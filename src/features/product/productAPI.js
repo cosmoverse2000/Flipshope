@@ -7,8 +7,8 @@ export function fetchAllProducts(amount = 1) {
   });
 }
 
-// using this promise function to get productlist using query and filter
-export function fetchFilterProducts(filter) {
+// using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giveing vlues to it in handle sort
+export function fetchFilterSortedProducts(filter) {
   //'filter' obj format ={"category"="smartphone"}
   let queryString = "";
 

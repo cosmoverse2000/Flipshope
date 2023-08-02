@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAllProductsAsync,
   selectAllProducts,
-  fetchFilterProductsAsync,
+  fetchFilterSortedProductsAsync,
 } from "../productSlice";
 
 import { Fragment, useState } from "react";
@@ -21,11 +21,14 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
+  { name: "Price: Low to High", sortBy: "price", order: "asc", current: false },
+  {
+    name: "Price: High to Low",
+    sortBy: "price",
+    order: "desc",
+    current: false,
+  },
 ];
 const filters = [
   {
@@ -245,9 +248,27 @@ export default function ProductList() {
       [section.id]: option.value,
     };
     setFilter(newFilter);
-    //using action 'fetchFilterProductsAsync' from Product Slice to call api function
+    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(fetchFilterProductsAsync(newFilter));
+    dispatch(fetchFilterSortedProductsAsync(newFilter));
+    // console.log(section.id, option.value);
+  };
+
+  // after sort change this fnc would be executed
+  const handleSort = (e, option) => {
+    const newFilter = {
+      ...filter,
+      _sort: option.sortBy,
+      _order: option.order,
+    };
+    setFilter(newFilter);
+    for (let key in sortOptions) {
+      sortOptions[key].current = false;
+    }
+    option.current = true;
+    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
+    // then updating 'products' in store
+    dispatch(fetchFilterSortedProductsAsync(newFilter));
     // console.log(section.id, option.value);
   };
 
@@ -403,8 +424,7 @@ export default function ProductList() {
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <p
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -412,9 +432,13 @@ export default function ProductList() {
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm"
                               )}
+                              // option is sorting type onject we already definde
+                              onClick={(e) => {
+                                handleSort(e, option);
+                              }}
                             >
                               {option.name}
-                            </a>
+                            </p>
                           )}
                         </Menu.Item>
                       ))}
@@ -536,13 +560,13 @@ export default function ProductList() {
                             <div className="mt-4 flex justify-between">
                               <div>
                                 <h3 className="text-sm font-medium text-gray-700">
-                                  <a href={product.thumbnail}>
+                                  <div>
                                     <span
                                       aria-hidden="true"
                                       className="absolute inset-0"
                                     />
                                     {product.title}
-                                  </a>
+                                  </div>
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-500">
                                   <StarIcon className="w-6 inline h-6" />

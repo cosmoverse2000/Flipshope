@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchAllProducts, fetchFilterProducts } from "./productAPI";
+import { fetchAllProducts, fetchFilterSortedProducts } from "./productAPI";
 
 const initialState = {
   products: [],
@@ -15,14 +15,14 @@ export const fetchAllProductsAsync = createAsyncThunk(
   }
 );
 
-//just like all-products api func above , getting filtered products
-export const fetchFilterProductsAsync = createAsyncThunk(
-  "product/fetchFilterProducts",
+//just like all-products api func above , getting filtered products, and sorting also now
+export const fetchFilterSortedProductsAsync = createAsyncThunk(
+  "product/fetchFilterSortedProducts",
   async (amount) => {
     //executing filter api function and getting reasponse
-    const response = await fetchFilterProducts(amount);
+    const response = await fetchFilterSortedProducts(amount);
     // The value we return becomes the `fulfilled` action payload
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );
@@ -46,10 +46,10 @@ export const productSlice = createSlice({
         state.status = "idle";
         state.products = action.payload;
       })
-      .addCase(fetchFilterProductsAsync.pending, (state) => {
+      .addCase(fetchFilterSortedProductsAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchFilterProductsAsync.fulfilled, (state, action) => {
+      .addCase(fetchFilterSortedProductsAsync.fulfilled, (state, action) => {
         // console.log(action.payload);
         //replacing prev product list to new filtered products
         state.status = "idle";
