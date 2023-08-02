@@ -31,6 +31,10 @@ const filters = [
   {
     id: "category",
     name: "Category",
+    //these options are hardcoded for now, and we get them from our public api Dummy-json
+    // both value and label are same words but label have been modified as correct Casing
+    // this array is created by applying filter, set and map to data.json product array
+    // we only need CATAGORY NAME FROM there
     options: [
       { value: "smartphones", label: "Smartphones", checked: false },
       { value: "laptops", label: "Laptops", checked: false },
@@ -57,6 +61,10 @@ const filters = [
   {
     id: "brand",
     name: "Brand",
+    //these options are hardcoded for now, and we get them from our public api Dummy-json
+    // both value and label are same words but label have been modified as correct Casing
+    // this array is created by applying filter, set and map to data.json product array
+    // we only need BRAND NAME FROM there
     options: [
       { value: "Apple", label: "Apple", checked: false },
       { value: "Samsung", label: "Samsung", checked: false },
@@ -226,18 +234,21 @@ function classNames(...classes) {
 
 export default function ProductList() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(false); // to use prev filter state we create it as usestate
   const products = useSelector(selectAllProducts);
   const dispatch = useDispatch();
 
+  // after filter change this fnc would be executed
   const handleFilters = (e, section, option) => {
     const newFilter = {
       ...filter,
       [section.id]: option.value,
     };
     setFilter(newFilter);
+    //using action 'fetchFilterProductsAsync' from Product Slice to call api function
+    // then updating 'products' in store
     dispatch(fetchFilterProductsAsync(newFilter));
-    console.log(section.id, option.value);
+    // console.log(section.id, option.value);
   };
 
   useEffect(() => {
@@ -481,6 +492,10 @@ export default function ProductList() {
                                   defaultValue={option.value}
                                   type="checkbox"
                                   defaultChecked={option.checked}
+                                  //while clicking on checkbox of Filters we will handle it
+                                  // here section.id is type of filter- Category, Brand
+                                  // here option .value give the value of filter like 'smarphone'
+                                  // we can use 'e also to get crrent val but here we will use option for that
                                   onChange={(e) =>
                                     handleFilters(e, section, option)
                                   }

@@ -6,9 +6,13 @@ export function fetchAllProducts(amount = 1) {
     resolve({ data });
   });
 }
+
+// using this promise function to get productlist using query and filter
 export function fetchFilterProducts(filter) {
-  //filter={"category"="smartphone"}
+  //'filter' obj format ={"category"="smartphone"}
   let queryString = "";
+
+  // converting all key:value pair of 'filter' obj into query string by concating each key:val pair
   for (const key in filter) {
     queryString += `${key}=${filter[key]}&`;
   }

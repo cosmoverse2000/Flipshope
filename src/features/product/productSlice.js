@@ -14,9 +14,12 @@ export const fetchAllProductsAsync = createAsyncThunk(
     return response.data;
   }
 );
+
+//just like all-products api func above , getting filtered products
 export const fetchFilterProductsAsync = createAsyncThunk(
   "product/fetchFilterProducts",
   async (amount) => {
+    //executing filter api function and getting reasponse
     const response = await fetchFilterProducts(amount);
     // The value we return becomes the `fulfilled` action payload
     console.log(response);
@@ -48,6 +51,7 @@ export const productSlice = createSlice({
       })
       .addCase(fetchFilterProductsAsync.fulfilled, (state, action) => {
         // console.log(action.payload);
+        //replacing prev product list to new filtered products
         state.status = "idle";
         state.products = action.payload;
       });
