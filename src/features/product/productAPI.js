@@ -7,16 +7,26 @@ export function fetchAllProducts(amount = 1) {
   });
 }
 
-// using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giveing vlues to it in handle sort
-export function fetchFilterSortedProducts(filter) {
-  //'filter' obj format ={"category"="smartphone"}
+// using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
+export function fetchFilterSortedProducts(filter, sorting) {
+  //example of structure that these above arguments will posses
+  //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','adad']}
+  //'Sort' obj format ={_sort:"ratings",_order="asc"}
+  //'pagination' obj format ={"page":2}
   let queryString = "";
 
   // converting all key:value pair of 'filter' obj into query string by concating each key:val pair
-  for (const key in filter) {
-    queryString += `${key}=${filter[key]}&`;
-  }
 
+  //addind filter queries
+  for (const key in filter) {
+    queryString += `${key}=${filter[key][filter[key].length - 1]}&`;
+  }
+  //adding sorting queries
+  for (const key in sorting) {
+    queryString += `${key}=${sorting[key]}&`;
+  }
+  console.log(queryString);
+  //calling api
   return new Promise(async (resolve) => {
     const response = await fetch(
       "http://localhost:8080/products?" + queryString
@@ -25,3 +35,15 @@ export function fetchFilterSortedProducts(filter) {
     resolve({ data });
   });
 }
+
+// WHEN HANDLING MULTIPLE CATEGORIES
+// for (const key in filter) {
+//   queryString += `${key}=`;
+
+//   for (let i = 0; i < filter[key].length; i++) {
+//     const element = filter[key][i];
+//     queryString += `${element},`;
+//   }
+//   queryString = queryString.replace(/.$/, "&");
+// }
+// console.log(queryString);

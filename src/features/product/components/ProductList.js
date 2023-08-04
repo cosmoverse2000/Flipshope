@@ -32,7 +32,7 @@ const sortOptions = [
     current: false,
   },
 ];
-const filters = [
+const filtersList = [
   {
     id: "category",
     name: "Category",
@@ -211,45 +211,69 @@ function classNames(...classes) {
 
 export default function ProductList() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [filter, setFilter] = useState({}); // to use prev filter state we create it as usestate
+  const [filter, setFilter] = useState({}); // to use prev filter state ,we create it as usestate
+  const [sorting, setSorting] = useState({}); // to use prev sort state, we create it as usestate
   const products = useSelector(selectAllProducts);
   const dispatch = useDispatch();
 
-  // after filter change this fnc would be executed
+  // after any change in filter this fnc would be executed
   const handleFilters = (e, section, option) => {
-    const newFilter = {
-      ...filter,
-      [section.id]: option.value,
-    };
+    let newFilter = { ...filter };
+
+    // below is all the logic to add remove filter item from filter state and
+    // set final fiiter in this eg. format
+    //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','apple']}
+    if (e.target.checked) {
+      if (section.id in newFilter) {
+        newFilter[section.id].push(option.value);
+      } else {
+        newFilter[section.id] = [option.value];
+      }
+    } else {
+      const index = newFilter[section.id].indexOf(option.value);
+
+      if (newFilter[section.id].length <= 1) {
+        delete newFilter[section.id];
+      } else {
+        const x = newFilter[section.id].splice(index, 1);
+      }
+    }
+
     setFilter(newFilter);
-    console.log(e.target.checked);
-    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
-    // then updating 'products' in store
-    dispatch(fetchFilterSortedProductsAsync(newFilter));
-    // console.log(section.id, option.value);
   };
 
   // after sort change this fnc would be executed
   const handleSort = (e, option) => {
-    const newFilter = {
-      ...filter,
-      _sort: option.sortBy,
-      _order: option.order,
-    };
-    setFilter(newFilter);
-    for (let key in sortOptions) {
-      sortOptions[key].current = false;
+    //checking if sorting already applied for current option, if yes then remove it
+    if (option.current === true) {
+      option.current = false;
+      setSorting({}); //removing sorting
+    } else {
+      const newSorting = {
+        _sort: option.sortBy,
+        _order: option.order,
+      };
+
+      //logic for highlighting only the applied sort-option ,making all false only selected true
+      for (let key in sortOptions) {
+        //removing other sortings if any
+        sortOptions[key].current = false;
+      }
+      option.current = true; //applying current sort
+
+      setSorting(newSorting);
     }
-    option.current = true;
-    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
-    // then updating 'products' in store
-    dispatch(fetchFilterSortedProductsAsync(newFilter));
-    // console.log(section.id, option.value);
   };
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync());
-  }, [dispatch]);
+    // dispatch(fetchAllProductsAsync());----- we will not use this for fetching list since its the same api as filter&sorting api would be at start(i.e when no filter and sort initlizd.)
+    //so applying that below directy
+
+    //after any setfilter and setSorting this beolw will be dispatched
+    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
+    // then updating 'products' in store
+    dispatch(fetchFilterSortedProductsAsync({ filter, sorting }));
+  }, [dispatch, filter, sorting]);
 
   // console.log(products);
   return (
@@ -428,7 +452,7 @@ export const ProductListDesktopFilters = ({ handleFilters }) => {
     <form className="hidden lg:block">
       <h3 className="sr-only">Categories</h3>
 
-      {filters.map((section) => (
+      {filtersList.map((section) => (
         <Disclosure
           as="div"
           key={section.id}
@@ -537,7 +561,7 @@ export const ProductListMobileFilters = ({
               <form className="mt-4 border-t border-gray-200">
                 <h3 className="sr-only">Categories</h3>
 
-                {filters.map((section) => (
+                {filtersList.map((section) => (
                   <Disclosure
                     as="div"
                     key={section.id}
