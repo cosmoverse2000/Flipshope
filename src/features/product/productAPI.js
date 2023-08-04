@@ -1,3 +1,4 @@
+import { ITEMS_PER_PAGE } from "../../app/constants";
 // A mock function to mimic making an async request for data
 export function fetchAllProducts(amount = 1) {
   return new Promise(async (resolve) => {
@@ -8,7 +9,7 @@ export function fetchAllProducts(amount = 1) {
 }
 
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
-export function fetchFilterSortedProducts(filter, sorting) {
+export function fetchFilterSortedProducts(filter, sorting, page) {
   //example of structure that these above arguments will posses
   //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','adad']}
   //'Sort' obj format ={_sort:"ratings",_order="asc"}
@@ -16,7 +17,6 @@ export function fetchFilterSortedProducts(filter, sorting) {
   let queryString = "";
 
   // converting all key:value pair of 'filter' obj into query string by concating each key:val pair
-
   //addind filter queries
   for (const key in filter) {
     queryString += `${key}=${filter[key][filter[key].length - 1]}&`;
@@ -25,14 +25,19 @@ export function fetchFilterSortedProducts(filter, sorting) {
   for (const key in sorting) {
     queryString += `${key}=${sorting[key]}&`;
   }
+  //addding pagination queries
+  queryString += `_page=${page}&_limit=${ITEMS_PER_PAGE}`;
+
   console.log(queryString);
+
   //calling api
   return new Promise(async (resolve) => {
     const response = await fetch(
       "http://localhost:8080/products?" + queryString
     );
     const data = await response.json();
-    resolve({ data });
+    const totalItems = await response.headers.get("X-Total-Count");
+    resolve({ data: { products: data, totalItems: totalItems } });
   });
 }
 

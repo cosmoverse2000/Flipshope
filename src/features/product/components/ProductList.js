@@ -5,8 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAllProductsAsync,
   selectAllProducts,
+  selectTotaItemsCount,
   fetchFilterSortedProductsAsync,
 } from "../productSlice";
+import { ITEMS_PER_PAGE } from "../../../app/constants";
 //roiuter imps
 import { Link } from "react-router-dom";
 //tailwind imps
@@ -213,7 +215,9 @@ export default function ProductList() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({}); // to use prev filter state ,we create it as usestate
   const [sorting, setSorting] = useState({}); // to use prev sort state, we create it as usestate
+  const [page, setPage] = useState(1); // to use prev page state, we create it as usestate
   const products = useSelector(selectAllProducts);
+  const totalItems = useSelector(selectTotaItemsCount);
   const dispatch = useDispatch();
 
   // after any change in filter this fnc would be executed
@@ -264,6 +268,21 @@ export default function ProductList() {
       setSorting(newSorting);
     }
   };
+  // after Page change this fnc would be executed
+  const handlePage = (e, page) => {
+    if (page === -1) {
+      // if prev btn clicked
+      setPage((prev) => (prev - 1 > 0 ? prev - 1 : 1));
+    } else if (page === 0) {
+      // if next btn clicked
+      setPage((prev) =>
+        prev + 1 <= Math.ceil(totalItems / ITEMS_PER_PAGE) ? prev + 1 : prev
+      );
+    } else {
+      // any page number clicked
+      setPage(page);
+    }
+  };
 
   useEffect(() => {
     // dispatch(fetchAllProductsAsync());----- we will not use this for fetching list since its the same api as filter&sorting api would be at start(i.e when no filter and sort initlizd.)
@@ -272,8 +291,8 @@ export default function ProductList() {
     //after any setfilter and setSorting this beolw will be dispatched
     //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(fetchFilterSortedProductsAsync({ filter, sorting }));
-  }, [dispatch, filter, sorting]);
+    dispatch(fetchFilterSortedProductsAsync({ filter, sorting, page }));
+  }, [dispatch, filter, sorting, page]);
 
   // console.log(products);
   return (
@@ -306,7 +325,11 @@ export default function ProductList() {
         </main>
 
         {/*ADDING THE PAGINATION HERE*/}
-        <ProductListPagination />
+        <ProductListPagination
+          page={page}
+          totalItems={totalItems}
+          handlePage={handlePage}
+        />
       </div>
     </div>
   );
@@ -314,77 +337,106 @@ export default function ProductList() {
 
 /// Full pagination Code is Responsive for mobile and Desktop Both
 // used tailwind flex for responsiveness
-export const ProductListPagination = () => {
+export const ProductListPagination = ({ page, handlePage, totalItems }) => {
+  const mobileBtnCssClasses =
+    "relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-indigo-600 hover:text-white";
+
+  const desktopBtnCssClasses =
+    "relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-indigo-600 hover:text-white focus:z-20 focus:outline-offset-0";
+
+  const desktopPgBtnClasses =
+    "relative z-10 cursor-pointer inline-flex items-center px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ring-1 ring-inset ring-gray-300 hover:bg-indigo-600 hover:text-white";
+
+  const start = (page - 1) * ITEMS_PER_PAGE;
+
+  const mobilePaginationContent = (
+    <div className="flex flex-1 justify-between sm:hidden">
+      <div
+        className={mobileBtnCssClasses}
+        onClick={(e) => {
+          handlePage(e, -1);
+        }}
+      >
+        Previous
+      </div>
+      <div
+        className={mobileBtnCssClasses}
+        onClick={(e) => {
+          handlePage(e, 0);
+        }}
+      >
+        Next
+      </div>
+    </div>
+  );
+
+  const desktopPaginationContent = (
+    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div>
+        <p className="text-sm text-gray-700">
+          Showing <span className="font-medium">{start + 1}</span> to{" "}
+          <span className="font-medium">
+            {start + ITEMS_PER_PAGE > totalItems
+              ? totalItems
+              : start + ITEMS_PER_PAGE}
+          </span>{" "}
+          of <span className="font-medium">{totalItems}</span> results
+        </p>
+      </div>
+      <div>
+        <nav
+          className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+          aria-label="Pagination"
+        >
+          <div
+            className={desktopBtnCssClasses}
+            onClick={(e) => {
+              handlePage(e, -1);
+            }}
+          >
+            <span className="sr-only">Previous</span>
+            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+          </div>
+          {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+
+          {/* This below 'Array.from' is used to create any array of required length without any values inside array */}
+          {Array.from({
+            length: Math.ceil(totalItems / ITEMS_PER_PAGE),
+          }).map((each, index) => {
+            return (
+              <div
+                key={index}
+                aria-current="page"
+                //applied desktopPgBtnClasses and higlighted the current page using conditn
+                className={`${desktopPgBtnClasses} ${
+                  index + 1 === page && "bg-indigo-600 text-white"
+                }`}
+                onClick={(e) => {
+                  handlePage(e, index + 1);
+                }}
+              >
+                {index + 1}
+              </div>
+            );
+          })}
+
+          <div
+            className={desktopBtnCssClasses}
+            onClick={(e) => {
+              handlePage(e, 0);
+            }}
+          >
+            <span className="sr-only">Next</span>
+            <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+          </div>
+        </nav>
+      </div>
+    </div>
+  );
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-      <div className="flex flex-1 justify-between sm:hidden">
-        <a
-          href="#"
-          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          Previous
-        </a>
-        <a
-          href="#"
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          Next
-        </a>
-      </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
-          <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to{" "}
-            <span className="font-medium">10</span> of{" "}
-            <span className="font-medium">97</span> results
-          </p>
-        </div>
-        <div>
-          <nav
-            className="isolate inline-flex -space-x-px rounded-md shadow-sm"
-            aria-label="Pagination"
-          >
-            <a
-              href="#"
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Previous</span>
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-            </a>
-            {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-            <a
-              href="#"
-              aria-current="page"
-              className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-            >
-              3
-            </a>
-            <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-              ...
-            </span>
-
-            <a
-              href="#"
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Next</span>
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </a>
-          </nav>
-        </div>
-      </div>
+      {mobilePaginationContent}
+      {desktopPaginationContent}
     </div>
   );
 };

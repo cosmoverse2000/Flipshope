@@ -4,6 +4,7 @@ import { fetchAllProducts, fetchFilterSortedProducts } from "./productAPI";
 const initialState = {
   products: [],
   status: "idle",
+  totalItems: 0,
 };
 
 export const fetchAllProductsAsync = createAsyncThunk(
@@ -18,9 +19,9 @@ export const fetchAllProductsAsync = createAsyncThunk(
 //just like all-products api func above , getting filtered products, and sorting also now
 export const fetchFilterSortedProductsAsync = createAsyncThunk(
   "product/fetchFilterSortedProducts",
-  async ({ filter, sorting }) => {
+  async ({ filter, sorting, page }) => {
     //executing filter api function and getting reasponse
-    const response = await fetchFilterSortedProducts(filter, sorting);
+    const response = await fetchFilterSortedProducts(filter, sorting, page);
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
     return response.data;
@@ -53,7 +54,8 @@ export const productSlice = createSlice({
         // console.log(action.payload);
         //replacing prev product list to new filtered products
         state.status = "idle";
-        state.products = action.payload;
+        state.products = action.payload.products;
+        state.totalItems = action.payload.totalItems;
       });
   },
 });
@@ -61,5 +63,6 @@ export const productSlice = createSlice({
 export const { increment } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
+export const selectTotaItemsCount = (state) => state.product.totalItems;
 
 export default productSlice.reducer;
