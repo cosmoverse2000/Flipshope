@@ -40,7 +40,7 @@ const Navbar = (props) => {
                       <img
                         className="h-8 w-8"
                         src="https://img.icons8.com/?size=512&id=HblsXWznhqIx&format=png"
-                        alt="Your Company"
+                        alt="Flipshope Logo"
                       />
                     </div>
                   </Link>
