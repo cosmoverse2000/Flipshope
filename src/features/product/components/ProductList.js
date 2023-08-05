@@ -6,6 +6,10 @@ import {
   fetchAllProductsAsync,
   selectAllProducts,
   selectTotaItemsCount,
+  selectBrands,
+  selectCategories,
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
   fetchFilterSortedProductsAsync,
 } from "../productSlice";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
@@ -34,191 +38,48 @@ const sortOptions = [
     current: false,
   },
 ];
-const filtersList = [
-  {
-    id: "category",
-    name: "Category",
-    //these options are hardcoded for now, and we get them from our public api Dummy-json
-    // both value and label are same words but label have been modified as correct Casing
-    // this array is created by applying filter, set and map to data.json product array
-    // we only need CATAGORY NAME FROM there
-    options: [
-      { value: "smartphones", label: "Smartphones", checked: false },
-      { value: "laptops", label: "Laptops", checked: false },
-      { value: "fragrances", label: "Fragrances", checked: false },
-      { value: "skincare", label: "Skincare", checked: false },
-      { value: "groceries", label: "Groceries", checked: false },
-      { value: "home-decoration", label: "Home decoration", checked: false },
-      { value: "furniture", label: "Furniture", checked: false },
-      { value: "tops", label: "Tops", checked: false },
-      { value: "womens-dresses", label: "Womens dresses", checked: false },
-      { value: "womens-shoes", label: "Womens shoes", checked: false },
-      { value: "mens-shirts", label: "Mens shirts", checked: false },
-      { value: "mens-shoes", label: "Mens shoes", checked: false },
-      { value: "mens-watches", label: "Mens watches", checked: false },
-      { value: "womens-watches", label: "Womens watches", checked: false },
-      { value: "womens-bags", label: "Womens bags", checked: false },
-      { value: "womens-jewellery", label: "Womens jewellery", checked: false },
-      { value: "sunglasses", label: "Sunglasses", checked: false },
-      { value: "automotive", label: "Automotive", checked: false },
-      { value: "motorcycle", label: "Motorcycle", checked: false },
-      { value: "lighting", label: "Lighting", checked: false },
-    ],
-  },
-  {
-    id: "brand",
-    name: "Brand",
-    //these options are hardcoded for now, and we get them from our public api Dummy-json
-    // both value and label are same words but label have been modified as correct Casing
-    // this array is created by applying filter, set and map to data.json product array
-    // we only need BRAND NAME FROM there
-    options: [
-      { value: "Apple", label: "Apple", checked: false },
-      { value: "Samsung", label: "Samsung", checked: false },
-      { value: "OPPO", label: "OPPO", checked: false },
-      { value: "Huawei", label: "Huawei", checked: false },
-      {
-        value: "Microsoft Surface",
-        label: "Microsoft Surface",
-        checked: false,
-      },
-      { value: "Infinix", label: "Infinix", checked: false },
-      { value: "HP Pavilion", label: "HP Pavilion", checked: false },
-      {
-        value: "Impression of Acqua Di Gio",
-        label: "Impression of Acqua Di Gio",
-        checked: false,
-      },
-      { value: "Royal_Mirage", label: "Royal_Mirage", checked: false },
-      {
-        value: "Fog Scent Xpressio",
-        label: "Fog Scent Xpressio",
-        checked: false,
-      },
-      { value: "Al Munakh", label: "Al Munakh", checked: false },
-      { value: "Lord - Al-Rehab", label: "Lord   Al Rehab", checked: false },
-      { value: "L'Oreal Paris", label: "L'Oreal Paris", checked: false },
-      { value: "Hemani Tea", label: "Hemani Tea", checked: false },
-      { value: "Dermive", label: "Dermive", checked: false },
-      { value: "ROREC White Rice", label: "ROREC White Rice", checked: false },
-      { value: "Fair & Clear", label: "Fair & Clear", checked: false },
-      { value: "Saaf & Khaas", label: "Saaf & Khaas", checked: false },
-      { value: "Bake Parlor Big", label: "Bake Parlor Big", checked: false },
-      {
-        value: "Baking Food Items",
-        label: "Baking Food Items",
-        checked: false,
-      },
-      { value: "fauji", label: "Fauji", checked: false },
-      { value: "Dry Rose", label: "Dry Rose", checked: false },
-      { value: "Boho Decor", label: "Boho Decor", checked: false },
-      { value: "Flying Wooden", label: "Flying Wooden", checked: false },
-      { value: "LED Lights", label: "LED Lights", checked: false },
-      { value: "luxury palace", label: "Luxury palace", checked: false },
-      { value: "Golden", label: "Golden", checked: false },
-      {
-        value: "Furniture Bed Set",
-        label: "Furniture Bed Set",
-        checked: false,
-      },
-      { value: "Ratttan Outdoor", label: "Ratttan Outdoor", checked: false },
-      { value: "Kitchen Shelf", label: "Kitchen Shelf", checked: false },
-      { value: "Multi Purpose", label: "Multi Purpose", checked: false },
-      { value: "AmnaMart", label: "AmnaMart", checked: false },
-      {
-        value: "Professional Wear",
-        label: "Professional Wear",
-        checked: false,
-      },
-      { value: "Soft Cotton", label: "Soft Cotton", checked: false },
-      { value: "Top Sweater", label: "Top Sweater", checked: false },
-      {
-        value: "RED MICKY MOUSE..",
-        label: "RED MICKY MOUSE..",
-        checked: false,
-      },
-      { value: "Digital Printed", label: "Digital Printed", checked: false },
-      { value: "Ghazi Fabric", label: "Ghazi Fabric", checked: false },
-      { value: "IELGY", label: "IELGY", checked: false },
-      { value: "IELGY fashion", label: "IELGY fashion", checked: false },
-      {
-        value: "Synthetic Leather",
-        label: "Synthetic Leather",
-        checked: false,
-      },
-      {
-        value: "Sandals Flip Flops",
-        label: "Sandals Flip Flops",
-        checked: false,
-      },
-      { value: "Maasai Sandals", label: "Maasai Sandals", checked: false },
-      { value: "Arrivals Genuine", label: "Arrivals Genuine", checked: false },
-      { value: "Vintage Apparel", label: "Vintage Apparel", checked: false },
-      { value: "FREE FIRE", label: "FREE FIRE", checked: false },
-      { value: "The Warehouse", label: "The Warehouse", checked: false },
-      { value: "Sneakers", label: "Sneakers", checked: false },
-      { value: "Rubber", label: "Rubber", checked: false },
-      { value: "Naviforce", label: "Naviforce", checked: false },
-      { value: "SKMEI 9117", label: "SKMEI 9117", checked: false },
-      { value: "Strap Skeleton", label: "Strap Skeleton", checked: false },
-      { value: "Stainless", label: "Stainless", checked: false },
-      { value: "Eastern Watches", label: "Eastern Watches", checked: false },
-      { value: "Luxury Digital", label: "Luxury Digital", checked: false },
-      { value: "Watch Pearls", label: "Watch Pearls", checked: false },
-      { value: "Bracelet", label: "Bracelet", checked: false },
-      { value: "LouisWill", label: "LouisWill", checked: false },
-      { value: "Copenhagen Luxe", label: "Copenhagen Luxe", checked: false },
-      { value: "Steal Frame", label: "Steal Frame", checked: false },
-      { value: "Darojay", label: "Darojay", checked: false },
-      {
-        value: "Fashion Jewellery",
-        label: "Fashion Jewellery",
-        checked: false,
-      },
-      { value: "Cuff Butterfly", label: "Cuff Butterfly", checked: false },
-      {
-        value: "Designer Sun Glasses",
-        label: "Designer Sun Glasses",
-        checked: false,
-      },
-      { value: "mastar watch", label: "Mastar watch", checked: false },
-      { value: "Car Aux", label: "Car Aux", checked: false },
-      { value: "W1209 DC12V", label: "W1209 DC12V", checked: false },
-      { value: "TC Reusable", label: "TC Reusable", checked: false },
-      { value: "Neon LED Light", label: "Neon LED Light", checked: false },
-      {
-        value: "METRO 70cc Motorcycle - MR70",
-        label: "METRO 70cc Motorcycle   MR70",
-        checked: false,
-      },
-      { value: "BRAVE BULL", label: "BRAVE BULL", checked: false },
-      { value: "shock absorber", label: "Shock absorber", checked: false },
-      { value: "JIEPOLLY", label: "JIEPOLLY", checked: false },
-      { value: "Xiangle", label: "Xiangle", checked: false },
-      {
-        value: "lightingbrilliance",
-        label: "Lightingbrilliance",
-        checked: false,
-      },
-      { value: "Ifei Home", label: "Ifei Home", checked: false },
-      { value: "DADAWU", label: "DADAWU", checked: false },
-      { value: "YIOSI", label: "YIOSI", checked: false },
-    ],
-  },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+/////////////////////////////////////////PRODUCT LIST MAIN FUNC.COMP.////////////////////////
+
 export default function ProductList() {
+  //redux states
+  const products = useSelector(selectAllProducts);
+  const totalItems = useSelector(selectTotaItemsCount);
+  const categories = useSelector(selectCategories);
+  const brands = useSelector(selectBrands);
+  const dispatch = useDispatch();
+
+  //local use states
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({}); // to use prev filter state ,we create it as usestate
   const [sorting, setSorting] = useState({}); // to use prev sort state, we create it as usestate
   const [page, setPage] = useState(1); // to use prev page state, we create it as usestate
-  const products = useSelector(selectAllProducts);
-  const totalItems = useSelector(selectTotaItemsCount);
-  const dispatch = useDispatch();
+
+  //local data
+  const filtersList = [
+    {
+      id: "category",
+      name: "Category",
+      //these options are hardcoded for now, and we get them from our public api Dummy-json
+      // both value and label are same words but label have been modified as correct Casing
+      // this array is created by applying filter, set and map to data.json product array
+      // we only need CATAGORY NAME FROM there
+      options: categories,
+    },
+    {
+      id: "brand",
+      name: "Brand",
+      //these options are hardcoded for now, and we get them from our public api Dummy-json
+      // both value and label are same words but label have been modified as correct Casing
+      // this array is created by applying filter, set and map to data.json product array
+      // we only need BRAND NAME FROM there
+      options: brands,
+    },
+  ];
 
   // after any change in filter this fnc would be executed
   const handleFilters = (e, section, option) => {
@@ -228,19 +89,28 @@ export default function ProductList() {
     // set final fiiter in this eg. format
     //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','apple']}
     if (e.target.checked) {
+      ///on checking the checbox
       if (section.id in newFilter) {
         newFilter[section.id].push(option.value);
       } else {
         newFilter[section.id] = [option.value];
       }
+
+      //TODO:on checking box making its value in filterList also checked
+      // option.checked = true;
     } else {
+      //on unchecking the checkbox
       const index = newFilter[section.id].indexOf(option.value);
 
       if (newFilter[section.id].length <= 1) {
+        ///if last filter value in array
         delete newFilter[section.id];
       } else {
         const x = newFilter[section.id].splice(index, 1);
       }
+
+      //TODO:on checking box making its value in filterList also checked
+      // option.checked = false;
     }
 
     setFilter(newFilter);
@@ -260,7 +130,7 @@ export default function ProductList() {
 
       //logic for highlighting only the applied sort-option ,making all false only selected true
       for (let key in sortOptions) {
-        //removing other sortings if any
+        //removing other sortings checked if any
         sortOptions[key].current = false;
       }
       option.current = true; //applying current sort
@@ -294,12 +164,23 @@ export default function ProductList() {
     dispatch(fetchFilterSortedProductsAsync({ filter, sorting, page }));
   }, [dispatch, filter, sorting, page]);
 
-  // console.log(products);
+  //to reset pagination while filter and sorting
+  useEffect(() => {
+    setPage(1);
+  }, [totalItems, sorting]);
+
+  //to fetch brand and categories from backedn for the first time
+  useEffect(() => {
+    dispatch(fetchBrandsAsync());
+    dispatch(fetchCategoriesAsync());
+  }, [dispatch]);
+
   return (
     <div className="bg-white">
       <div>
         {/* Mobile filter LIST dialog */}
         <ProductListMobileFilters
+          filtersList={filtersList}
           handleFilters={handleFilters}
           mobileFiltersOpen={mobileFiltersOpen}
           setMobileFiltersOpen={setMobileFiltersOpen}
@@ -316,7 +197,10 @@ export default function ProductList() {
             {/* {FilterList and ProductList in 1:3 ratio in lg screen w/ responsivenes} */}
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Desktop Filters LIST*/}
-              <ProductListDesktopFilters handleFilters={handleFilters} />
+              <ProductListDesktopFilters
+                filtersList={filtersList}
+                handleFilters={handleFilters}
+              />
 
               {/* Product grid */}
               <ProductListGrid products={products} />
@@ -499,7 +383,7 @@ export const ProductListGrid = ({ products }) => {
 };
 
 /// lg screen FILTERS LIST
-export const ProductListDesktopFilters = ({ handleFilters }) => {
+export const ProductListDesktopFilters = ({ filtersList, handleFilters }) => {
   return (
     <form className="hidden lg:block">
       <h3 className="sr-only">Categories</h3>
@@ -563,6 +447,7 @@ export const ProductListDesktopFilters = ({ handleFilters }) => {
 
 //  mobile screen filter-list as dialog BOX in right side
 export const ProductListMobileFilters = ({
+  filtersList,
   handleFilters,
   mobileFiltersOpen,
   setMobileFiltersOpen,

@@ -1,5 +1,6 @@
 import { ITEMS_PER_PAGE } from "../../app/constants";
 // A mock function to mimic making an async request for data
+//api function to get 'products list' with there datainit
 export function fetchAllProducts(amount = 1) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products");
@@ -21,6 +22,19 @@ export function fetchFilterSortedProducts(filter, sorting, page) {
   for (const key in filter) {
     queryString += `${key}=${filter[key][filter[key].length - 1]}&`;
   }
+  // WHEN HANDLING MULTIPLE CATEGORIES
+
+  // for (const key in filter) {
+  //   queryString += `${key}=`;
+
+  //   for (let i = 0; i < filter[key].length; i++) {
+  //     const element = filter[key][i];
+  //     queryString += `${element},`;
+  //   }
+  //   queryString = queryString.replace(/.$/, "&");
+  // }
+  // console.log(queryString);
+
   //adding sorting queries
   for (const key in sorting) {
     queryString += `${key}=${sorting[key]}&`;
@@ -41,14 +55,19 @@ export function fetchFilterSortedProducts(filter, sorting, page) {
   });
 }
 
-// WHEN HANDLING MULTIPLE CATEGORIES
-// for (const key in filter) {
-//   queryString += `${key}=`;
-
-//   for (let i = 0; i < filter[key].length; i++) {
-//     const element = filter[key][i];
-//     queryString += `${element},`;
-//   }
-//   queryString = queryString.replace(/.$/, "&");
-// }
-// console.log(queryString);
+//api function to get 'categories list' in Filters
+export function fetchCategories(amount = 1) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/categories");
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+//api function to get 'categories list' in Filters
+export function fetchBrands(amount = 1) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/brands");
+    const data = await response.json();
+    resolve({ data });
+  });
+}
