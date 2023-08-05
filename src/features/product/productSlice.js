@@ -4,6 +4,7 @@ import {
   fetchFilterSortedProducts,
   fetchBrands,
   fetchCategories,
+  fetchProductById,
 } from "./productAPI";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   totalItems: 0,
   categories: [],
   brands: [],
+  slectedProduct: null,
 };
 
 //using redux thunk to call api functions(promises) then setting data into state
@@ -38,6 +40,15 @@ export const fetchBrandsAsync = createAsyncThunk(
   "product/fetchBrands",
   async (amount) => {
     const response = await fetchBrands(amount);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const fetchProductByIdAsync = createAsyncThunk(
+  "product/fetchProductById",
+  async (id) => {
+    const response = await fetchProductById(id);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -94,6 +105,13 @@ export const productSlice = createSlice({
       .addCase(fetchBrandsAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.brands = action.payload;
+      })
+      .addCase(fetchProductByIdAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.slectedProduct = action.payload;
       });
   },
 });
@@ -104,5 +122,6 @@ export const selectAllProducts = (state) => state.product.products;
 export const selectTotaItemsCount = (state) => state.product.totalItems;
 export const selectCategories = (state) => state.product.categories;
 export const selectBrands = (state) => state.product.brands;
+export const selectProducById = (state) => state.product.slectedProduct;
 
 export default productSlice.reducer;

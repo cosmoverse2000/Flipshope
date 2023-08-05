@@ -8,6 +8,13 @@ export function fetchAllProducts(amount = 1) {
     resolve({ data });
   });
 }
+export function fetchProductById(id) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/products/" + id);
+    const data = await response.json();
+    resolve({ data });
+  });
+}
 
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
 export function fetchFilterSortedProducts(filter, sorting, page) {
