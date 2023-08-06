@@ -1,22 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchCount } from "./authAPI";
+import { signupUserAccount, loginUserAccount } from "./authAPI";
 
 const initialState = {
-  value: 0,
+  loggedInUser: null,
   status: "idle",
+  loginErrors: null,
 };
 
-export const incrementAsync = createAsyncThunk(
-  "counter/fetchCount",
-  async (amount) => {
-    const response = await fetchCount(amount);
+//signup ACtion
+export const signupUserAccountAsync = createAsyncThunk(
+  "user/signupUserAccount",
+  async (userData) => {
+    const response = await signupUserAccount(userData);
     // The value we return becomes the `fulfilled` action payload
-    return response.data;
+    return response;
   }
 );
 
-export const counterSlice = createSlice({
-  name: "counter",
+//login ACtion
+export const loginUserAccountAsync = createAsyncThunk(
+  "user/loginUserAccount",
+  async (loginData) => {
+    const response = await loginUserAccount(loginData);
+    // The value we return becomes the `fulfilled` action payload
+    return response;
+  }
+);
+
+export const authSlice = createSlice({
+  name: "user",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -26,18 +38,30 @@ export const counterSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
+      .addCase(signupUserAccountAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
+      .addCase(signupUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value += action.payload;
+        state.loggedInUser = action.payload;
+      })
+      .addCase(loginUserAccountAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loginUserAccountAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.loggedInUser = action.payload;
+      })
+      .addCase(loginUserAccountAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.loginErrors = action.error;
       });
   },
 });
 
-export const { increment } = counterSlice.actions;
+export const { increment } = authSlice.actions;
 
-export const selectCount = (state) => state.counter.value;
+export const selectLoggedInUser = (state) => state.user.loggedInUser;
+export const selectLoginErrors = (state) => state.user.loginErrors;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;
