@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addItemsToCart, fetchCartByUserId } from "./cartAPI";
+import {
+  addItemsToCart,
+  fetchCartByUserId,
+  updateCartItems,
+  deleteCartItems,
+} from "./cartAPI";
 
 const initialState = {
   items: [],
@@ -21,6 +26,23 @@ export const fetchCartByUserIdAsync = createAsyncThunk(
     const response = await fetchCartByUserId(item);
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
+    return response.data;
+  }
+);
+export const updateCartItemsAsync = createAsyncThunk(
+  "cart/updateCartItems",
+  async (updatedItem) => {
+    const response = await updateCartItems(updatedItem);
+    // The value we return becomes the `fulfilled` action payload
+
+    return response;
+  }
+);
+export const deleteCartItemsAsync = createAsyncThunk(
+  "cart/deleteCartItems",
+  async (deleteItemId) => {
+    const response = await deleteCartItems(deleteItemId);
+    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
@@ -49,6 +71,27 @@ export const cartSlice = createSlice({
       .addCase(fetchCartByUserIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.items = action.payload;
+      })
+      .addCase(updateCartItemsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateCartItemsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        state.items[index] = action.payload;
+      })
+      .addCase(deleteCartItemsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteCartItemsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        console.log(index, action.payload, "kdhskd");
+        state.items.splice(index, 1);
       });
   },
 });

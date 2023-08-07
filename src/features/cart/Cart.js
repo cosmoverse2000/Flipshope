@@ -1,12 +1,20 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, incrementAsync, selectCartItems } from "./cartSlice";
+import {
+  deleteCartItemsAsync,
+  increment,
+  incrementAsync,
+  selectCartItems,
+  updateCartItemsAsync,
+} from "./cartSlice";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 export default function Cart() {
+  const [open, setOpen] = useState(true);
+
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
@@ -15,10 +23,15 @@ export default function Cart() {
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
-  const [open, setOpen] = useState(true);
+  const handleQuantity = (e, cartItem) => {
+    dispatch(updateCartItemsAsync({ ...cartItem, qty: +e.target.value }));
+  };
+  const handleRemove = (e, item) => {
+    dispatch(deleteCartItemsAsync(item.id));
+  };
 
   return (
-    <div className="mx-auto bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto bg-white max-w-5xl px-4 sm:px-6 lg:px-8">
       <div className="mt-8">
         <div className="flow-root">
           <h1 className="text-4xl my-10 font-bold tracking-tight text-gray-900">
@@ -56,7 +69,12 @@ export default function Cart() {
                         Qty :
                       </label>
 
-                      <select name="qty" id="qty">
+                      <select
+                        onChange={(e) => handleQuantity(e, product)}
+                        name="qty"
+                        id="qty"
+                        value={product.qty}
+                      >
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -67,6 +85,9 @@ export default function Cart() {
                       <button
                         type="button"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
+                        onClick={(e) => {
+                          handleRemove(e, product);
+                        }}
                       >
                         Remove
                       </button>
