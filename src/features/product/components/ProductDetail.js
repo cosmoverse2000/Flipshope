@@ -46,7 +46,10 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    dispatch(addItemsToCartAsync({ ...product, qty: 1, userId: user.id }));
+    //removing id , so that DB auto generate its onw id or identification of cart items
+    const newItemToCart = { ...product, qty: 1, userId: user.id };
+    delete newItemToCart["id"];
+    dispatch(addItemsToCartAsync(newItemToCart));
   };
 
   useEffect(() => {

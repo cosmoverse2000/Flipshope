@@ -44,7 +44,7 @@ export default function Signup() {
                     password: data.password,
                   })
                 );
-                console.log(data);
+                // console.log(data);
               })}
               className="space-y-6"
               action="#"

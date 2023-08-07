@@ -49,7 +49,7 @@ export function fetchFilterSortedProducts(filter, sorting, page) {
   //addding pagination queries
   queryString += `_page=${page}&_limit=${ITEMS_PER_PAGE}`;
 
-  console.log(queryString);
+  // console.log(queryString);
 
   //calling api
   return new Promise(async (resolve) => {

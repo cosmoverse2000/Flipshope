@@ -90,7 +90,7 @@ export const cartSlice = createSlice({
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id
         );
-        console.log(index, action.payload, "kdhskd");
+
         state.items.splice(index, 1);
       });
   },

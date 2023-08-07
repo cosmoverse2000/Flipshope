@@ -44,7 +44,7 @@ export default function Login() {
           <form
             onSubmit={handleSubmit((data) => {
               dispatch(loginUserAccountAsync(data));
-              console.log(data);
+              // console.log(data);
             })}
             className="space-y-6"
             action="#"
