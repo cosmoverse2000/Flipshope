@@ -12,9 +12,13 @@ import {
   addUserAddressAsync,
   selectLoggedInUser,
 } from "../features/auth/authSlice";
+import { addToOrdersAsync } from "../features/orders/orderSlice";
 
 const CheckoutPage = () => {
   const [open, setOpen] = useState(true);
+  const [selectAddress, setSelectAddress] = useState(0);
+  const [selectPayment, setSelectPayment] = useState("card");
+  //redux
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const user = useSelector(selectLoggedInUser);
@@ -38,6 +42,26 @@ const CheckoutPage = () => {
   };
   const handleRemove = (e, item) => {
     dispatch(deleteCartItemsAsync(item.id));
+  };
+  const handleAddress = (e) => {
+    setSelectAddress(e.target.value);
+  };
+  const handlePayments = (e) => {
+    setSelectPayment(e.target.value);
+  };
+  const handleOrders = () => {
+    const order = {
+      userId: user.id,
+      orderedItems: cartItems,
+      totalItems,
+      totalPrice,
+      selectPayment,
+      address: user.addresses[selectAddress],
+    };
+    dispatch(addToOrdersAsync(order));
+    //TODO : Succes page on order success
+    //TODO : clear cart on both serevr and local
+    //TODO : stock to be reduced in backend/db accorig to ordreed items
   };
 
   return (
@@ -268,21 +292,23 @@ const CheckoutPage = () => {
                         </p>
 
                         <ul role="list">
-                          {user.addresses.map((address) => (
+                          {user.addresses.map((address, index) => (
                             <li
-                              key={address.email}
-                              className="border-solid border-2 border-gray-200 p-5 "
+                              key={index}
+                              className="border-solid border-2  border-gray-200 p-5 "
                             >
-                              <div className="flex  gap-x-4">
+                              <div className="flex   gap-x-4">
                                 <input
                                   id={address.email}
                                   name="address"
                                   type="radio"
-                                  className="h-4 w-4 m-auto border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                  onChange={handleAddress}
+                                  value={index}
+                                  className="h-4 w-4 m-auto cursor-pointer border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                 />
                                 <label
                                   htmlFor={address.email}
-                                  className="flex justify-between w-full "
+                                  className="flex justify-between cursor-pointer w-full "
                                 >
                                   <div className="">
                                     <p className="text-sm font-semibold leading-6 text-gray-900">
@@ -322,11 +348,14 @@ const CheckoutPage = () => {
                               id="card-pay"
                               name="payment"
                               type="radio"
-                              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                              value="card"
+                              onChange={handlePayments}
+                              checked={selectPayment === "card"}
+                              className="h-4 w-4 border-gray-300 cursor-pointer text-indigo-600 focus:ring-indigo-600"
                             />
                             <label
                               htmlFor="card-pay"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                              className="block text-sm cursor-pointer font-medium leading-6 text-gray-900"
                             >
                               Card Payment
                             </label>
@@ -336,11 +365,14 @@ const CheckoutPage = () => {
                               id="cash-pay"
                               name="payment"
                               type="radio"
-                              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                              value="cash"
+                              onChange={handlePayments}
+                              checked={selectPayment === "cash"}
+                              className="h-4 w-4 border-gray-300 cursor-pointer text-indigo-600 focus:ring-indigo-600"
                             />
                             <label
                               htmlFor="cash-pay"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                              className="block text-sm font-medium cursor-pointer leading-6 text-gray-900"
                             >
                               Cash
                             </label>
@@ -433,12 +465,12 @@ const CheckoutPage = () => {
                     Shipping and taxes calculated at checkout.
                   </p>
                   <div className="mt-6">
-                    <Link
-                      to="/checkout"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                    <div
+                      onClick={handleOrders}
+                      className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
                       Proceed To Payment
-                    </Link>
+                    </div>
                   </div>
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                     <p>

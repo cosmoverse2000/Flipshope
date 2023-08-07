@@ -2446,5 +2446,62 @@
       "userId": 1,
       "id": 4
     }
+  ],
+  "orders": [
+    {
+      "userId": 1,
+      "orderedItems": [
+        {
+          "title": "Samsung Universe 9",
+          "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+          "price": 1249,
+          "discountPercentage": 15.46,
+          "rating": 4.09,
+          "stock": 36,
+          "brand": "Samsung",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/3/1.jpg"
+          ],
+          "qty": 3,
+          "userId": 1,
+          "id": 3
+        },
+        {
+          "title": "iPhone X",
+          "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+          "price": 899,
+          "discountPercentage": 17.94,
+          "rating": 4.44,
+          "stock": 34,
+          "brand": "Apple",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/2/1.jpg",
+            "https://i.dummyjson.com/data/products/2/2.jpg",
+            "https://i.dummyjson.com/data/products/2/3.jpg",
+            "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+          ],
+          "qty": 1,
+          "userId": 1,
+          "id": 4
+        }
+      ],
+      "totalItems": 4,
+      "totalPrice": 4646,
+      "selectPayment": "card",
+      "address": {
+        "name": "Anshul Patel",
+        "email": "anshulpatel5757@gmail.com",
+        "phone": "930150457",
+        "street": "house no. 5,village bodi,post lamkana,tehsil majholi",
+        "city": "Jabalpur",
+        "region": "Madhya Pradesh",
+        "pincode": "483225"
+      },
+      "id": 1
+    }
   ]
 }
