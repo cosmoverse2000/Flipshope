@@ -1,41 +1,20 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, incrementAsync, selectCount } from "./cartSlice";
+import { increment, incrementAsync, selectCartItems } from "./cartSlice";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
 export default function Cart() {
-  const count = useSelector(selectCount);
   const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+
+  const totalPrice = cartItems.reduce(
+    (amount, item) => item.qty * item.price + amount,
+    0
+  );
+  const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
   const [open, setOpen] = useState(true);
 
   return (
@@ -46,12 +25,12 @@ export default function Cart() {
             Your Cart
           </h1>
           <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {products.map((product) => (
+            {cartItems.map((product) => (
               <li key={product.id} className="flex py-6">
                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
+                    src={product.thumbnail}
+                    alt={product.title}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -60,12 +39,12 @@ export default function Cart() {
                   <div>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <h3>
-                        <a href={product.href}>{product.name}</a>
+                        <a href={product.thumbnail}>{product.title}</a>
                       </h3>
-                      <p className="ml-4">{product.price}</p>
+                      <p className="ml-4">${product.price}</p>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
-                      {product.color}
+                      {product.brand}
                     </p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
@@ -101,9 +80,13 @@ export default function Cart() {
       </div>
 
       <div className="border-t mt-6 border-gray-200 px-4 py-6 sm:px-6">
-        <div className="flex justify-between text-base font-medium text-gray-900">
+        <div className="flex justify-between my-2 text-base font-medium text-gray-900">
           <p>Subtotal</p>
-          <p>$262.00</p>
+          <p>${totalPrice}</p>
+        </div>
+        <div className="flex justify-between my-2 text-base font-medium text-gray-900">
+          <p>Total-items in the Cart</p>
+          <p>{totalItems} Items</p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">
           Shipping and taxes calculated at checkout.

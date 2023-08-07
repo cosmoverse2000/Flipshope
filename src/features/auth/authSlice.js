@@ -50,7 +50,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload;
+        state.loggedInUser = action.payload.data;
       })
       .addCase(loginUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";

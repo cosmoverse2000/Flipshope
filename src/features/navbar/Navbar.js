@@ -6,6 +6,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCartItems } from "../cart/cartSlice";
 
 const user = {
   name: "Tom Cook",
@@ -27,6 +29,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 const Navbar = (props) => {
+  const cartItems = useSelector(selectCartItems);
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
@@ -79,9 +82,16 @@ const Navbar = (props) => {
                         />
                       </button>
                     </Link>
-                    <span className="inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-7 -ml-3 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                      3
-                    </span>
+                    {cartItems.length > 0 ? (
+                      <Link
+                        to="/cart"
+                        className="inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-7 -ml-3 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"
+                      >
+                        {cartItems.length}
+                      </Link>
+                    ) : (
+                      ""
+                    )}
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
@@ -169,7 +179,7 @@ const Navbar = (props) => {
                       alt=""
                     />
                   </div>
-                  <div className="ml-3">
+                  <div className="ml-3 mr-auto">
                     <div className="text-base font-medium leading-none text-white">
                       {user.name}
                     </div>
@@ -177,6 +187,7 @@ const Navbar = (props) => {
                       {user.email}
                     </div>
                   </div>
+
                   <Link to="/cart">
                     <button
                       type="button"
@@ -190,9 +201,16 @@ const Navbar = (props) => {
                       />
                     </button>
                   </Link>
-                  <span className="inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-7 -ml-3 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                    3
-                  </span>
+                  {cartItems.length > 0 ? (
+                    <Link
+                      to="/cart"
+                      className="inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-7 -ml-3 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"
+                    >
+                      {cartItems.length}
+                    </Link>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="mt-3 space-y-1 px-2">
                   {userNavigation.map((item) => (

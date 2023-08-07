@@ -70,7 +70,7 @@ export function fetchCategories(amount = 1) {
     resolve({ data });
   });
 }
-//api function to get 'categories list' in Filters
+//api function to get 'brands list' in Filters
 export function fetchBrands(amount = 1) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/brands");
