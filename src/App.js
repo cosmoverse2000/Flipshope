@@ -12,10 +12,12 @@ import SignupPage from "./pages/SignupPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import ErrorPage from "./pages/404";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
 import { selectLoggedInUser } from "./features/auth/authSlice";
+import OrderSuccess from "./pages/Order-success";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,19 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  },
+  {
+    path: "/order-success/:orderId",
+    element: (
+      <Protected>
+        <OrderSuccess />
+      </Protected>
+    ),
+  },
+  //TODO: prev orders list and fetch, store and display
 ]);
 
 export default function App() {

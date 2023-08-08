@@ -59,3 +59,14 @@ export function deleteCartItems(itemId) {
     resolve({ data: { id: itemId } });
   });
 }
+//to reset cart on order success
+export function resetCartItems(userId) {
+  return new Promise(async (resolve) => {
+    const userData = await fetchCartByUserId(userId);
+
+    for (const cartItemId of userData.data) {
+      await deleteCartItems(cartItemId.id);
+    }
+    resolve({ status: "CartReset success" });
+  });
+}
