@@ -12,6 +12,7 @@ import SignupPage from "./pages/SignupPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import UserOrdersPage from "./pages/UserOrdersPage";
 import ErrorPage from "./pages/404";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
     element: (
       <Protected>
         <OrderSuccess />
+      </Protected>
+    ),
+  },
+  {
+    path: "/user-orders",
+    element: (
+      <Protected>
+        <UserOrdersPage />
       </Protected>
     ),
   },

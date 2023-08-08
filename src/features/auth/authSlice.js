@@ -9,7 +9,7 @@ const initialState = {
 
 //signup ACtion
 export const signupUserAccountAsync = createAsyncThunk(
-  "user/signupUserAccount",
+  "auth/signupUserAccount",
   async (userData) => {
     const response = await signupUserAccount(userData);
     // The value we return becomes the `fulfilled` action payload
@@ -19,7 +19,7 @@ export const signupUserAccountAsync = createAsyncThunk(
 
 //login ACtion
 export const loginUserAccountAsync = createAsyncThunk(
-  "user/loginUserAccount",
+  "auth/loginUserAccount",
   async (loginData) => {
     const response = await loginUserAccount(loginData);
     // The value we return becomes the `fulfilled` action payload
@@ -28,7 +28,7 @@ export const loginUserAccountAsync = createAsyncThunk(
 );
 //ADD ADDRESS ACtion
 export const addUserAddressAsync = createAsyncThunk(
-  "user/addUserAddress",
+  "auth/addUserAddress",
   async (addressData) => {
     const response = await addUserAddress(addressData);
     // The value we return becomes the `fulfilled` action payload
@@ -37,7 +37,7 @@ export const addUserAddressAsync = createAsyncThunk(
 );
 
 export const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -77,7 +77,7 @@ export const authSlice = createSlice({
 
 export const { increment } = authSlice.actions;
 
-export const selectLoggedInUser = (state) => state.user.loggedInUser;
-export const selectLoginErrors = (state) => state.user.loginErrors;
+export const selectLoggedInUser = (state) => state.auth.loggedInUser;
+export const selectLoginErrors = (state) => state.auth.loginErrors;
 
 export default authSlice.reducer;
