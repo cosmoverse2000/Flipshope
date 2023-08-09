@@ -13,12 +13,14 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import ErrorPage from "./pages/404";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
 import { selectLoggedInUser } from "./features/auth/authSlice";
 import OrderSuccess from "./pages/Order-success";
+import { fetchUserProfileAsync } from "./features/user/userSlice";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +83,14 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
+  {
+    path: "/user-profile",
+    element: (
+      <Protected>
+        <UserProfilePage />
+      </Protected>
+    ),
+  },
   //TODO: prev orders list and fetch, store and display
 ]);
 
@@ -91,6 +101,7 @@ export default function App() {
   useEffect(() => {
     if (user) {
       dispatch(fetchCartByUserIdAsync(user.id));
+      dispatch(fetchUserProfileAsync(user.id));
     }
   }, [dispatch, user]);
 

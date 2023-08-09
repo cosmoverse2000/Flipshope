@@ -5,17 +5,17 @@ import {
   selectCartItems,
   updateCartItemsAsync,
 } from "../features/cart/cartSlice";
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 //form
 import { useForm } from "react-hook-form";
-import {
-  addUserAddressAsync,
-  selectLoggedInUser,
-} from "../features/auth/authSlice";
 import {
   addToOrdersAsync,
   selectCurrentOrder,
 } from "../features/orders/orderSlice";
+import {
+  selectUserProfile,
+  updateUserProfileAsync,
+} from "../features/user/userSlice";
 
 const CheckoutPage = () => {
   const [open, setOpen] = useState(true);
@@ -24,7 +24,7 @@ const CheckoutPage = () => {
   //redux
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-  const user = useSelector(selectLoggedInUser);
+  const userProfile = useSelector(selectUserProfile);
   const currentOrder = useSelector(selectCurrentOrder);
 
   //react-forms
@@ -59,12 +59,12 @@ const CheckoutPage = () => {
       return;
     }
     const order = {
-      userId: user.id,
+      userId: userProfile.id,
       orderedItems: cartItems,
       totalItems,
       totalPrice,
       selectPayment,
-      address: user.addresses[selectAddress],
+      address: userProfile.addresses[selectAddress],
       orderStatus: "pending", //this can be set by admin for ordered status
     };
     dispatch(addToOrdersAsync(order));
@@ -92,9 +92,9 @@ const CheckoutPage = () => {
                   className="px-5 bg-white py-6 my-12"
                   onSubmit={handleSubmit((data) => {
                     dispatch(
-                      addUserAddressAsync({
-                        ...user,
-                        addresses: [...user.addresses, data],
+                      updateUserProfileAsync({
+                        ...userProfile,
+                        addresses: [...userProfile.addresses, data],
                       })
                     );
                     reset();
@@ -307,8 +307,8 @@ const CheckoutPage = () => {
                             Choose from Existing addresses.
                           </p>
 
-                          <ul role="list">
-                            {user.addresses.map((address, index) => (
+                          <ul>
+                            {userProfile.addresses.map((address, index) => (
                               <li
                                 key={index}
                                 className="border-solid border-2  border-gray-200 p-5 "
@@ -406,7 +406,7 @@ const CheckoutPage = () => {
                     <h1 className="text-4xl my-10 font-bold tracking-tight text-gray-900">
                       Your Cart
                     </h1>
-                    <ul role="list" className="-my-6 divide-y divide-gray-200">
+                    <ul className="-my-6 divide-y divide-gray-200">
                       {cartItems.map((product) => (
                         <li key={product.id} className="flex py-6">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

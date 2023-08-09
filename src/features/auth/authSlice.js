@@ -26,15 +26,15 @@ export const loginUserAccountAsync = createAsyncThunk(
     return response;
   }
 );
-//ADD ADDRESS ACtion
-export const addUserAddressAsync = createAsyncThunk(
-  "auth/addUserAddress",
-  async (addressData) => {
-    const response = await addUserAddress(addressData);
-    // The value we return becomes the `fulfilled` action payload
-    return response;
-  }
-);
+// //ADD ADDRESS ACtion
+// export const addUserAddressAsync = createAsyncThunk(
+//   "auth/addUserAddress",
+//   async (addressData) => {
+//     const response = await addUserAddress(addressData);
+//     // The value we return becomes the `fulfilled` action payload
+//     return response;
+//   }
+// );
 
 export const authSlice = createSlice({
   name: "auth",
@@ -64,14 +64,14 @@ export const authSlice = createSlice({
       .addCase(loginUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
         state.loginErrors = action.error;
-      })
-      .addCase(addUserAddressAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(addUserAddressAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.loggedInUser = action.payload;
       });
+    // .addCase(addUserAddressAsync.pending, (state) => {
+    //   state.status = "loading";
+    // })
+    // .addCase(addUserAddressAsync.fulfilled, (state, action) => {
+    //   state.status = "idle";
+    //   state.loggedInUser = action.payload;
+    // });
   },
 });
 

@@ -15,6 +15,7 @@ export function signupUserAccount(userData) {
     resolve(data);
   });
 }
+
 //On LOGIN API
 export function loginUserAccount(loginData) {
   const email = loginData.email;
@@ -33,20 +34,5 @@ export function loginUserAccount(loginData) {
     } else {
       reject({ message: "User not Found !" });
     }
-  });
-}
-//On ADD ADDRESSS API
-export function addUserAddress(userData) {
-  return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/users/" + userData.id, {
-      method: "PATCH",
-      body: JSON.stringify(userData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    resolve(data);
   });
 }

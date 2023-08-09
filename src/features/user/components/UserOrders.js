@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserOrdersAsync, selectUserOrders } from "../userSlice";
-import { selectLoggedInUser } from "../../auth/authSlice";
+import {
+  fetchUserOrdersAsync,
+  selectUserOrders,
+  selectUserProfile,
+} from "../userSlice";
 import { Link } from "react-router-dom";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
 
   const userOrders = useSelector(selectUserOrders);
-  const user = useSelector(selectLoggedInUser);
+  const userProfile = useSelector(selectUserProfile);
   useEffect(() => {
-    dispatch(fetchUserOrdersAsync(user.id));
-  }, [dispatch, user]);
+    dispatch(fetchUserOrdersAsync(userProfile.id));
+  }, [dispatch, userProfile]);
 
   const noOrdersContent = (
     <div className="mx-auto py-10 bg-white max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
@@ -30,13 +33,15 @@ export default function UserOrders() {
   );
 
   return (
-    <div className="py-6 mx-6">
-      <h1 className="mx-auto font-bold text-2xl max-w-4xl ">Your Orders :</h1>
+    <div className="py-6 ">
+      <h1 className="mx-auto px-4 sm:px-6 lg:px-8 font-bold text-2xl max-w-4xl ">
+        My Orders
+      </h1>
       {userOrders.length > 0
         ? userOrders.map((order) => {
             return (
-              <>
-                <div key={order.id}>
+              <div key={order.id}>
+                <div>
                   <div className="mx-auto mt-8 py-6 bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="flow-root">
                       <h1 className="text-4xl   font-bold tracking-tight text-gray-900">
@@ -114,7 +119,7 @@ export default function UserOrders() {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })
         : noOrdersContent}
