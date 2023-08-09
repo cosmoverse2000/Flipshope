@@ -74,6 +74,11 @@ export default function UserProfile() {
           <div className="my-4 text-xl font-medium text-red-500">
             Email Address : {userProfile.email}
           </div>
+          {userProfile.role === "admin" && (
+            <div className="my-4 text-xl font-medium text-green-500">
+              Role : Admin
+            </div>
+          )}
         </div>
 
         <div className="mt-4 ">
