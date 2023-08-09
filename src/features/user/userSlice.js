@@ -26,7 +26,7 @@ export const fetchUserProfileAsync = createAsyncThunk(
   async (userId) => {
     const response = await fetchUserProfile(userId);
     // The value we return becomes the `fulfilled` action payload
-    console.log(response, "userProfile");
+    // console.log(response, "userProfile");
     return response;
   }
 );
@@ -36,7 +36,7 @@ export const updateUserProfileAsync = createAsyncThunk(
   async (userData) => {
     const response = await updateUserProfile(userData);
     // The value we return becomes the `fulfilled` action payload
-    console.log(response, "updateUserProf");
+    // console.log(response, "updateUserProf");
     return response;
   }
 );

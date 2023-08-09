@@ -2342,30 +2342,30 @@
       "addresses": [
         {
           "name": "Anshul Patel",
-          "email": "anshulpatel5757@gmail.com",
+          "email": "patelAnshul5757@gmail.com",
           "phone": "930150457",
           "street": "house no. 5,village bodi,post lamkana,tehsil majholi",
-          "city": "Jabalpur",
+          "pincode": "762472",
           "region": "Madhya Pradesh",
-          "pincode": "483225"
+          "city": "Bhopal"
         },
         {
-          "name": "Anshul Patel",
-          "email": "jet@test.com",
-          "phone": "930150457",
-          "street": "house no. 5,village bodi,post lamkana,tehsil majholi",
-          "city": "Jabalpur",
-          "region": "Madhya Pradesh",
-          "pincode": "483225"
-        },
-        {
-          "name": " Aaj ha sdhga h",
+          "name": "aman tiwari",
           "email": "anotheradd@gmail.com",
           "phone": "930150457",
           "street": "asdg fasghdfjahg ahasdad adahjgasdad",
           "city": "Jabalpur",
           "region": "Madhya Pradesh",
           "pincode": "483225"
+        },
+        {
+          "name": "amar sharma",
+          "email": "amarshara3434@gmail.com",
+          "phone": "324324324324",
+          "street": "st 45m. nabsa m, nholal ,mp.",
+          "city": "shahgsahs",
+          "region": "uttar msdsds",
+          "pincode": "854578"
         }
       ]
     },
@@ -2373,20 +2373,50 @@
       "email": "jet@test1.com",
       "password": "B@24.com",
       "id": 2,
-      "addresses": [
-        {
-          "name": "Anshul Patel",
-          "email": "121@gmail.com",
-          "phone": "930150457",
-          "street": "house no. 5,village bodi,post lamkana,tehsil majholi",
-          "city": "Jabalpur",
-          "region": "Madhya Pradesh",
-          "pincode": "483225"
-        }
-      ]
+      "addresses": []
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "title": "MacBook Pro",
+      "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
+      "price": 1749,
+      "discountPercentage": 11.02,
+      "rating": 4.57,
+      "stock": 83,
+      "brand": "Apple",
+      "category": "laptops",
+      "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+      "images": [
+        "https://i.dummyjson.com/data/products/6/1.png",
+        "https://i.dummyjson.com/data/products/6/2.jpg",
+        "https://i.dummyjson.com/data/products/6/3.png",
+        "https://i.dummyjson.com/data/products/6/4.jpg"
+      ],
+      "qty": 3,
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "title": "Huawei P30",
+      "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+      "price": 499,
+      "discountPercentage": 10.58,
+      "rating": 4.09,
+      "stock": 32,
+      "brand": "Huawei",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/5/1.jpg",
+        "https://i.dummyjson.com/data/products/5/2.jpg",
+        "https://i.dummyjson.com/data/products/5/3.jpg"
+      ],
+      "qty": 1,
+      "userId": 1,
+      "id": 2
+    }
+  ],
   "orders": [
     {
       "userId": 1,
