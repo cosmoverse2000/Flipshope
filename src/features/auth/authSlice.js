@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { signupUserAccount, loginUserAccount, addUserAddress } from "./authAPI";
+import {
+  signupUserAccount,
+  loginUserAccount,
+  logoutUserAccount,
+} from "./authAPI";
 
 const initialState = {
   loggedInUser: null,
@@ -26,15 +30,15 @@ export const loginUserAccountAsync = createAsyncThunk(
     return response;
   }
 );
-// //ADD ADDRESS ACtion
-// export const addUserAddressAsync = createAsyncThunk(
-//   "auth/addUserAddress",
-//   async (addressData) => {
-//     const response = await addUserAddress(addressData);
-//     // The value we return becomes the `fulfilled` action payload
-//     return response;
-//   }
-// );
+//logout ACtion
+export const logoutUserAccountAsync = createAsyncThunk(
+  "auth/logoutUserAccount",
+  async (userId) => {
+    const response = await logoutUserAccount(userId);
+    // The value we return becomes the `fulfilled` action payload
+    return response;
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -64,14 +68,14 @@ export const authSlice = createSlice({
       .addCase(loginUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
         state.loginErrors = action.error;
+      })
+      .addCase(logoutUserAccountAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.loggedInUser = null;
       });
-    // .addCase(addUserAddressAsync.pending, (state) => {
-    //   state.status = "loading";
-    // })
-    // .addCase(addUserAddressAsync.fulfilled, (state, action) => {
-    //   state.status = "idle";
-    //   state.loggedInUser = action.payload;
-    // });
   },
 });
 

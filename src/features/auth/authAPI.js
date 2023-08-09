@@ -36,3 +36,12 @@ export function loginUserAccount(loginData) {
     }
   });
 }
+
+// on LOGOUT API
+export function logoutUserAccount(userId) {
+  return new Promise(async (resolve) => {
+    //TODO:will aware backend from here to Logout that user
+
+    resolve({ status: "logout successs" });
+  });
+}

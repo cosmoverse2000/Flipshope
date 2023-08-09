@@ -29,7 +29,7 @@ const OrderSuccess = () => {
           <p className="mt-6 text-base leading-7 text-gray-600">
             ThankYou ! For being our valuable customer.
             <br />
-            To check your orders Status go to My profile {"->"} My Orders
+            To check your orders Status go to Account{"->"}My Orders
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link

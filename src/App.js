@@ -21,6 +21,7 @@ import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
 import { selectLoggedInUser } from "./features/auth/authSlice";
 import OrderSuccess from "./pages/Order-success";
 import { fetchUserProfileAsync } from "./features/user/userSlice";
+import Logout from "./features/auth/components/Logout";
 
 const router = createBrowserRouter([
   {
@@ -91,7 +92,10 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
-  //TODO: prev orders list and fetch, store and display
+  {
+    path: "/logout",
+    element: <Logout />,
+  },
 ]);
 
 export default function App() {

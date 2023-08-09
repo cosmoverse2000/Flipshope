@@ -2373,50 +2373,20 @@
       "email": "jet@test1.com",
       "password": "B@24.com",
       "id": 2,
-      "addresses": []
+      "addresses": [
+        {
+          "name": "User two test1",
+          "email": "usertwao@gmail.com",
+          "phone": "23625372652",
+          "street": "lordganj,ttha mumbai, stree, MAHARASTRA",
+          "city": "NAGPUR",
+          "region": "Maharastra",
+          "pincode": "1122323"
+        }
+      ]
     }
   ],
-  "cart": [
-    {
-      "title": "MacBook Pro",
-      "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
-      "price": 1749,
-      "discountPercentage": 11.02,
-      "rating": 4.57,
-      "stock": 83,
-      "brand": "Apple",
-      "category": "laptops",
-      "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
-      "images": [
-        "https://i.dummyjson.com/data/products/6/1.png",
-        "https://i.dummyjson.com/data/products/6/2.jpg",
-        "https://i.dummyjson.com/data/products/6/3.png",
-        "https://i.dummyjson.com/data/products/6/4.jpg"
-      ],
-      "qty": 3,
-      "userId": 1,
-      "id": 1
-    },
-    {
-      "title": "Huawei P30",
-      "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
-      "price": 499,
-      "discountPercentage": 10.58,
-      "rating": 4.09,
-      "stock": 32,
-      "brand": "Huawei",
-      "category": "smartphones",
-      "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/5/1.jpg",
-        "https://i.dummyjson.com/data/products/5/2.jpg",
-        "https://i.dummyjson.com/data/products/5/3.jpg"
-      ],
-      "qty": 1,
-      "userId": 1,
-      "id": 2
-    }
-  ],
+  "cart": [],
   "orders": [
     {
       "userId": 1,
@@ -2654,6 +2624,64 @@
       },
       "orderStatus": "pending",
       "id": 4
+    },
+    {
+      "userId": 1,
+      "orderedItems": [
+        {
+          "title": "MacBook Pro",
+          "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
+          "price": 1749,
+          "discountPercentage": 11.02,
+          "rating": 4.57,
+          "stock": 83,
+          "brand": "Apple",
+          "category": "laptops",
+          "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+          "images": [
+            "https://i.dummyjson.com/data/products/6/1.png",
+            "https://i.dummyjson.com/data/products/6/2.jpg",
+            "https://i.dummyjson.com/data/products/6/3.png",
+            "https://i.dummyjson.com/data/products/6/4.jpg"
+          ],
+          "qty": 3,
+          "userId": 1,
+          "id": 1
+        },
+        {
+          "title": "Huawei P30",
+          "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+          "price": 499,
+          "discountPercentage": 10.58,
+          "rating": 4.09,
+          "stock": 32,
+          "brand": "Huawei",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/5/1.jpg",
+            "https://i.dummyjson.com/data/products/5/2.jpg",
+            "https://i.dummyjson.com/data/products/5/3.jpg"
+          ],
+          "qty": 1,
+          "userId": 1,
+          "id": 2
+        }
+      ],
+      "totalItems": 4,
+      "totalPrice": 5746,
+      "selectPayment": "cash",
+      "address": {
+        "name": "aman tiwari",
+        "email": "anotheradd@gmail.com",
+        "phone": "930150457",
+        "street": "asdg fasghdfjahg ahasdad adahjgasdad",
+        "city": "Jabalpur",
+        "region": "Madhya Pradesh",
+        "pincode": "483225"
+      },
+      "orderStatus": "pending",
+      "id": 5
     }
   ]
 }
