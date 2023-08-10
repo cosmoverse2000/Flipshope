@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBrands, selectCategories } from "../../product/productSlice";
+import {
+  addToProductListAsync,
+  fetchProductByIdAsync,
+  selectBrands,
+  selectCategories,
+  selectProducById,
+  updateSelectedProductAsync,
+} from "../../product/productSlice";
+import { useParams } from "react-router-dom";
 
 const AdminProductForm = () => {
   //redux
@@ -13,22 +21,71 @@ const AdminProductForm = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
+  //react-router
+  const params = useParams();
+  const selectedProduct = useSelector(selectProducById);
+
+  useEffect(() => {
+    if (params.prodId) {
+      dispatch(fetchProductByIdAsync(params.prodId));
+    }
+  }, [dispatch, params.prodId]);
+
+  useEffect(() => {
+    if (params.prodId && selectedProduct) {
+      console.log(selectedProduct);
+      setValue("productname", selectedProduct.title);
+      setValue("description", selectedProduct.description);
+      setValue("price", selectedProduct.price);
+      setValue("discount", selectedProduct.discountPercentage);
+      setValue("stock", selectedProduct.stock);
+      setValue("brand", selectedProduct.brand);
+      setValue("category", selectedProduct.category);
+      setValue("thumbnail", selectedProduct.thumbnail);
+      setValue("image_1", selectedProduct.images[0]);
+      setValue("image_2", selectedProduct.images[1]);
+      setValue("image_3", selectedProduct.images[2]);
+      setValue("image_4", selectedProduct.images[3]);
+    }
+  }, [selectedProduct, setValue, params]);
 
   return (
     <div>
       <form
         className="px-5 bg-white py-6 my-12"
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          const product = {
+            title: data.productname,
+            description: data.description,
+            price: +data.price,
+            discountPercentage: +data.discount,
+            rating: +0,
+            stock: +data.stock,
+            brand: data.brand,
+            category: data.category,
+            thumbnail: data.thumbnail,
+            images: [data.image_1, data.image_2, data.image_3, data.image_4],
+          };
+          if (params.prodId) {
+            product.id = params.prodId;
+            product.rating = selectedProduct.rating || 0;
+            ///this product is Updated Product !
+            dispatch(updateSelectedProductAsync(product));
+            console.log(data, "Product Edit success!");
+          } else {
+            dispatch(addToProductListAsync(product));
+            console.log(data, "Product add success!");
+          }
           reset();
         })}
       >
         <div>
           <div className="border-b border-gray-900/10 pb-6">
             <h2 className="text-2xl font-semibold leading-7 text-gray-900">
-              Add Product
+              {params.prodId ? "Edit Product" : "Add Product"}
             </h2>
 
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -141,7 +198,7 @@ const AdminProductForm = () => {
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Price in INR
+                  Price in $
                 </label>
                 <div className="mt-2">
                   <input
@@ -180,6 +237,7 @@ const AdminProductForm = () => {
                         message: "• Max-Discount %  is 100 !",
                       },
                     })}
+                    step=".01"
                     id="discount"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -277,7 +335,7 @@ const AdminProductForm = () => {
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Add to Products
+              {params.prodId ? "Save Product Edit" : "Add to Products"}
             </button>
           </div>
         </div>

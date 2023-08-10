@@ -23,7 +23,7 @@
       "id": 2,
       "title": "iPhone X",
       "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-      "price": 899,
+      "price": 1000,
       "discountPercentage": 17.94,
       "rating": 4.44,
       "stock": 34,
@@ -164,7 +164,7 @@
       "id": 10,
       "title": "HP Pavilion 15-DK1056WM",
       "description": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10",
-      "price": 1099,
+      "price": 999,
       "discountPercentage": 6.18,
       "rating": 4.43,
       "stock": 89,
@@ -1832,6 +1832,44 @@
         "https://i.dummyjson.com/data/products/100/3.jpg",
         "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
       ]
+    },
+    {
+      "title": "Iphone 16 pro",
+      "description": "sadsag kdjdgsahds",
+      "price": 3432,
+      "discountPercentage": 23,
+      "rating": 0,
+      "stock": 10,
+      "brand": "Apple",
+      "category": "laptops",
+      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
+      ],
+      "id": 101,
+      "isDeleted": true
+    },
+    {
+      "title": "Iphone 17 pro",
+      "description": "sadsag kdjdgsahds",
+      "price": 3432,
+      "discountPercentage": 23,
+      "rating": 0,
+      "stock": 10,
+      "brand": "Apple",
+      "category": "laptops",
+      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
+      ],
+      "id": 102,
+      "isDeleted": true
     }
   ],
   "categories": [

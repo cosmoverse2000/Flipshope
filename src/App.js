@@ -122,6 +122,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/admin/product-form/edit/:prodId",
+    element: (
+      <AdminProtected>
+        <AdminProductFormPage />
+      </AdminProtected>
+    ),
+  },
+  {
     path: "/logout",
     element: <Logout />,
   },

@@ -10,6 +10,7 @@ import {
   fetchBrandsAsync,
   fetchCategoriesAsync,
   fetchFilterSortedProductsAsync,
+  updateSelectedProductAsync,
 } from "../../product/productSlice";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
 //roiuter imps
@@ -26,6 +27,7 @@ import {
   StarIcon,
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { updateSelectedProduct } from "../../product/productAPI";
 
 const sortOptions = [
   { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
@@ -63,19 +65,11 @@ export default function AdminProductList() {
     {
       id: "category",
       name: "Category",
-      //these options are hardcoded for now, and we get them from our public api Dummy-json
-      // both value and label are same words but label have been modified as correct Casing
-      // this array is created by applying filter, set and map to data.json product array
-      // we only need CATAGORY NAME FROM there
       options: categories,
     },
     {
       id: "brand",
       name: "Brand",
-      //these options are hardcoded for now, and we get them from our public api Dummy-json
-      // both value and label are same words but label have been modified as correct Casing
-      // this array is created by applying filter, set and map to data.json product array
-      // we only need BRAND NAME FROM there
       options: brands,
     },
   ];
@@ -152,6 +146,14 @@ export default function AdminProductList() {
       setPage(page);
     }
   };
+  //to handle delete Product by admin
+  const handleDelete = (productId) => {
+    const index = products.findIndex((product) => product.id === productId);
+    const productToDel = { ...products[index] };
+    productToDel.isDeleted = true;
+    console.log(productToDel, "Del Succ");
+    dispatch(updateSelectedProductAsync(productToDel));
+  };
 
   useEffect(() => {
     // dispatch(fetchAllProductsAsync());----- we will not use this for fetching list since its the same api as filter&sorting api would be at start(i.e when no filter and sort initlizd.)
@@ -202,7 +204,10 @@ export default function AdminProductList() {
               />
 
               {/* Product grid */}
-              <ProductListGrid products={products} />
+              <ProductListGrid
+                products={products}
+                handleDelete={handleDelete}
+              />
             </div>
           </section>
         </main>
@@ -326,7 +331,7 @@ export const ProductListPagination = ({ page, handlePage, totalItems }) => {
 
 // used grid for responsiveness with
 // (in lg screen -> grid-col-span-1 = filters  && grid-col-span-3 = GRID )
-export const ProductListGrid = ({ products }) => {
+export const ProductListGrid = ({ products, handleDelete }) => {
   return (
     <div className="lg:col-span-3">
       {/* THIS IS OUR PDODUCT LIST*/}
@@ -387,19 +392,29 @@ export const ProductListGrid = ({ products }) => {
                     </div>
                   </div>
                 </Link>
-                <div className="border-2 border-solid flex items-center justify-end gap-x-6 p-3">
+                <div className="border-2 border-solid flex items-center  justify-between gap-x-6 p-3">
+                  {!product.isDeleted && (
+                    <Link
+                      type="button"
+                      to={`product-form/edit/${product.id}`}
+                      className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    >
+                      Edit
+                    </Link>
+                  )}
                   <button
                     type="button"
-                    onClick={() => {}}
-                    className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    onClick={() => {
+                      handleDelete(product.id);
+                    }}
+                    disabled={product.isDeleted}
+                    className={`rounded-md border-2 ${
+                      product.isDeleted
+                        ? "bg-gray-500 w-full"
+                        : " hover:bg-red-600 hover:text-white "
+                    } px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600`}
                   >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="rounded-md border-2 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-green-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                  >
-                    Remove
+                    {product.isDeleted ? "Removed Product" : "Remove"}
                   </button>
                 </div>
               </div>

@@ -18,6 +18,8 @@ export function fetchProductById(id) {
 
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
 export function fetchFilterSortedProducts(filter, sorting, page) {
+  //TODO:on server we will support multiple filters ,now not possible in json-server
+  //TODO:server will filter deleted product to admin not to a user
   //example of structure that these above arguments will posses
   //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','adad']}
   //'Sort' obj format ={_sort:"ratings",_order="asc"}
@@ -76,5 +78,40 @@ export function fetchBrands(amount = 1) {
     const response = await fetch("http://localhost:8080/brands");
     const data = await response.json();
     resolve({ data });
+  });
+}
+
+//POST API to Add Product to PRoduct list by admin
+//add PRoduct
+export function addToProductList(product) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/products/", {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    resolve(data);
+  });
+}
+//to update Edited Product details
+export function updateSelectedProduct(upadtedProduct) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      "http://localhost:8080/products/" + upadtedProduct.id,
+      {
+        method: "PATCH",
+        body: JSON.stringify(upadtedProduct),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    resolve(data);
   });
 }
