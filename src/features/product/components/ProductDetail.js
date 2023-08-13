@@ -3,10 +3,10 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProducById, fetchProductByIdAsync } from "../productSlice";
-import { useParams } from "react-router-dom";
-import { handler } from "@tailwindcss/aspect-ratio";
+import { useNavigate, useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
-import { addItemsToCartAsync } from "../../cart/cartSlice";
+import { addItemsToCartAsync, selectCartItems } from "../../cart/cartSlice";
+import { discountedPrice } from "../../../app/constants";
 
 //TODO : set color,size,higlit list from backend api these are ststic for now
 const colors = [
@@ -36,20 +36,36 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
+  //redux
   const product = useSelector(selectProducById);
   const user = useSelector(selectLoggedInUser);
+  const cartItems = useSelector(selectCartItems);
   const dispatch = useDispatch();
+  //router
   const params = useParams();
+  const navigate = useNavigate();
 
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
 
   const handleCart = (e) => {
     e.preventDefault();
+    //checking if item already present in cart
+    const index = cartItems.findIndex((item) => item.productId === product.id);
+    if (index >= 0 && cartItems.length > 0) {
+      console.log("Already Added to Cart");
+      return;
+    }
     //removing id , so that DB auto generate its onw id or identification of cart items
-    const newItemToCart = { ...product, qty: 1, userId: user.id };
+    const newItemToCart = {
+      ...product,
+      productId: product.id,
+      qty: 1,
+      userId: user.id,
+    };
     delete newItemToCart["id"];
     dispatch(addItemsToCartAsync(newItemToCart));
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -146,6 +162,9 @@ export default function ProductDetail() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
+                ${discountedPrice(product)}
+              </p>
+              <p className="text-3xl line-through tracking-tight text-gray-500">
                 ${product.price}
               </p>
 

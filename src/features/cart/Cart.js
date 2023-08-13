@@ -2,15 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteCartItemsAsync,
-  increment,
-  incrementAsync,
   selectCartItems,
   updateCartItemsAsync,
 } from "./cartSlice";
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { discountedPrice } from "../../app/constants";
 
 export default function Cart() {
   const [open, setOpen] = useState(true);
@@ -19,7 +16,7 @@ export default function Cart() {
   const cartItems = useSelector(selectCartItems);
 
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.qty * item.price + amount,
+    (amount, item) => item.qty * discountedPrice(item) + amount,
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
@@ -30,10 +27,27 @@ export default function Cart() {
     dispatch(deleteCartItemsAsync(item.id));
   };
 
+  //NO ITEMS IN CART FEEDBACK
+  const emptyCartContent = (
+    <div className="mx-auto mt-8 py-10 bg-white max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <h1 className="text-3xl  font-bold tracking-tight text-gray-900 ">
+        Your cart is Empty ! ☹️
+      </h1>
+
+      <button
+        type="button"
+        className="font-medium text-indigo-600 hover:text-indigo-500"
+      >
+        <span aria-hidden="true"> →</span>{" "}
+        <Link to="/">Continue Shopping </Link>
+      </button>
+    </div>
+  );
+  // console.log("CART");
   return (
-    <>
+    <div>
       {!cartItems.length ? (
-        <Navigate to="/" replace={true}></Navigate>
+        emptyCartContent
       ) : (
         <div className="mx-6">
           <div className="mx-auto bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -59,7 +73,7 @@ export default function Cart() {
                             <h3>
                               <a href={product.thumbnail}>{product.title}</a>
                             </h3>
-                            <p className="ml-4">${product.price}</p>
+                            <p className="ml-4">${discountedPrice(product)}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
                             {product.brand}
@@ -142,6 +156,6 @@ export default function Cart() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

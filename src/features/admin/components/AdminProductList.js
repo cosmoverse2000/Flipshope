@@ -12,7 +12,7 @@ import {
   fetchFilterSortedProductsAsync,
   updateSelectedProductAsync,
 } from "../../product/productSlice";
-import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 //roiuter imps
 import { Link } from "react-router-dom";
 //tailwind imps
@@ -273,11 +273,7 @@ export const ProductListGrid = ({ products, handleDelete }) => {
                       </div>
                       <div>
                         <p className="text-sm  block font-medium  text-gray-900">
-                          $
-                          {Math.round(
-                            product.price *
-                              (1 - product.discountPercentage / 100)
-                          )}
+                          ${discountedPrice(product)}
                         </p>
                         <p className="text-sm mt-2 line-through block font-medium  text-gray-500">
                           ${product.price}
@@ -287,7 +283,7 @@ export const ProductListGrid = ({ products, handleDelete }) => {
                   </div>
                 </Link>
                 <div className="border-2 border-solid flex items-center  justify-between gap-x-6 p-3">
-                  {!product.isDeleted && (
+                  {!(product.isDeleted || product.stock <= 0) && (
                     <Link
                       type="button"
                       to={`product-form/edit/${product.id}`}
@@ -301,14 +297,18 @@ export const ProductListGrid = ({ products, handleDelete }) => {
                     onClick={() => {
                       handleDelete(product.id);
                     }}
-                    disabled={product.isDeleted}
+                    disabled={product.isDeleted || product.stock <= 0}
                     className={`rounded-md border-2 ${
-                      product.isDeleted
+                      product.isDeleted || product.stock <= 0
                         ? "bg-gray-500 w-full"
                         : " hover:bg-red-600 hover:text-white "
                     } px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600`}
                   >
-                    {product.isDeleted ? "Removed Product" : "Remove"}
+                    {product.isDeleted
+                      ? "Removed Product"
+                      : product.stock <= 0
+                      ? "Out of Stock"
+                      : "Remove"}
                   </button>
                 </div>
               </div>

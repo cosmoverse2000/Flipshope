@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { handler } from "@tailwindcss/aspect-ratio";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addItemsToCartAsync } from "../../cart/cartSlice";
+import { discountedPrice } from "../../../app/constants";
 
 //TODO : set color,size,higlit list from backend api these are ststic for now
 const colors = [
@@ -149,6 +150,9 @@ export default function AdminProductDetail() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
+                ${discountedPrice(product)}
+              </p>
+              <p className="text-3xl line-through tracking-tight text-gray-500">
                 ${product.price}
               </p>
 

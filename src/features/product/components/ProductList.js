@@ -12,7 +12,7 @@ import {
   fetchCategoriesAsync,
   fetchFilterSortedProductsAsync,
 } from "../productSlice";
-import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 //roiuter imps
 import { Link } from "react-router-dom";
 //tailwind imps
@@ -257,10 +257,7 @@ export const ProductListGrid = ({ products }) => {
                     </div>
                     <div>
                       <p className="text-sm  block font-medium  text-gray-900">
-                        $
-                        {Math.round(
-                          product.price * (1 - product.discountPercentage / 100)
-                        )}
+                        ${discountedPrice(product)}
                       </p>
                       <p className="text-sm mt-2 line-through block font-medium  text-gray-500">
                         ${product.price}
@@ -271,6 +268,11 @@ export const ProductListGrid = ({ products }) => {
                   {product.isDeleted && (
                     <p className="text-sm text-red-500">
                       • This Prod. is Removed !
+                    </p>
+                  )}
+                  {product.stock <= 0 && (
+                    <p className="text-sm text-red-500">
+                      • This Prod. is Out of Stock !
                     </p>
                   )}
                 </div>

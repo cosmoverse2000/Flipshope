@@ -16,6 +16,7 @@ import {
   selectUserProfile,
   updateUserProfileAsync,
 } from "../features/user/userSlice";
+import { discountedPrice } from "../app/constants";
 
 const CheckoutPage = () => {
   const [open, setOpen] = useState(true);
@@ -36,7 +37,7 @@ const CheckoutPage = () => {
   } = useForm();
 
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.qty * item.price + amount,
+    (amount, item) => item.qty * discountedPrice(item) + amount,
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
@@ -425,7 +426,9 @@ const CheckoutPage = () => {
                                     {product.title}
                                   </a>
                                 </h3>
-                                <p className="ml-4">${product.price}</p>
+                                <p className="ml-4">
+                                  ${discountedPrice(product)}
+                                </p>
                               </div>
                               <p className="mt-1 text-sm text-gray-500">
                                 {product.brand}

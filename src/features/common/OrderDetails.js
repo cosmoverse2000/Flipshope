@@ -1,5 +1,6 @@
 import React from "react";
 import chooseColour from "./ColorStatus";
+import { discountedPrice } from "../../app/constants";
 
 const OrderDetails = ({ order }) => {
   return (
@@ -34,7 +35,7 @@ const OrderDetails = ({ order }) => {
                         <h3>
                           <a href={product.thumbnail}>{product.title}</a>
                         </h3>
-                        <p className="ml-4">${product.price}</p>
+                        <p className="ml-4">${discountedPrice(product)}</p>
                       </div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p className="mt-1 text-sm text-gray-500">
