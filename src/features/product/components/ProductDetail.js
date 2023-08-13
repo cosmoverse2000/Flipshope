@@ -42,8 +42,8 @@ export default function ProductDetail() {
   const cartItems = useSelector(selectCartItems);
   const dispatch = useDispatch();
   //router
-  const params = useParams();
   const navigate = useNavigate();
+  const params = useParams();
 
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
@@ -65,7 +65,7 @@ export default function ProductDetail() {
     };
     delete newItemToCart["id"];
     dispatch(addItemsToCartAsync(newItemToCart));
-    navigate("/cart");
+    // navigate("/cart");
   };
 
   useEffect(() => {
@@ -359,6 +359,14 @@ export default function ProductDetail() {
                   <p className="text-sm text-gray-600">{product.description}</p>
                 </div>
               </div>
+            </div>
+            <div
+              className="border-2 text-center cursor-pointer mt-auto mr-auto bg-white hover:bg-gray-500 hover:text-white  rounded-md px-3 py-2 text-sm font-medium"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Go Back{" "}
             </div>
           </div>
         </div>

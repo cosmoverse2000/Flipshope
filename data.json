@@ -2467,26 +2467,66 @@
       "id": 1
     },
     {
-      "title": "Microsoft Surface Laptop 4",
-      "description": "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen.",
-      "price": 1499,
-      "discountPercentage": 10.23,
-      "rating": 4.43,
-      "stock": 68,
-      "brand": "Microsoft Surface",
+      "title": "Infinix INBOOK",
+      "description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
+      "price": 1099,
+      "discountPercentage": 11.83,
+      "rating": 4.54,
+      "stock": 96,
+      "brand": "Infinix",
       "category": "laptops",
-      "thumbnail": "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
+      "thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/8/1.jpg",
-        "https://i.dummyjson.com/data/products/8/2.jpg",
-        "https://i.dummyjson.com/data/products/8/3.jpg",
-        "https://i.dummyjson.com/data/products/8/4.jpg",
-        "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+        "https://i.dummyjson.com/data/products/9/1.jpg",
+        "https://i.dummyjson.com/data/products/9/2.png",
+        "https://i.dummyjson.com/data/products/9/3.png",
+        "https://i.dummyjson.com/data/products/9/4.jpg",
+        "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
       ],
-      "productId": 8,
+      "productId": 9,
       "qty": 1,
-      "userId": 3,
-      "id": 2
+      "userId": 1,
+      "id": 3
+    },
+    {
+      "title": "Samsung Universe 9",
+      "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+      "price": 1249,
+      "discountPercentage": 15.46,
+      "rating": 4.09,
+      "stock": 36,
+      "brand": "Samsung",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/1.jpg"
+      ],
+      "productId": 3,
+      "qty": 1,
+      "userId": 1,
+      "id": 4
+    },
+    {
+      "title": "OPPOF19",
+      "description": "OPPO F19 is officially announced on April 2021.",
+      "price": 280,
+      "discountPercentage": 17.91,
+      "rating": 4.3,
+      "stock": 123,
+      "brand": "OPPO",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/4/1.jpg",
+        "https://i.dummyjson.com/data/products/4/2.jpg",
+        "https://i.dummyjson.com/data/products/4/3.jpg",
+        "https://i.dummyjson.com/data/products/4/4.jpg",
+        "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
+      ],
+      "productId": 4,
+      "qty": 1,
+      "userId": 1,
+      "id": 5
     }
   ],
   "orders": [
