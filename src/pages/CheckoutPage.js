@@ -65,7 +65,7 @@ const CheckoutPage = () => {
       totalPrice,
       selectPayment,
       address: userProfile.addresses[selectAddress],
-      orderStatus: "pending", //this can be set by admin for ordered status
+      orderStatus: "Pending", //this can be set by admin for ordered status
     };
     dispatch(addToOrdersAsync(order));
     //TODO : Succes page on order success

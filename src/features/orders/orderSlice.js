@@ -1,10 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addToOrders } from "./orderAPI";
+import {
+  addToOrders,
+  fetchAllOrders,
+  updateOrder,
+  deleteOrder,
+} from "./orderAPI";
 
 const initialState = {
-  orders: [],
+  orders: [], //user only order list
+  allOrders: [], // admin orders list of all users combined
   status: "idle",
-  currentOrder: null,
+  currentOrder: null, //users current order
+  totalOrders: 0, // count of totalOrders in admin allOrderslist
 };
 
 export const addToOrdersAsync = createAsyncThunk(
@@ -14,6 +21,36 @@ export const addToOrdersAsync = createAsyncThunk(
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
     return response;
+  }
+);
+export const updateOrderAsync = createAsyncThunk(
+  "orders/updateOrder",
+  async (updatedOrder) => {
+    const response = await updateOrder(updatedOrder);
+    // The value we return becomes the `fulfilled` action payload
+    // console.log(response);
+    return response;
+  }
+);
+
+export const fetchAllOrdersAsync = createAsyncThunk(
+  "orders/fetchAllOrders",
+  async ({ sorting, page }) => {
+    //executing filter api function and getting reasponse
+    // console.log(sorting, page);
+    const response = await fetchAllOrders({ sorting, page });
+
+    // The value we return becomes the `fulfilled` action payload
+    // console.log(response, "admin orders list  ");
+    return response.data;
+  }
+);
+export const deleteOrderAsync = createAsyncThunk(
+  "orders/deleteOrder",
+  async (deleteOrderId) => {
+    const response = await deleteOrder(deleteOrderId);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
   }
 );
 
@@ -38,6 +75,34 @@ export const orderSlice = createSlice({
         state.status = "idle";
         state.orders.push(action.payload);
         state.currentOrder = action.payload;
+      })
+      .addCase(fetchAllOrdersAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.allOrders = action.payload.ordersList;
+        state.totalOrders = action.payload.totalOrders;
+      })
+      .addCase(updateOrderAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        const index = state.allOrders.findIndex(
+          (order) => order.id === action.payload.id
+        );
+        state.allOrders[index] = action.payload;
+      })
+      .addCase(deleteOrderAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        const index = state.allOrders.findIndex(
+          (order) => order.id === action.payload.id
+        );
+        state.allOrders.splice(index, 1);
       });
   },
 });
@@ -45,6 +110,8 @@ export const orderSlice = createSlice({
 export const { resetCurrentOrder } = orderSlice.actions;
 
 export const selectOrders = (state) => state.order.orders;
+export const selectAllOrders = (state) => state.order.allOrders;
+export const selectTotalOrdersCount = (state) => state.order.totalOrders;
 export const selectCurrentOrder = (state) => state.order.currentOrder;
 
 export default orderSlice.reducer;

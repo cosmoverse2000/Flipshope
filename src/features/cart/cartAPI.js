@@ -40,7 +40,7 @@ export function updateCartItems(upadteData) {
     resolve(data);
   });
 }
-//to update cart update qty
+//to remove cart item
 export function deleteCartItems(itemId) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/cart/" + itemId, {
