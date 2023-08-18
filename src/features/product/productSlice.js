@@ -163,4 +163,6 @@ export const selectCategories = (state) => state.product.categories;
 export const selectBrands = (state) => state.product.brands;
 export const selectProducById = (state) => state.product.slectedProduct;
 
+export const selectProductListStatus = (state) => state.product.status;
+
 export default productSlice.reducer;

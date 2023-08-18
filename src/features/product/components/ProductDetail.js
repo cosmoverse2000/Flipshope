@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addItemsToCartAsync, selectCartItems } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
+import { useAlert } from "react-alert";
 
 //TODO : set color,size,higlit list from backend api these are ststic for now
 const colors = [
@@ -44,6 +45,8 @@ export default function ProductDetail() {
   //router
   const navigate = useNavigate();
   const params = useParams();
+  //alert
+  const alert = useAlert();
 
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
@@ -53,7 +56,8 @@ export default function ProductDetail() {
     //checking if item already present in cart
     const index = cartItems.findIndex((item) => item.productId === product.id);
     if (index >= 0 && cartItems.length > 0) {
-      console.log("Already Added to Cart");
+      alert.error("Already added to cart !");
+      // console.log("Already Added to Cart");
       return;
     }
     //removing id , so that DB auto generate its onw id or identification of cart items
@@ -65,7 +69,8 @@ export default function ProductDetail() {
     };
     delete newItemToCart["id"];
     dispatch(addItemsToCartAsync(newItemToCart));
-    // navigate("/cart");
+    // TODO: we will on show alert , 'item-added' when backend give response -fixit
+    alert.success("Added to cart !");
   };
 
   useEffect(() => {
