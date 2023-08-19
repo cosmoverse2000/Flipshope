@@ -29,6 +29,8 @@ import {
 } from "@heroicons/react/20/solid";
 import Pagination from "../../common/Pagination";
 import { Grid } from "react-loader-spinner";
+import Modals from "../../common/Modals";
+import { useAlert } from "react-alert";
 
 const sortOptions = [
   { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
@@ -55,6 +57,8 @@ export default function AdminProductList() {
   const brands = useSelector(selectBrands);
   const status = useSelector(selectProductListStatus);
   const dispatch = useDispatch();
+  //react-aler
+  const alert = useAlert();
 
   //local use states
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -155,6 +159,8 @@ export default function AdminProductList() {
     productToDel.isDeleted = true;
     console.log(productToDel, "Del Succ");
     dispatch(updateSelectedProductAsync(productToDel));
+    //TODO:show this alerr after backend approves
+    alert.info("Product Deleted Successfully !");
   };
 
   useEffect(() => {
@@ -230,6 +236,8 @@ export default function AdminProductList() {
 // used grid for responsiveness with
 // (in lg screen -> grid-col-span-1 = filters  && grid-col-span-3 = GRID )
 export const ProductListGrid = ({ products, handleDelete, status }) => {
+  //set modal id for which item you want to show modal
+  const [showModal, setShowModal] = useState(0);
   return (
     <div className="lg:col-span-3">
       {status === "loading" ? (
@@ -259,6 +267,22 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
               {products.map((product) => (
                 <div key={product.id}>
+                  {showModal === product.id && (
+                    <Modals
+                      modalTitle={`Delete ${product.title}!`}
+                      modalWarning={
+                        "Are you sure want to delete this Product from the List ?"
+                      }
+                      modalActionBtnName={"Remove"}
+                      modalCancelBtnName={"Cancel"}
+                      onClickModalActionBtn={() => {
+                        handleDelete(product.id);
+                      }}
+                      onClickModalCancelBtn={() => {}}
+                      setShowModal={setShowModal}
+                      showModal={showModal}
+                    />
+                  )}
                   <Link to={`/product-detail/${product.id}`}>
                     <div className="group relative border-2 border-solid p-2">
                       <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
@@ -310,9 +334,7 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
                     )}
                     <button
                       type="button"
-                      onClick={() => {
-                        handleDelete(product.id);
-                      }}
+                      onClick={() => setShowModal(product.id)}
                       disabled={product.isDeleted || product.stock <= 0}
                       className={`rounded-md border-2 ${
                         product.isDeleted || product.stock <= 0

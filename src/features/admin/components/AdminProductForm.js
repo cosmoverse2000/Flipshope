@@ -10,12 +10,15 @@ import {
   updateSelectedProductAsync,
 } from "../../product/productSlice";
 import { useParams } from "react-router-dom";
+import { useAlert } from "react-alert";
 
 const AdminProductForm = () => {
   //redux
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch();
+  //react-alert
+  const alert = useAlert();
   //react-forms
   const {
     register,
@@ -36,7 +39,7 @@ const AdminProductForm = () => {
 
   useEffect(() => {
     if (params.prodId && selectedProduct) {
-      console.log(selectedProduct);
+      // console.log(selectedProduct);
       setValue("productname", selectedProduct.title);
       setValue("description", selectedProduct.description);
       setValue("price", selectedProduct.price);
@@ -74,10 +77,14 @@ const AdminProductForm = () => {
             product.rating = selectedProduct.rating || 0;
             ///this product is Updated Product !
             dispatch(updateSelectedProductAsync(product));
-            console.log(data, "Product Edit success!");
+            // console.log(data, "Product Edit success!");
+            //TODO: alert this after backedn approves it
+            alert.success("Product Edited Successfully !");
           } else {
             dispatch(addToProductListAsync(product));
-            console.log(data, "Product add success!");
+            // console.log(data, "Product add success!");
+            //TODO: alert this after backedn approves it
+            alert.success("Product Added Successfully !");
           }
           reset();
         })}
@@ -335,7 +342,7 @@ const AdminProductForm = () => {
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              {params.prodId ? "Save Product Edit" : "Add to Products"}
+              {params.prodId ? "Update Product" : "Add to Products"}
             </button>
           </div>
         </div>

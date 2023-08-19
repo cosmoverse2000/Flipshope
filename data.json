@@ -147,7 +147,7 @@
       "id": 9,
       "title": "Infinix INBOOK",
       "description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
-      "price": 1099,
+      "price": 1599,
       "discountPercentage": 11.83,
       "rating": 4.54,
       "stock": 96,
@@ -158,8 +158,7 @@
         "https://i.dummyjson.com/data/products/9/1.jpg",
         "https://i.dummyjson.com/data/products/9/2.png",
         "https://i.dummyjson.com/data/products/9/3.png",
-        "https://i.dummyjson.com/data/products/9/4.jpg",
-        "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
+        "https://i.dummyjson.com/data/products/9/4.jpg"
       ]
     },
     {
@@ -1875,6 +1874,25 @@
         "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
       ],
       "id": 102,
+      "isDeleted": true
+    },
+    {
+      "title": "Iphone 17 pro 23",
+      "description": "asdadasd hjagddsa dadasgdaskjdafd adda",
+      "price": 2099,
+      "discountPercentage": 12,
+      "rating": 0,
+      "stock": 12,
+      "brand": "Apple",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+      ],
+      "id": 103,
       "isDeleted": true
     }
   ],

@@ -8,9 +8,11 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { discountedPrice } from "../../app/constants";
+import Modals from "../common/Modals";
 
 export default function Cart() {
-  const [open, setOpen] = useState(true);
+  //set modal id for which item you want to show modal
+  const [showModal, setShowModal] = useState(0);
 
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
@@ -23,8 +25,8 @@ export default function Cart() {
   const handleQuantity = (e, cartItem) => {
     dispatch(updateCartItemsAsync({ ...cartItem, qty: +e.target.value }));
   };
-  const handleRemove = (e, item) => {
-    dispatch(deleteCartItemsAsync(item.id));
+  const handleRemove = (prodId) => {
+    dispatch(deleteCartItemsAsync(prodId));
   };
 
   //NO ITEMS IN CART FEEDBACK
@@ -56,9 +58,25 @@ export default function Cart() {
                 <h1 className="text-4xl my-10 font-bold tracking-tight text-gray-900">
                   Your Cart
                 </h1>
-                <ul role="list" className="-my-6 divide-y divide-gray-200">
+                <ul className="-my-6 divide-y divide-gray-200">
                   {cartItems.map((product) => (
                     <li key={product.id} className="flex py-6">
+                      {showModal === product.id && (
+                        <Modals
+                          modalTitle={`Delete ${product.title}!`}
+                          modalWarning={
+                            "Are you sure want to delete this item from the cart ?"
+                          }
+                          modalActionBtnName={"Remove"}
+                          modalCancelBtnName={"Cancel"}
+                          onClickModalActionBtn={() => {
+                            handleRemove(product.id);
+                          }}
+                          onClickModalCancelBtn={() => {}}
+                          setShowModal={setShowModal}
+                          showModal={showModal}
+                        />
+                      )}
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
                           src={product.thumbnail}
@@ -104,9 +122,7 @@ export default function Cart() {
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={(e) => {
-                                handleRemove(e, product);
-                              }}
+                              onClick={() => setShowModal(product.id)}
                             >
                               Remove
                             </button>
@@ -145,7 +161,6 @@ export default function Cart() {
                   <button
                     type="button"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
-                    onClick={() => setOpen(false)}
                   >
                     <Link to="/">Continue Shopping</Link>
                     <span aria-hidden="true"> &rarr;</span>
