@@ -2,17 +2,20 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUserOrdersAsync,
+  selectUserLoadStatus,
   selectUserOrders,
   selectUserProfile,
 } from "../userSlice";
 import { Link } from "react-router-dom";
 import OrderDetails from "../../common/OrderDetails";
+import { Grid } from "react-loader-spinner";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
 
   const userOrders = useSelector(selectUserOrders);
   const userProfile = useSelector(selectUserProfile);
+  const status = useSelector(selectUserLoadStatus);
   useEffect(() => {
     dispatch(fetchUserOrdersAsync(userProfile.id));
   }, [dispatch, userProfile]);
@@ -38,11 +41,24 @@ export default function UserOrders() {
       <h1 className="mx-auto px-4 sm:px-6 lg:px-8 font-bold text-2xl max-w-4xl ">
         My Orders
       </h1>
-      {userOrders.length > 0
-        ? userOrders.map((order) => {
-            return <OrderDetails key={order.id} order={order} />;
-          })
-        : noOrdersContent}
+      {status === "loading" ? (
+        <Grid
+          height="80"
+          width="80"
+          color="rgb(79, 70, 229)"
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass="my-24 justify-center"
+          visible={true}
+        />
+      ) : userOrders.length > 0 ? (
+        userOrders.map((order) => {
+          return <OrderDetails key={order.id} order={order} />;
+        })
+      ) : (
+        noOrdersContent
+      )}
     </div>
   );
 }

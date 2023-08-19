@@ -109,9 +109,14 @@ export const orderSlice = createSlice({
 
 export const { resetCurrentOrder } = orderSlice.actions;
 
+//user
 export const selectOrders = (state) => state.order.orders;
+//admin
 export const selectAllOrders = (state) => state.order.allOrders;
 export const selectTotalOrdersCount = (state) => state.order.totalOrders;
+//oder detail
 export const selectCurrentOrder = (state) => state.order.currentOrder;
+//chekout order  place status-all status comb
+export const selectOrderLoadingStatus = (state) => state.order.status;
 
 export default orderSlice.reducer;

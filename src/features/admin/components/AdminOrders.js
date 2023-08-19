@@ -4,6 +4,7 @@ import {
   deleteOrderAsync,
   fetchAllOrdersAsync,
   selectAllOrders,
+  selectOrderLoadingStatus,
   selectTotalOrdersCount,
   updateOrderAsync,
 } from "../../orders/orderSlice";
@@ -12,12 +13,14 @@ import Pagination from "../../common/Pagination";
 import OrderDetails from "../../common/OrderDetails";
 import chooseColour from "../../common/ColorStatus";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
+import { Grid } from "react-loader-spinner";
 
 const AdminOrders = () => {
   //redux
   const dispatch = useDispatch();
   const allOrdersList = useSelector(selectAllOrders);
   const ordersListCount = useSelector(selectTotalOrdersCount);
+  const selectOrderStatus = useSelector(selectOrderLoadingStatus);
 
   //react-hooks
   const [sorting, setSorting] = useState({ _sort: "id", _order: "asc" }); // to use prev sort state create it as usestate
@@ -33,7 +36,7 @@ const AdminOrders = () => {
     dispatch(fetchAllOrdersAsync({ sorting, page }));
   }, [dispatch, sorting, page]);
 
-  console.log(allOrdersList, "ored list");
+  // console.log(allOrdersList, "ored list");
   //   console.log(ordersListCount, "ored list c");
 
   //HANDLE EVENTS
@@ -101,6 +104,7 @@ const AdminOrders = () => {
 
   return (
     <>
+      {/* to show order details */}
       {showOrderDetails ? (
         <div>
           <div className="flex justify-between mx-auto max-w-4xl px-4 sm:px-6">
@@ -116,8 +120,20 @@ const AdminOrders = () => {
           </div>
           <OrderDetails order={showOrderDetails} />
         </div>
+      ) : selectOrderStatus === "loading" ? (
+        <Grid
+          height="80"
+          width="80"
+          color="rgb(79, 70, 229)"
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass="my-24 justify-center"
+          visible={true}
+        />
       ) : (
         <div className="mx-6">
+          {/* ALL orders LISTS */}
           <div className=" flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
             <div className="w-full lg:w-5.5/6">
               <div className="overflow-x-auto  bg-white shadow-md rounded my-6">

@@ -11,12 +11,14 @@ import { useForm } from "react-hook-form";
 import {
   addToOrdersAsync,
   selectCurrentOrder,
+  selectOrderLoadingStatus,
 } from "../features/orders/orderSlice";
 import {
   selectUserProfile,
   updateUserProfileAsync,
 } from "../features/user/userSlice";
 import { discountedPrice } from "../app/constants";
+import { Grid } from "react-loader-spinner";
 
 const CheckoutPage = () => {
   const [open, setOpen] = useState(true);
@@ -27,6 +29,7 @@ const CheckoutPage = () => {
   const cartItems = useSelector(selectCartItems);
   const userProfile = useSelector(selectUserProfile);
   const currentOrder = useSelector(selectCurrentOrder);
+  const placeOrderStatus = useSelector(selectOrderLoadingStatus);
 
   //react-forms
   const {
@@ -80,11 +83,24 @@ const CheckoutPage = () => {
         <Navigate to="/" replace={true}></Navigate>
       ) : (
         <>
-          {currentOrder && (
-            <Navigate
-              to={`/order-success/${currentOrder.id}`}
-              replace={true}
-            ></Navigate>
+          {placeOrderStatus === "loading" ? (
+            <Grid
+              height="80"
+              width="80"
+              color="rgb(79, 70, 229)"
+              ariaLabel="grid-loading"
+              radius="12.5"
+              wrapperStyle={{}}
+              wrapperClass="my-24 justify-center"
+              visible={true}
+            />
+          ) : (
+            currentOrder && (
+              <Navigate
+                to={`/order-success/${currentOrder.id}`}
+                replace={true}
+              ></Navigate>
+            )
           )}
           <div className="mx-auto  max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
