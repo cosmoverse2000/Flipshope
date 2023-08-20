@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchAllProducts,
-  fetchFilterSortedProducts,
+  fetchAllProductsQuery,
   fetchBrands,
   fetchCategories,
   fetchProductById,
-  addToProductList,
+  createProduct,
   updateSelectedProduct,
 } from "./productAPI";
 
@@ -57,21 +57,21 @@ export const fetchProductByIdAsync = createAsyncThunk(
 );
 
 //just like all-products api func above , getting filtered products,sorting,page also now
-export const fetchFilterSortedProductsAsync = createAsyncThunk(
-  "product/fetchFilterSortedProducts",
+export const fetchAllProductsQueryAsync = createAsyncThunk(
+  "product/fetchAllProductsQuery",
   async ({ filter, sorting, page }) => {
     //executing filter api function and getting reasponse
-    const response = await fetchFilterSortedProducts(filter, sorting, page);
+    const response = await fetchAllProductsQuery(filter, sorting, page);
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
     return response.data;
   }
 );
 //adding new product
-export const addToProductListAsync = createAsyncThunk(
-  "product/addToProductList",
+export const createProductAsync = createAsyncThunk(
+  "product/createProduct",
   async (product) => {
-    const response = await addToProductList(product);
+    const response = await createProduct(product);
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
     return response;
@@ -105,10 +105,10 @@ export const productSlice = createSlice({
         state.status = "idle";
         state.products = action.payload;
       })
-      .addCase(fetchFilterSortedProductsAsync.pending, (state) => {
+      .addCase(fetchAllProductsQueryAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchFilterSortedProductsAsync.fulfilled, (state, action) => {
+      .addCase(fetchAllProductsQueryAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.products = action.payload.products;
         state.totalItems = action.payload.totalItems;
@@ -134,10 +134,10 @@ export const productSlice = createSlice({
         state.status = "idle";
         state.slectedProduct = action.payload;
       })
-      .addCase(addToProductListAsync.pending, (state) => {
+      .addCase(createProductAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(addToProductListAsync.fulfilled, (state, action) => {
+      .addCase(createProductAsync.fulfilled, (state, action) => {
         state.status = "idle";
         // console.log(action.payload);
         state.products.push(action.payload);

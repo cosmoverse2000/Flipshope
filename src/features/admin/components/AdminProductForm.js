@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToProductListAsync,
+  createProductAsync,
   fetchProductByIdAsync,
   selectBrands,
   selectCategories,
@@ -81,7 +81,7 @@ const AdminProductForm = () => {
             //TODO: alert this after backedn approves it
             alert.success("Product Edited Successfully !");
           } else {
-            dispatch(addToProductListAsync(product));
+            dispatch(createProductAsync(product));
             // console.log(data, "Product add success!");
             //TODO: alert this after backedn approves it
             alert.success("Product Added Successfully !");
@@ -240,8 +240,8 @@ const AdminProductForm = () => {
                       required: "• Discount is Required !",
                       min: { value: 0, message: "• Min-Discount %  is 0 !" },
                       max: {
-                        value: 100,
-                        message: "• Max-Discount %  is 100 !",
+                        value: 99,
+                        message: "• Max-Discount %  is 99 !",
                       },
                     })}
                     step=".01"

@@ -17,7 +17,7 @@ export function fetchProductById(id) {
 }
 
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
-export function fetchFilterSortedProducts(filter, sorting, page) {
+export function fetchAllProductsQuery(filter, sorting, page) {
   //TODO:on server we will support multiple filters ,now not possible in json-server
   //TODO:server will filter deleted product to admin not to a user
   //example of structure that these above arguments will posses
@@ -83,7 +83,7 @@ export function fetchBrands(amount = 1) {
 
 //POST API to Add Product to PRoduct list by admin
 //add PRoduct
-export function addToProductList(product) {
+export function createProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products/", {
       method: "POST",

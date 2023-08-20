@@ -2461,70 +2461,7 @@
       "id": 3
     }
   ],
-  "cart": [
-    {
-      "title": "Infinix INBOOK",
-      "description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
-      "price": 1099,
-      "discountPercentage": 11.83,
-      "rating": 4.54,
-      "stock": 96,
-      "brand": "Infinix",
-      "category": "laptops",
-      "thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/9/1.jpg",
-        "https://i.dummyjson.com/data/products/9/2.png",
-        "https://i.dummyjson.com/data/products/9/3.png",
-        "https://i.dummyjson.com/data/products/9/4.jpg",
-        "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
-      ],
-      "productId": 9,
-      "qty": 1,
-      "userId": 1,
-      "id": 3
-    },
-    {
-      "title": "Samsung Universe 9",
-      "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
-      "price": 1249,
-      "discountPercentage": 15.46,
-      "rating": 4.09,
-      "stock": 36,
-      "brand": "Samsung",
-      "category": "smartphones",
-      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/3/1.jpg"
-      ],
-      "productId": 3,
-      "qty": 1,
-      "userId": 1,
-      "id": 4
-    },
-    {
-      "title": "OPPOF19",
-      "description": "OPPO F19 is officially announced on April 2021.",
-      "price": 280,
-      "discountPercentage": 17.91,
-      "rating": 4.3,
-      "stock": 123,
-      "brand": "OPPO",
-      "category": "smartphones",
-      "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/4/1.jpg",
-        "https://i.dummyjson.com/data/products/4/2.jpg",
-        "https://i.dummyjson.com/data/products/4/3.jpg",
-        "https://i.dummyjson.com/data/products/4/4.jpg",
-        "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
-      ],
-      "productId": 4,
-      "qty": 1,
-      "userId": 1,
-      "id": 5
-    }
-  ],
+  "cart": [],
   "orders": [
     {
       "userId": 1,
@@ -3034,6 +2971,104 @@
       },
       "orderStatus": "Pending",
       "id": 10
+    },
+    {
+      "userId": 1,
+      "orderedItems": [
+        {
+          "title": "Infinix INBOOK",
+          "description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
+          "price": 1099,
+          "discountPercentage": 11.83,
+          "rating": 4.54,
+          "stock": 96,
+          "brand": "Infinix",
+          "category": "laptops",
+          "thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/9/1.jpg",
+            "https://i.dummyjson.com/data/products/9/2.png",
+            "https://i.dummyjson.com/data/products/9/3.png",
+            "https://i.dummyjson.com/data/products/9/4.jpg",
+            "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
+          ],
+          "productId": 9,
+          "qty": 1,
+          "userId": 1,
+          "id": 3
+        },
+        {
+          "title": "Samsung Universe 9",
+          "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+          "price": 1249,
+          "discountPercentage": 15.46,
+          "rating": 4.09,
+          "stock": 36,
+          "brand": "Samsung",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/3/1.jpg"
+          ],
+          "productId": 3,
+          "qty": 1,
+          "userId": 1,
+          "id": 4
+        }
+      ],
+      "totalItems": 2,
+      "totalPrice": 2025,
+      "selectPayment": "card",
+      "address": {
+        "name": "Anshul Patel",
+        "email": "patelAnshul5757@gmail.com",
+        "phone": "930150457",
+        "street": "house no. 5,village bodi,post lamkana,tehsil majholi",
+        "pincode": "762472",
+        "region": "Madhya Pradesh",
+        "city": "Bhopal"
+      },
+      "orderStatus": "Pending",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "orderedItems": [
+        {
+          "title": "Huawei P30",
+          "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+          "price": 499,
+          "discountPercentage": 10.58,
+          "rating": 4.09,
+          "stock": 32,
+          "brand": "Huawei",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/5/1.jpg",
+            "https://i.dummyjson.com/data/products/5/2.jpg",
+            "https://i.dummyjson.com/data/products/5/3.jpg"
+          ],
+          "productId": 5,
+          "qty": 1,
+          "userId": 1,
+          "id": 1
+        }
+      ],
+      "totalItems": 1,
+      "totalPrice": 446,
+      "selectPayment": "card",
+      "address": {
+        "name": "amar sharma",
+        "email": "amarshara3434@gmail.com",
+        "phone": "324324324324",
+        "street": "st 45m. nabsa m, nholal ,mp.",
+        "city": "shahgsahs",
+        "region": "uttar msdsds",
+        "pincode": "854578"
+      },
+      "orderStatus": "Pending",
+      "id": 12
     }
   ]
 }

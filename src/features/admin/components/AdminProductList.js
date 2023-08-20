@@ -9,7 +9,7 @@ import {
   selectCategories,
   fetchBrandsAsync,
   fetchCategoriesAsync,
-  fetchFilterSortedProductsAsync,
+  fetchAllProductsQueryAsync,
   updateSelectedProductAsync,
   selectProductListStatus,
 } from "../../product/productSlice";
@@ -168,9 +168,9 @@ export default function AdminProductList() {
     //so applying that below directy
 
     //after any setfilter and setSorting this beolw will be dispatched
-    //using action 'fetchFilterSortedProductsAsync' from Product Slice to call api function
+    //using action 'fetchAllProductsQueryAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(fetchFilterSortedProductsAsync({ filter, sorting, page }));
+    dispatch(fetchAllProductsQueryAsync({ filter, sorting, page }));
   }, [dispatch, filter, sorting, page]);
 
   //to reset pagination while filter and sorting
