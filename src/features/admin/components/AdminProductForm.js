@@ -65,7 +65,7 @@ const AdminProductForm = () => {
             description: data.description,
             price: +data.price,
             discountPercentage: +data.discount,
-            rating: +0,
+            rating: +1,
             stock: +data.stock,
             brand: data.brand,
             category: data.category,
@@ -74,7 +74,7 @@ const AdminProductForm = () => {
           };
           if (params.prodId) {
             product.id = params.prodId;
-            product.rating = selectedProduct.rating || 0;
+            product.rating = selectedProduct.rating || 1;
             ///this product is Updated Product !
             dispatch(updateSelectedProductAsync(product));
             // console.log(data, "Product Edit success!");

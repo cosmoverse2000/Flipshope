@@ -1,9 +1,9 @@
 // A mock function to mimic making an async request for data
 
-//On Register API
+//On create user
 export function signupUserAccount(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/users", {
+    const response = await fetch("http://localhost:8080/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -18,21 +18,27 @@ export function signupUserAccount(userData) {
 
 //On LOGIN API
 export function loginUserAccount(loginData) {
-  const email = loginData.email;
-  const password = loginData.password;
   return new Promise(async (resolve, reject) => {
-    const response = await fetch("http://localhost:8080/users?email=" + email);
-    //TODO:don't send back password data and also it should be encrypted
-    //TODO: this checking is to be done on backend
-    const data = await response.json();
-    if (data.length) {
-      if (data[0].password === password) {
-        resolve({ data: data[0] });
+    try {
+      const response = await fetch("http://localhost:8080/auth/login/", {
+        method: "POST",
+        body: JSON.stringify(loginData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data, "daa");
+        resolve(data);
       } else {
-        reject({ message: "Incorrect Credentials !" });
+        const error = await response.json();
+        // console.log(error, "error");
+        reject(error);
       }
-    } else {
-      reject({ message: "User not Found !" });
+    } catch (error) {
+      // console.log(error, "loginUserAccount");
+      reject(error);
     }
   });
 }

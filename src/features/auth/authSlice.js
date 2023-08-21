@@ -24,10 +24,17 @@ export const signupUserAccountAsync = createAsyncThunk(
 //login ACtion
 export const loginUserAccountAsync = createAsyncThunk(
   "auth/loginUserAccount",
-  async (loginData) => {
-    const response = await loginUserAccount(loginData);
-    // The value we return becomes the `fulfilled` action payload
-    return response;
+  async (loginData, { rejectWithValue }) => {
+    try {
+      // to handle resolve from api
+      const response = await loginUserAccount(loginData);
+      // console.log(response, "from auth slice");
+      return response;
+    } catch (error) {
+      // to handle reject from api
+      // console.log(error,"login errors if any");
+      return rejectWithValue(error);
+    }
   }
 );
 //logout ACtion
@@ -63,11 +70,12 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload.data;
+        state.loggedInUser = action.payload;
       })
       .addCase(loginUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
-        state.loginErrors = action.error;
+        state.loginErrors = action.payload;
+        // console.log(action, "login user reject error thunk");
       })
       .addCase(logoutUserAccountAsync.pending, (state) => {
         state.status = "loading";

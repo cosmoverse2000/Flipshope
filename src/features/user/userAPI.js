@@ -12,7 +12,7 @@ export function fetchUserOrders(userId) {
 // get user data to display user profile
 export function fetchUserProfile(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/users/" + userId);
+    const response = await fetch("http://localhost:8080/user/" + userId);
     const data = await response.json();
     resolve(data);
   });
@@ -21,7 +21,7 @@ export function fetchUserProfile(userId) {
 //On Update user API, like adding address, edit or remove user datas(addres, name ,email)
 export function updateUserProfile(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/users/" + userData.id, {
+    const response = await fetch("http://localhost:8080/user/" + userData.id, {
       method: "PATCH",
       body: JSON.stringify(userData),
       headers: {
