@@ -18,7 +18,7 @@ export default function Cart() {
   const cartItems = useSelector(selectCartItems);
 
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.qty * discountedPrice(item) + amount,
+    (amount, item) => item.qty * discountedPrice(item.productId) + amount,
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
@@ -60,17 +60,17 @@ export default function Cart() {
                 </h1>
                 <ul className="-my-6 divide-y divide-gray-200">
                   {cartItems.map((product) => (
-                    <li key={product.id} className="flex py-6">
-                      {showModal === product.id && (
+                    <li key={product.productId.id} className="flex py-6">
+                      {showModal === product.productId.id && (
                         <Modals
-                          modalTitle={`Delete ${product.title}!`}
+                          modalTitle={`Delete ${product.productId.title}!`}
                           modalWarning={
                             "Are you sure want to delete this item from the cart ?"
                           }
                           modalActionBtnName={"Remove"}
                           modalCancelBtnName={"Cancel"}
                           onClickModalActionBtn={() => {
-                            handleRemove(product.id);
+                            handleRemove(product.productId.id);
                           }}
                           onClickModalCancelBtn={() => {}}
                           setShowModal={setShowModal}
@@ -79,8 +79,8 @@ export default function Cart() {
                       )}
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
-                          src={product.thumbnail}
-                          alt={product.title}
+                          src={product.productId.thumbnail}
+                          alt={product.productId.title}
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -89,12 +89,16 @@ export default function Cart() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
-                              <a href={product.thumbnail}>{product.title}</a>
+                              <a href={product.productId.thumbnail}>
+                                {product.productId.title}
+                              </a>
                             </h3>
-                            <p className="ml-4">${discountedPrice(product)}</p>
+                            <p className="ml-4">
+                              ${discountedPrice(product.productId)}
+                            </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
-                            {product.brand}
+                            {product.productId.brand}
                           </p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
@@ -122,7 +126,7 @@ export default function Cart() {
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={() => setShowModal(product.id)}
+                              onClick={() => setShowModal(product.productId.id)}
                             >
                               Remove
                             </button>

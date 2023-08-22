@@ -9,8 +9,11 @@ export function addItemsToCart(item) {
       },
     });
 
-    const data = await response.json();
-    resolve(data);
+    if (response.ok) {
+      const data = await response.json();
+      // console.log(data, "add items res");
+      resolve(data);
+    }
   });
 }
 

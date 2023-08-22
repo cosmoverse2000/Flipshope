@@ -14,7 +14,7 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
   const status = useSelector(selectUserLoadStatus);
-  console.log(userProfile, "userProfile");
+  // console.log(userProfile, "userProfile");
   //react
   const [showEditForm, setShowEditForm] = useState(-1);
   const [showAddNewAddressForm, setShowAddNewAddressForm] = useState(0);

@@ -65,20 +65,19 @@ export default function ProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     //checking if item already present in cart
-    const index = cartItems.findIndex((item) => item.productId === product.id);
+    const index = cartItems.findIndex(
+      (item) => item.productId.id === product.id
+    );
     if (index >= 0 && cartItems.length > 0) {
       alert.error("Already added to cart !");
       // console.log("Already Added to Cart");
       return;
     }
-    //removing id , so that DB auto generate its onw id or identification of cart items
     const newItemToCart = {
-      ...product,
       productId: product.id,
       qty: 1,
       userId: user.id,
     };
-    delete newItemToCart["id"];
     dispatch(addItemsToCartAsync(newItemToCart));
     // TODO: we will on show alert , 'item-added' when backend give response -fixit
     alert.success("Added to cart !");
