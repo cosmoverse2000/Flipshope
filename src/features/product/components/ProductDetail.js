@@ -10,7 +10,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import {
-  addItemsToCartAsync,
+  addItemToCartAsync,
   selectCartItems,
   selectCartStatus,
 } from "../../cart/cartSlice";
@@ -65,20 +65,18 @@ export default function ProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     //checking if item already present in cart
-    const index = cartItems.findIndex(
-      (item) => item.productId.id === product.id
-    );
+    const index = cartItems.findIndex((item) => item.product.id === product.id);
     if (index >= 0 && cartItems.length > 0) {
       alert.error("Already added to cart !");
       // console.log("Already Added to Cart");
       return;
     }
     const newItemToCart = {
-      productId: product.id,
+      product: product.id,
       qty: 1,
-      userId: user.id,
+      user: user.id,
     };
-    dispatch(addItemsToCartAsync(newItemToCart));
+    dispatch(addItemToCartAsync(newItemToCart));
     // TODO: we will on show alert , 'item-added' when backend give response -fixit
     alert.success("Added to cart !");
   };

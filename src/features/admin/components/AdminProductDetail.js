@@ -9,7 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 import { handler } from "@tailwindcss/aspect-ratio";
 import { selectLoggedInUser } from "../../auth/authSlice";
-import { addItemsToCartAsync } from "../../cart/cartSlice";
+import { addItemToCartAsync } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
 
 //TODO : set color,size,higlit list from backend api these are ststic for now
@@ -51,9 +51,9 @@ export default function AdminProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     //removing id , so that DB auto generate its onw id or identification of cart items
-    const newItemToCart = { ...product, qty: 1, userId: user.id };
+    const newItemToCart = { ...product, qty: 1, user: user.id };
     delete newItemToCart["id"];
-    dispatch(addItemsToCartAsync(newItemToCart));
+    dispatch(addItemToCartAsync(newItemToCart));
   };
 
   useEffect(() => {

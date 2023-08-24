@@ -1,9 +1,9 @@
 //On add item click API
-export function addItemsToCart(item) {
+export function addItemToCart(cartItem) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/cart", {
       method: "POST",
-      body: JSON.stringify(item),
+      body: JSON.stringify(cartItem),
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,31 +22,32 @@ export function fetchCartByUserId(userId) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/cart?userId=" + userId);
     const data = await response.json();
+
     resolve({ data });
   });
 }
 //to update cart update qty
-export function updateCartItems(upadteData) {
+export function updateCartItem(updatedCartItem) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/cart/" + upadteData.id,
+      "http://localhost:8080/cart/" + updatedCartItem.id,
       {
         method: "PATCH",
-        body: JSON.stringify(upadteData),
+        body: JSON.stringify(updatedCartItem),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-
     const data = await response.json();
     resolve(data);
   });
 }
 //to remove cart item
-export function deleteCartItems(itemId) {
+export function deleteCartItem(cartItemId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart/" + itemId, {
+    // console.log(cartItemId, "cartItemId");
+    const response = await fetch("http://localhost:8080/cart/" + cartItemId, {
       method: "DELETE",
     });
 
@@ -54,12 +55,12 @@ export function deleteCartItems(itemId) {
     // we manually send it to uppdate local cart
     const data = await response.json(); //this data would empty in 'delete'case
     if (response.ok) {
-      console.log("deleted");
+      console.log("cartItem deleted");
     } else {
       console.log("delete item failed");
     }
 
-    resolve({ data: { id: itemId } });
+    resolve({ data: { id: data.id } });
   });
 }
 //to reset cart on order success
@@ -67,8 +68,8 @@ export function resetCartItems(userId) {
   return new Promise(async (resolve) => {
     const userData = await fetchCartByUserId(userId);
 
-    for (const cartItemId of userData.data) {
-      await deleteCartItems(cartItemId.id);
+    for (const cartItem of userData.data) {
+      await deleteCartItem(cartItem.id);
     }
     resolve({ status: "CartReset success" });
   });

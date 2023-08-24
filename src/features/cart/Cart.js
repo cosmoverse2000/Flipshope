@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  deleteCartItemsAsync,
+  deleteCartItemAsync,
   selectCartItems,
-  updateCartItemsAsync,
+  updateCartItemAsync,
 } from "./cartSlice";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,15 +18,15 @@ export default function Cart() {
   const cartItems = useSelector(selectCartItems);
 
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.qty * discountedPrice(item.productId) + amount,
+    (amount, item) => item.qty * discountedPrice(item.product) + amount,
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
   const handleQuantity = (e, cartItem) => {
-    dispatch(updateCartItemsAsync({ ...cartItem, qty: +e.target.value }));
+    dispatch(updateCartItemAsync({ id: cartItem.id, qty: +e.target.value }));
   };
-  const handleRemove = (prodId) => {
-    dispatch(deleteCartItemsAsync(prodId));
+  const handleRemove = (cartItemId) => {
+    dispatch(deleteCartItemAsync(cartItemId));
   };
 
   //NO ITEMS IN CART FEEDBACK
@@ -59,18 +59,18 @@ export default function Cart() {
                   Your Cart
                 </h1>
                 <ul className="-my-6 divide-y divide-gray-200">
-                  {cartItems.map((product) => (
-                    <li key={product.productId.id} className="flex py-6">
-                      {showModal === product.productId.id && (
+                  {cartItems.map((cartItem) => (
+                    <li key={cartItem.product.id} className="flex py-6">
+                      {showModal === cartItem.product.id && (
                         <Modals
-                          modalTitle={`Delete ${product.productId.title}!`}
+                          modalTitle={`Delete ${cartItem.product.title}!`}
                           modalWarning={
                             "Are you sure want to delete this item from the cart ?"
                           }
                           modalActionBtnName={"Remove"}
                           modalCancelBtnName={"Cancel"}
                           onClickModalActionBtn={() => {
-                            handleRemove(product.productId.id);
+                            handleRemove(cartItem.id);
                           }}
                           onClickModalCancelBtn={() => {}}
                           setShowModal={setShowModal}
@@ -79,8 +79,8 @@ export default function Cart() {
                       )}
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
-                          src={product.productId.thumbnail}
-                          alt={product.productId.title}
+                          src={cartItem.product.thumbnail}
+                          alt={cartItem.product.title}
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -89,16 +89,16 @@ export default function Cart() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
-                              <a href={product.productId.thumbnail}>
-                                {product.productId.title}
+                              <a href={cartItem.product.thumbnail}>
+                                {cartItem.product.title}
                               </a>
                             </h3>
                             <p className="ml-4">
-                              ${discountedPrice(product.productId)}
+                              ${discountedPrice(cartItem.product)}
                             </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
-                            {product.productId.brand}
+                            {cartItem.product.brand}
                           </p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
@@ -111,10 +111,10 @@ export default function Cart() {
                             </label>
 
                             <select
-                              onChange={(e) => handleQuantity(e, product)}
+                              onChange={(e) => handleQuantity(e, cartItem)}
                               name="qty"
                               id="qty"
-                              value={product.qty}
+                              value={cartItem.qty}
                             >
                               <option value="1">1</option>
                               <option value="2">2</option>
@@ -126,7 +126,7 @@ export default function Cart() {
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={() => setShowModal(product.productId.id)}
+                              onClick={() => setShowModal(cartItem.product.id)}
                             >
                               Remove
                             </button>
