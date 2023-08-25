@@ -48,7 +48,7 @@ const Navbar = (props) => {
                     <div className="flex-shrink-0">
                       <img
                         className="h-8 w-8"
-                        src="https://img.icons8.com/?size=512&id=HblsXWznhqIx&format=png"
+                        src={process.env.PUBLIC_URL + "/flipshope_logo.png"}
                         alt="Flipshope Logo"
                       />
                     </div>

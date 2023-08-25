@@ -20,6 +20,7 @@ import {
 import { discountedPrice } from "../app/constants";
 import { Grid } from "react-loader-spinner";
 import Modals from "../features/common/Modals";
+import { useAlert } from "react-alert";
 
 const CheckoutPage = () => {
   //set modal id for which item you want to show modal
@@ -32,6 +33,8 @@ const CheckoutPage = () => {
   const userProfile = useSelector(selectUserProfile);
   const currentOrder = useSelector(selectCurrentOrder);
   const placeOrderStatus = useSelector(selectOrderLoadingStatus);
+  //react alert
+  const alert = useAlert();
 
   //react-forms
   const {
@@ -52,6 +55,8 @@ const CheckoutPage = () => {
   };
   const handleRemove = (prodId) => {
     dispatch(deleteCartItemAsync(prodId));
+    //TODO: get response from back that deleted then show alert
+    alert.error("Product removed from Cart !");
   };
   const handleAddress = (e) => {
     setSelectAddress(e.target.value);
@@ -65,13 +70,13 @@ const CheckoutPage = () => {
       return;
     }
     const order = {
-      userId: userProfile.id,
+      user: userProfile.id,
       orderedItems: cartItems,
       totalItems,
       totalPrice,
       selectPayment,
       address: userProfile.addresses[selectAddress],
-      orderStatus: "Pending", //this can be set by admin for ordered status
+      // orderStatus: "Pending", //this can be set by admin for ordered status or backend def
     };
     dispatch(addToOrdersAsync(order));
     //TODO : Succes page on order success

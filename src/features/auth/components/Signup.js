@@ -27,7 +27,7 @@ export default function Signup() {
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
               className="mx-auto h-10 w-auto"
-              src="https://img.icons8.com/?size=512&id=HblsXWznhqIx&format=png"
+              src={process.env.PUBLIC_URL + "/flipshope_logo.png"}
               alt="Flipshope Logo"
             />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">

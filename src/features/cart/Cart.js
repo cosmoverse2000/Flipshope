@@ -9,10 +9,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { discountedPrice } from "../../app/constants";
 import Modals from "../common/Modals";
+import { useAlert } from "react-alert";
 
 export default function Cart() {
   //set modal id for which item you want to show modal
   const [showModal, setShowModal] = useState(0);
+  //react-alert
+  const alert = useAlert();
 
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
@@ -27,6 +30,8 @@ export default function Cart() {
   };
   const handleRemove = (cartItemId) => {
     dispatch(deleteCartItemAsync(cartItemId));
+    //TODO: get response from back that deleted then show alert
+    alert.error("Product removed from Cart !");
   };
 
   //NO ITEMS IN CART FEEDBACK

@@ -59,8 +59,9 @@ export function deleteCartItem(cartItemId) {
     } else {
       console.log("delete item failed");
     }
-
-    resolve({ data: { id: data.id } });
+    // console.log(data);
+    //todo:fix this when reseting cart its running delete cart items two timmes for each itm
+    resolve({ data: { id: data && data.id } });
   });
 }
 //to reset cart on order success

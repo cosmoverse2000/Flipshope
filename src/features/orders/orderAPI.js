@@ -3,7 +3,8 @@ import { ORDERS_PER_PAGE } from "../../app/constants";
 //On click order item - API
 export function addToOrders(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders/", {
+    // console.log(order, "orderfa");
+    const response = await fetch("http://localhost:8080/order/", {
       method: "POST",
       body: JSON.stringify(order),
       headers: {
@@ -19,7 +20,7 @@ export function addToOrders(order) {
 export function updateOrder(upadtedOrder) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/orders/" + upadtedOrder.id,
+      "http://localhost:8080/order/" + upadtedOrder.id,
       {
         method: "PATCH",
         body: JSON.stringify(upadtedOrder),
@@ -36,7 +37,7 @@ export function updateOrder(upadtedOrder) {
 //to remove Order By ADMIN
 export function deleteOrder(orderId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders/" + orderId, {
+    const response = await fetch("http://localhost:8080/order/" + orderId, {
       method: "DELETE",
     });
 
@@ -69,7 +70,7 @@ export function fetchAllOrders({ sorting, page }) {
 
   //calling api
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders?" + queryString);
+    const response = await fetch("http://localhost:8080/order?" + queryString);
     const data = await response.json();
     const totalOrders = await response.headers.get("X-Total-Count");
     resolve({ data: { ordersList: data, totalOrders: totalOrders } });
