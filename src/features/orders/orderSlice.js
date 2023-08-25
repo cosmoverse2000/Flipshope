@@ -4,16 +4,20 @@ import {
   fetchAllOrders,
   updateOrder,
   deleteOrder,
+  fetchUserOrders,
 } from "./orderAPI";
 
 const initialState = {
-  orders: [], //user only order list
-  allOrders: [], // admin orders list of all users combined
   status: "idle",
+  //user
+  userOrders: [], //user only order list
   currentOrder: null, //users current order
-  totalOrders: 0, // count of totalOrders in admin allOrderslist
+  //admin
+  allOrders: [], // admin orders list of all users combined
+  totalOrders: 0, // count of totalOrders in admin allOrderslist for pagination in admin
 };
 
+// by user
 export const addToOrdersAsync = createAsyncThunk(
   "orders/addToOrders",
   async (order) => {
@@ -23,6 +27,18 @@ export const addToOrdersAsync = createAsyncThunk(
     return response;
   }
 );
+
+// by user
+export const fetchUserOrdersAsync = createAsyncThunk(
+  "user/fetchUserOrders",
+  async (userId) => {
+    const response = await fetchUserOrders(userId);
+    // The value we return becomes the `fulfilled` action payload
+    return response;
+  }
+);
+
+// by admin only
 export const updateOrderAsync = createAsyncThunk(
   "orders/updateOrder",
   async (updatedOrder) => {
@@ -33,6 +49,7 @@ export const updateOrderAsync = createAsyncThunk(
   }
 );
 
+// by admin only
 export const fetchAllOrdersAsync = createAsyncThunk(
   "orders/fetchAllOrders",
   async ({ sorting, page }) => {
@@ -45,6 +62,7 @@ export const fetchAllOrdersAsync = createAsyncThunk(
     return response.data;
   }
 );
+// by admin only
 export const deleteOrderAsync = createAsyncThunk(
   "orders/deleteOrder",
   async (deleteOrderId) => {
@@ -73,8 +91,15 @@ export const orderSlice = createSlice({
       })
       .addCase(addToOrdersAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.orders.push(action.payload);
+        state.userOrders.push(action.payload);
         state.currentOrder = action.payload;
+      })
+      .addCase(fetchUserOrdersAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserOrdersAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.userOrders = action.payload;
       })
       .addCase(fetchAllOrdersAsync.pending, (state) => {
         state.status = "loading";
@@ -110,7 +135,7 @@ export const orderSlice = createSlice({
 export const { resetCurrentOrder } = orderSlice.actions;
 
 //user
-export const selectOrders = (state) => state.order.orders;
+export const selectUserOrders = (state) => state.order.userOrders;
 //admin
 export const selectAllOrders = (state) => state.order.allOrders;
 export const selectTotalOrdersCount = (state) => state.order.totalOrders;

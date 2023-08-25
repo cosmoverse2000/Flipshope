@@ -1,6 +1,6 @@
 import React from "react";
 import chooseColour from "./ColorStatus";
-import { discountedPrice } from "../../app/constants";
+import { dateFormatter, discountedPrice } from "../../app/constants";
 
 const OrderDetails = ({ order }) => {
   return (
@@ -19,12 +19,12 @@ const OrderDetails = ({ order }) => {
               Order Status : {order.orderStatus}
             </div>
             <ul className="-my-6 divide-y divide-gray-200">
-              {order.orderedItems.map((product) => (
-                <li key={product.id} className="flex py-6">
+              {order.orderedItems.map((cartItem) => (
+                <li key={cartItem.id} className="flex py-6">
                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <img
-                      src={product.thumbnail}
-                      alt={product.title}
+                      src={cartItem.product.thumbnail}
+                      alt={cartItem.product.title}
                       className="h-full w-full object-cover object-center"
                     />
                   </div>
@@ -33,15 +33,19 @@ const OrderDetails = ({ order }) => {
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                          <a href={product.thumbnail}>{product.title}</a>
+                          <a href={cartItem.product.thumbnail}>
+                            {cartItem.product.title}
+                          </a>
                         </h3>
-                        <p className="ml-4">${discountedPrice(product)}</p>
+                        <p className="ml-4">
+                          ${discountedPrice(cartItem.product)}
+                        </p>
                       </div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p className="mt-1 text-sm text-gray-500">
-                          {product.brand}
+                          {cartItem.product.brand}
                         </p>
-                        <p className="ml-4">Qty. {product.qty}</p>
+                        <p className="ml-4">Qty. {cartItem.qty}</p>
                       </div>
                     </div>
                   </div>
@@ -52,12 +56,16 @@ const OrderDetails = ({ order }) => {
 
           <div className="border-t mt-6 border-gray-200  py-3">
             <div className="flex justify-between my-2 text-base font-medium text-gray-900">
-              <p>Subtotal</p>
+              <p>Subtotal :</p>
               <p>${order.totalPrice}</p>
             </div>
             <div className="flex justify-between my-2 text-base font-medium text-gray-900">
-              <p>Total-items in the Cart</p>
+              <p>Total-items in the Cart :</p>
               <p>{order.totalItems} Items</p>
+            </div>
+            <div className="flex justify-between my-2 text-base font-medium text-gray-900">
+              <p>Delivery Address :</p>
+              <p>Dated : {dateFormatter(order.createdAt)}</p>
             </div>
           </div>
           <div className="border-solid border-2  border-gray-200 p-3 ">

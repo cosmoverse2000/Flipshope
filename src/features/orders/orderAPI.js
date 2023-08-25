@@ -16,6 +16,17 @@ export function addToOrders(order) {
     resolve(data);
   });
 }
+//get all orders of a particular user
+export function fetchUserOrders(userId) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      "http://localhost:8080/order?userId=" + userId
+    );
+    const data = await response.json();
+    resolve(data);
+  });
+}
+
 //to update orderStats from admin
 export function updateOrder(upadtedOrder) {
   return new Promise(async (resolve) => {
@@ -34,6 +45,7 @@ export function updateOrder(upadtedOrder) {
     resolve(data);
   });
 }
+
 //to remove Order By ADMIN
 export function deleteOrder(orderId) {
   return new Promise(async (resolve) => {

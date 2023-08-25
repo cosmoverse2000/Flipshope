@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchUserOrdersAsync,
-  selectUserLoadStatus,
-  selectUserOrders,
-  selectUserProfile,
-} from "../userSlice";
+import { selectUserLoadStatus, selectUserProfile } from "../userSlice";
 import { Link } from "react-router-dom";
 import OrderDetails from "../../common/OrderDetails";
 import { Grid } from "react-loader-spinner";
+import {
+  fetchUserOrdersAsync,
+  selectUserOrders,
+} from "../../orders/orderSlice";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -16,6 +15,7 @@ export default function UserOrders() {
   const userOrders = useSelector(selectUserOrders);
   const userProfile = useSelector(selectUserProfile);
   const status = useSelector(selectUserLoadStatus);
+
   useEffect(() => {
     dispatch(fetchUserOrdersAsync(userProfile.id));
   }, [dispatch, userProfile]);
