@@ -164,9 +164,6 @@ export default function AdminProductList() {
   };
 
   useEffect(() => {
-    // dispatch(fetchAllProductsAsync());----- we will not use this for fetching list since its the same api as filter&sorting api would be at start(i.e when no filter and sort initlizd.)
-    //so applying that below directy
-
     //after any setfilter and setSorting this beolw will be dispatched
     //using action 'fetchAllProductsQueryAsync' from Product Slice to call api function
     // then updating 'products' in store

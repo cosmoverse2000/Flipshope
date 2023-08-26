@@ -6,7 +6,7 @@ import {
 } from "./authAPI";
 
 const initialState = {
-  loggedInUser: null,
+  loggedInUser: null, //only ID And role Will be saved here
   status: "idle",
   loginErrors: null,
 };

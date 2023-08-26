@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  fetchAllProducts,
   fetchAllProductsQuery,
   fetchBrands,
   fetchCategories,
@@ -20,14 +19,6 @@ const initialState = {
 
 //using redux thunk to call api functions(promises) then setting data into state
 //this is an redux-action, when dipatched will call api and then setstate
-export const fetchAllProductsAsync = createAsyncThunk(
-  "product/fetchAllProducts",
-  async (amount) => {
-    const response = await fetchAllProducts(amount);
-    // The value we return becomes the `fulfilled` action payload
-    return response.data;
-  }
-);
 
 export const fetchCategoriesAsync = createAsyncThunk(
   "product/fetchCategories",
@@ -98,13 +89,6 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProductsAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.products = action.payload;
-      })
       .addCase(fetchAllProductsQueryAsync.pending, (state) => {
         state.status = "loading";
       })

@@ -42,9 +42,6 @@ export default function Signup() {
                   signupUserAccountAsync({
                     email: data.email,
                     password: data.password,
-                    addresses: [],
-                    role: "user",
-                    //TODO:This canbe change from backend only and given on there
                   })
                 );
                 // console.log(data);

@@ -26,7 +26,7 @@ function classNames(...classes) {
 }
 const Navbar = (props) => {
   const cartItems = useSelector(selectCartItems);
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUser); //todo:use useeffect and user-profile
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {

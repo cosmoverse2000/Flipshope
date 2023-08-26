@@ -1,13 +1,6 @@
 import { ITEMS_PER_PAGE } from "../../app/constants";
 // A mock function to mimic making an async request for data
-//api function to get 'products list' with there datainit
-export function fetchAllProducts(amount = 1) {
-  return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products");
-    const data = await response.json();
-    resolve({ data });
-  });
-}
+
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products/" + id);
@@ -16,6 +9,7 @@ export function fetchProductById(id) {
   });
 }
 
+//USING THIS API TO FETCH PRODUCT LIST, Along w/ filter sort and pagination
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
 export function fetchAllProductsQuery(filter, sorting, page) {
   //TODO:on server we will support multiple filters ,now not possible in json-server

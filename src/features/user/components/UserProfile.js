@@ -7,6 +7,7 @@ import {
 } from "../userSlice";
 import { useForm } from "react-hook-form";
 import { Grid } from "react-loader-spinner";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 export default function UserProfile() {
   //TODO: ALso add payments section in userprofile, user can add card details
@@ -16,6 +17,7 @@ export default function UserProfile() {
   const status = useSelector(selectUserLoadStatus);
   // console.log(userProfile, "userProfile");
   //react
+  const [showNameEdit, setShowNameEdit] = useState(false);
   const [showEditForm, setShowEditForm] = useState(-1);
   const [showAddNewAddressForm, setShowAddNewAddressForm] = useState(0);
 
@@ -57,6 +59,10 @@ export default function UserProfile() {
     setValue("region", address.region);
     setValue("city", address.city);
   };
+  const handleNameEdit = (updatedName) => {
+    dispatch(updateUserProfileAsync({ id: userProfile.id, name: updatedName }));
+    setShowNameEdit(false);
+  };
 
   const handleAddNewAddress = (address) => {
     const newUser = {
@@ -84,22 +90,86 @@ export default function UserProfile() {
           visible={true}
         />
       ) : (
-        <div className="mx-auto mt-8 py-6 bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto mt-4 py-6 bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="flow-root">
-            <h1 className="text-4xl   font-bold tracking-tight text-gray-900">
-              Name : {userProfile.name ? userProfile.name : "Guest User"}
-            </h1>
-            <div className="my-4 text-xl font-medium text-red-500">
-              Email Address : {userProfile.email}
+            {/* //USER NAME WITH EDIT FUNCTIONALITY w/ VALIDATION */}
+            <div className="flex items-end text-base font-medium text-gray-900">
+              {showNameEdit ? (
+                <form
+                  className=" flex items-end bg-white "
+                  onSubmit={handleSubmit((data) => {
+                    handleNameEdit(data.userName);
+                    // console.log(data, "deit name");
+                  })}
+                >
+                  <div className="mt-2 mr-4">
+                    <input
+                      type="text"
+                      id="userName"
+                      {...register("userName", {
+                        required: "• User Name is Required !",
+                        maxLength: {
+                          value: 40,
+                          message: "• Max Name Length Exceded !",
+                        },
+                        pattern: {
+                          value: /^[A-Za-z\s]+$/i,
+                          message: "• Only Alphabets Accepted !", // JS only: <p>error message</p> TS only support string
+                        },
+                      })}
+                      className="text-4xl  font-bold tracking-tight text-indigo-600 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    {errors.userName && (
+                      <p className="text-red-500">{errors.userName.message}</p>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Save
+                    {/* on save 'handleSubmit' from react-form will run */}
+                  </button>
+                </form>
+              ) : (
+                <>
+                  <p className="text-4xl mr-4 font-bold tracking-tight text-indigo-600">
+                    {userProfile.name ? userProfile.name : "Guest User"}
+                  </p>
+                  <button
+                    type="button"
+                    className="font-medium mx-2 -mb-1  text-gray-900 hover:text-indigo-500"
+                    onClick={() => {
+                      setValue(
+                        "userName",
+                        userProfile.name ? userProfile.name : "Guest User"
+                      );
+                      setShowNameEdit(true);
+                    }}
+                  >
+                    <PencilSquareIcon
+                      className="mb-2  h-5 w-5 inline"
+                      aria-hidden="true"
+                    />{" "}
+                    Edit Name
+                  </button>
+                </>
+              )}
             </div>
-            {userProfile.role === "admin" && (
-              <div className="my-4 text-xl font-medium text-green-500">
-                Role : Admin
+            {/* //DISPLAY EMAIL AND ROLE if admin */}
+            <div className="flex justify-between text-base font-medium text-gray-900">
+              <div className="my-4 text-xl font-medium text-green-600">
+                Email : {userProfile.email}
               </div>
-            )}
+              {userProfile.role === "admin" && (
+                <div className="my-4 text-xl font-medium text-green-600">
+                  Role : Admin
+                </div>
+              )}
+            </div>
           </div>
-
-          <div className="mt-4 ">
+          <div className="">
+            {/* //All USER ADDRESSES SAVED LIST w/ EDIT AND REMEOVE FUNCTIONS */}
             <fieldset>
               <legend className="text-sm font-semibold leading-6 text-gray-900">
                 Your Addresses :
@@ -323,7 +393,7 @@ export default function UserProfile() {
                       ) : (
                         ""
                       )}
-                      <div className="border-solid border-2  border-gray-200 p-5 my-3">
+                      <div className="border-solid border-2  border-gray-200 p-3 my-2">
                         <div className="flex max-sm:flex-col justify-between">
                           <div className="">
                             <p className="text-sm font-semibold leading-6 text-gray-900">
@@ -370,6 +440,8 @@ export default function UserProfile() {
                   ))}
               </ul>
             </fieldset>
+            {/* //FORM TO ADD NEW ADDRESSS TO USER ADDRESSES */}
+
             <div>
               {showAddNewAddressForm ? (
                 <form

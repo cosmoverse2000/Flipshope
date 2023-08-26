@@ -8,12 +8,18 @@ import {
   selectTotalOrdersCount,
   updateOrderAsync,
 } from "../../orders/orderSlice";
-import { ORDERS_PER_PAGE, discountedPrice } from "../../../app/constants";
+import {
+  ORDERS_PER_PAGE,
+  dateFormatter,
+  discountedPrice,
+} from "../../../app/constants";
 import Pagination from "../../common/Pagination";
 import OrderDetails from "../../common/OrderDetails";
 import chooseColour from "../../common/ColorStatus";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
 import { Grid } from "react-loader-spinner";
+import Modals from "../../common/Modals";
+import { useAlert } from "react-alert";
 
 const AdminOrders = () => {
   //redux
@@ -21,12 +27,18 @@ const AdminOrders = () => {
   const allOrdersList = useSelector(selectAllOrders);
   const ordersListCount = useSelector(selectTotalOrdersCount);
   const selectOrderStatus = useSelector(selectOrderLoadingStatus);
+  //react-alert
+  const alert = useAlert();
 
   //react-hooks
-  const [sorting, setSorting] = useState({ _sort: "id", _order: "asc" }); // to use prev sort state create it as usestate
+  const [sorting, setSorting] = useState({
+    _sort: "createdAt",
+    _order: "desc",
+  }); // to use prev sort state create it as usestate
   const [page, setPage] = useState(1); // to use prev page state, we create it as usestate
   const [orderEditable, setOrderEditable] = useState(0);
   const [showOrderDetails, setShowOrderDetails] = useState(null);
+  const [showModal, setShowModal] = useState(0);
 
   useEffect(() => {
     setPage(1);
@@ -35,9 +47,6 @@ const AdminOrders = () => {
   useEffect(() => {
     dispatch(fetchAllOrdersAsync({ sorting, page }));
   }, [dispatch, sorting, page]);
-
-  // console.log(allOrdersList, "ored list");
-  //   console.log(ordersListCount, "ored list c");
 
   //HANDLE EVENTS
   // after sort change this fnc would be executed
@@ -56,10 +65,12 @@ const AdminOrders = () => {
   //to update the edited order status....
   const handleUpdate = (e, order) => {
     if (e.target.value) {
-      const updatedOrder = { ...order, orderStatus: e.target.value };
+      const updatedOrder = { id: order.id, orderStatus: e.target.value };
       dispatch(updateOrderAsync(updatedOrder));
     }
     setOrderEditable(-1);
+    // /todo: alert fro backend feedback only
+    alert.info("Order-Status Updated Successfully");
   };
   // after Page change this fnc would be executed
   const handlePage = (e, page) => {
@@ -81,6 +92,8 @@ const AdminOrders = () => {
   //to handle delete Product by admin
   const handleDelete = (orderId) => {
     dispatch(deleteOrderAsync(orderId));
+    //todo: alert fro backend feedback only
+    alert.info("Order Deleted Success");
   };
   //SORTING ARROWS CSS
   const sortingArrow = (sortBy) => {
@@ -140,12 +153,17 @@ const AdminOrders = () => {
                 <table className="min-w-max w-full table-auto">
                   <thead>
                     <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                      <th
-                        className="py-3 px-2 cursor-pointer text-center"
-                        onClick={(e) => handleSort(e, sortingObj("id"))}
-                      >
-                        <div>
-                          Order <br /> Id
+                      <th className="py-3 px-4 cursor-pointer text-left">
+                        <div
+                          onClick={(e) =>
+                            handleSort(e, sortingObj("createdAt"))
+                          }
+                        >
+                          Order Time
+                          {sortingArrow("createdAt")}
+                        </div>
+                        <div onClick={(e) => handleSort(e, sortingObj("id"))}>
+                          Order Id
                           {sortingArrow("id")}
                         </div>
                       </th>
@@ -159,11 +177,7 @@ const AdminOrders = () => {
                           })
                         }
                       >
-                        <div className="text-center">
-                          Product Details{`(`}
-                          {sortingArrow("totalItems")}
-                          {` To.Qty. )`}
-                        </div>
+                        <div className="text-center">Product Details</div>
 
                         <div className="flex items-center border-2 rounded-lg  border-gray-400 p-1">
                           <div className="mr-2  font-semibold  basis-1/12">
@@ -173,7 +187,7 @@ const AdminOrders = () => {
                             PRODUCT NAME
                           </span>
                           <div className="basis-2/12 text-center font-semibold">
-                            QTY.
+                            QTY.{sortingArrow("totalItems")}
                           </div>
                           <span className="basis-2/12 font-semibold">
                             PRICE
@@ -207,13 +221,29 @@ const AdminOrders = () => {
                   <tbody className="text-gray-600 text-sm font-light">
                     {allOrdersList.map((order) => {
                       return (
-                        <tr
-                          key={order.id}
-                          className="border-b border-gray-200 font-semibold hover:bg-gray-100"
-                        >
+                        <tr className="border-b border-gray-200 font-semibold hover:bg-gray-100">
                           <td className="py-3 px-2 text-left whitespace-nowrap">
+                            {/* Delete order warning pop modal we can put anywhere but here in top of order */}
+                            {showModal === order.id && (
+                              <Modals
+                                modalTitle={`Delete ORDER : ${order.id} `}
+                                modalWarning={
+                                  "Are you sure want to delete this Order ?"
+                                }
+                                modalActionBtnName={"Remove"}
+                                modalCancelBtnName={"Cancel"}
+                                onClickModalActionBtn={() => {
+                                  handleDelete(order.id);
+                                }}
+                                onClickModalCancelBtn={() => {}}
+                                setShowModal={setShowModal}
+                                showModal={showModal}
+                              />
+                            )}
                             <div className="items-center">
-                              <div className="font-medium text-center">
+                              <div className=" text-left px-2 font-normal">
+                                <b> {dateFormatter(order.createdAt)}</b>
+                                <br />
                                 {order.id}
                               </div>
                             </div>
@@ -227,18 +257,18 @@ const AdminOrders = () => {
                                 <div className="mr-2 basis-1/12">
                                   <img
                                     className="w-6 h-6 rounded-full"
-                                    src={item.thumbnail}
-                                    alt={item.title}
+                                    src={item.product.thumbnail}
+                                    alt={item.product.title}
                                   />
                                 </div>
                                 <div className="text-base overflow-hidden whitespace-nowrap basis-8/12 ">
-                                  {item.title}
+                                  {item.product.title}
                                 </div>
                                 <span className="text-base basis-1/12 font-semibold">
                                   {item.qty}
                                 </span>
                                 <span className="text-base basis-2/12 font-semibold">
-                                  ${discountedPrice(item)}
+                                  ${discountedPrice(item.product)}
                                 </span>
                               </div>
                             ))}
@@ -329,7 +359,7 @@ const AdminOrders = () => {
                               </div>
                               <div
                                 className="w-5 mr-2 transform cursor-pointer hover:text-purple-500 hover:scale-110"
-                                onClick={() => handleDelete(order.id)}
+                                onClick={() => setShowModal(order.id)}
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
