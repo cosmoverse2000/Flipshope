@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectLoginErrors,
-  selectLoggedInUser,
+  selectLoggedInUserToken,
   loginUserAccountAsync,
 } from "../authSlice";
 //router
@@ -15,7 +15,7 @@ export default function Login() {
   //redux
   const dispatch = useDispatch();
   const loginErrors = useSelector(selectLoginErrors);
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   //react-forms
   const {
     register,

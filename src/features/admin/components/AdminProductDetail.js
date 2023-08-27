@@ -8,7 +8,7 @@ import {
 } from "../../product/productSlice";
 import { useParams } from "react-router-dom";
 import { handler } from "@tailwindcss/aspect-ratio";
-import { selectLoggedInUser } from "../../auth/authSlice";
+import { selectLoggedInUserToken } from "../../auth/authSlice";
 import { addItemToCartAsync } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
 
@@ -41,7 +41,7 @@ function classNames(...classes) {
 
 export default function AdminProductDetail() {
   const product = useSelector(selectProducById);
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   const dispatch = useDispatch();
   const params = useParams();
 

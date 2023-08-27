@@ -18,7 +18,7 @@ import ErrorPage from "./pages/404";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice";
+import { selectLoggedInUserToken } from "./features/auth/authSlice";
 import OrderSuccess from "./pages/Order-success";
 import { fetchUserProfileAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
@@ -157,7 +157,7 @@ const router = createBrowserRouter([
 
 export default function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
 
   useEffect(() => {
     if (user) {

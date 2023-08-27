@@ -8,7 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCartItems } from "../cart/cartSlice";
-import { selectLoggedInUser } from "../auth/authSlice";
+import { selectLoggedInUserToken } from "../auth/authSlice";
 
 const navigation = [
   { name: "Products", link: "/", current: false, role: "user" },
@@ -26,7 +26,7 @@ function classNames(...classes) {
 }
 const Navbar = (props) => {
   const cartItems = useSelector(selectCartItems);
-  const user = useSelector(selectLoggedInUser); //todo:use useeffect and user-profile
+  const user = useSelector(selectLoggedInUserToken); //todo:use useeffect and user-profile
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {

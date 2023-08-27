@@ -1,7 +1,7 @@
 import React from "react";
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { signupUserAccountAsync, selectLoggedInUser } from "../authSlice";
+import { signupUserAccountAsync, selectLoggedInUserToken } from "../authSlice";
 //router
 import { Link, Navigate } from "react-router-dom";
 //form
@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 export default function Signup() {
   //redux
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   //react-forms
   const {
     register,

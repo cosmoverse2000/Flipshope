@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { resetCurrentOrder } from "../features/orders/orderSlice";
 import { resetCartItemsAsync } from "../features/cart/cartSlice";
-import { selectLoggedInUser } from "../features/auth/authSlice";
+import { selectLoggedInUserToken } from "../features/auth/authSlice";
 import Footer from "../features/common/Footer";
 import Navbar from "../features/navbar/Navbar";
 
 const OrderSuccess = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
 
   useEffect(() => {
     //to empty cart after order succes

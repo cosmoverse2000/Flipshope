@@ -8,7 +8,7 @@ import {
   selectProductListStatus,
 } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectLoggedInUser } from "../../auth/authSlice";
+import { selectLoggedInUserToken } from "../../auth/authSlice";
 import {
   addItemToCartAsync,
   selectCartItems,
@@ -48,7 +48,7 @@ function classNames(...classes) {
 export default function ProductDetail() {
   //redux
   const product = useSelector(selectProducById);
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   const cartItems = useSelector(selectCartItems);
   const prodDetailStatus = useSelector(selectProductListStatus);
   const cartUpdatingStatus = useSelector(selectCartStatus);

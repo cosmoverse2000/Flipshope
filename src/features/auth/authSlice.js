@@ -6,7 +6,7 @@ import {
 } from "./authAPI";
 
 const initialState = {
-  loggedInUser: null, //only ID And role Will be saved here
+  loggedInUserToken: null, //only jwt token is passed here for more sequrity
   status: "idle",
   loginErrors: null,
 };
@@ -63,14 +63,14 @@ export const authSlice = createSlice({
       })
       .addCase(signupUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload;
+        state.loggedInUserToken = action.payload;
       })
       .addCase(loginUserAccountAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(loginUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload;
+        state.loggedInUserToken = action.payload;
       })
       .addCase(loginUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
@@ -82,14 +82,14 @@ export const authSlice = createSlice({
       })
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = null;
+        state.loggedInUserToken = null;
       });
   },
 });
 
 export const { increment } = authSlice.actions;
 
-export const selectLoggedInUser = (state) => state.auth.loggedInUser;
+export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectLoginErrors = (state) => state.auth.loginErrors;
 
 export default authSlice.reducer;
