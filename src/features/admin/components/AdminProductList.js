@@ -33,6 +33,14 @@ import Modals from "../../common/Modals";
 import { useAlert } from "react-alert";
 
 const sortOptions = [
+  {
+    name: "isDeleted:true",
+    sortBy: "isDeleted",
+    order: "desc",
+    current: false,
+  },
+  { name: "Stocks-Left Low", sortBy: "stock", order: "asc", current: false },
+  { name: "Stocks-Left High", sortBy: "stock", order: "desc", current: false },
   { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
   { name: "Price: Low to High", sortBy: "price", order: "asc", current: false },
   {
@@ -167,7 +175,9 @@ export default function AdminProductList() {
     //after any setfilter and setSorting this beolw will be dispatched
     //using action 'fetchAllProductsQueryAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(fetchAllProductsQueryAsync({ filter, sorting, page }));
+    dispatch(
+      fetchAllProductsQueryAsync({ filter, sorting, page, role: "admin" })
+    );
   }, [dispatch, filter, sorting, page]);
 
   //to reset pagination while filter and sorting
@@ -320,7 +330,7 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
                     </div>
                   </Link>
                   <div className="border-2 border-solid flex items-center  justify-between gap-x-6 p-3">
-                    {!(product.isDeleted || product.stock <= 0) && (
+                    {
                       <Link
                         type="button"
                         to={`product-form/edit/${product.id}`}
@@ -328,7 +338,7 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
                       >
                         Edit
                       </Link>
-                    )}
+                    }
                     <button
                       type="button"
                       onClick={() => setShowModal(product.id)}
@@ -336,8 +346,8 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
                       className={`rounded-md border-2 ${
                         product.isDeleted || product.stock <= 0
                           ? "bg-gray-500 w-full"
-                          : " hover:bg-red-600 hover:text-white "
-                      } px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600`}
+                          : "px-3 hover:bg-red-600 hover:text-white "
+                      }  py-2 text-sm font-semibold text-gray-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600`}
                     >
                       {product.isDeleted
                         ? "Removed Product"

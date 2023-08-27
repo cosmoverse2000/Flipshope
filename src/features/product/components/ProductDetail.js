@@ -65,6 +65,13 @@ export default function ProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     //checking if item already present in cart
+    if (product.stock <= 0) {
+      //todo: all dipatch alerts should be poped after backend res confirmation
+      alert.error("PRODUCT OUT OF STOCK!");
+      // console.log("Already Added to Cart");
+      return;
+    }
+
     const index = cartItems.findIndex((item) => item.product.id === product.id);
     if (index >= 0 && cartItems.length > 0) {
       alert.error("Already added to cart !");

@@ -278,15 +278,10 @@ export const ProductListGrid = ({ products, status }) => {
                       </div>
                     </div>
                     {/* this is for demo only finally backend will remove this alredy */}
-                    {product.isDeleted && (
-                      <p className="text-sm text-red-500">
-                        • This Prod. is Removed !
-                      </p>
-                    )}
                     {product.stock <= 0 && (
-                      <p className="text-sm text-red-500">
-                        • This Prod. is Out of Stock !
-                      </p>
+                      <h3 className="text-sm text-center p-1 mt-2 bg-gray-100 text-red-500">
+                        • Product is Out of Stock 😔!
+                      </h3>
                     )}
                   </div>
                 </Link>

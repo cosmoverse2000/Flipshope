@@ -11,7 +11,7 @@ export function fetchProductById(id) {
 
 //USING THIS API TO FETCH PRODUCT LIST, Along w/ filter sort and pagination
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
-export function fetchAllProductsQuery(filter, sorting, page) {
+export function fetchAllProductsQuery(filter, sorting, page, role) {
   //TODO:on server we will support multiple filters ,now not possible in json-server
   //TODO:server will filter deleted product to admin not to a user
   //example of structure that these above arguments will posses
@@ -44,6 +44,8 @@ export function fetchAllProductsQuery(filter, sorting, page) {
   }
   //addding pagination queries
   queryString += `_page=${page}&_limit=${ITEMS_PER_PAGE}`;
+
+  queryString += `&role=${role}`;
 
   // console.log(queryString);
 

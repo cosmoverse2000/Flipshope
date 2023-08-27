@@ -50,9 +50,9 @@ export const fetchProductByIdAsync = createAsyncThunk(
 //just like all-products api func above , getting filtered products,sorting,page also now
 export const fetchAllProductsQueryAsync = createAsyncThunk(
   "product/fetchAllProductsQuery",
-  async ({ filter, sorting, page }) => {
+  async ({ filter, sorting, page, role }) => {
     //executing filter api function and getting reasponse
-    const response = await fetchAllProductsQuery(filter, sorting, page);
+    const response = await fetchAllProductsQuery(filter, sorting, page, role);
     // The value we return becomes the `fulfilled` action payload
     // console.log(response);
     return response.data;
