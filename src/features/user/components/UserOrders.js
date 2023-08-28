@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUserLoadStatus, selectUserProfile } from "../userSlice";
+import { selectUserLoadStatus } from "../userSlice";
 import { Link } from "react-router-dom";
 import OrderDetails from "../../common/OrderDetails";
 import { Grid } from "react-loader-spinner";
@@ -13,12 +13,11 @@ export default function UserOrders() {
   const dispatch = useDispatch();
 
   const userOrders = useSelector(selectUserOrders);
-  const userProfile = useSelector(selectUserProfile);
   const status = useSelector(selectUserLoadStatus);
 
   useEffect(() => {
-    dispatch(fetchUserOrdersAsync(userProfile.id));
-  }, [dispatch, userProfile]);
+    dispatch(fetchUserOrdersAsync());
+  }, [dispatch]);
 
   const noOrdersContent = (
     <div className="mx-auto py-10 bg-white max-w-4xl px-4 sm:px-6 lg:px-8 text-center">

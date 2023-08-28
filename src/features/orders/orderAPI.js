@@ -17,11 +17,9 @@ export function addToOrders(order) {
   });
 }
 //get all orders of a particular user
-export function fetchUserOrders(userId) {
+export function fetchUserOrders() {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8080/order?userId=" + userId
-    );
+    const response = await fetch("http://localhost:8080/order/user");
     const data = await response.json();
     resolve(data);
   });

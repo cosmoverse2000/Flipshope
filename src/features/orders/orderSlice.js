@@ -31,8 +31,8 @@ export const addToOrdersAsync = createAsyncThunk(
 // by user
 export const fetchUserOrdersAsync = createAsyncThunk(
   "user/fetchUserOrders",
-  async (userId) => {
-    const response = await fetchUserOrders(userId);
+  async () => {
+    const response = await fetchUserOrders();
     // The value we return becomes the `fulfilled` action payload
     return response;
   }
