@@ -44,9 +44,10 @@ export function loginUserAccount(loginData) {
 }
 
 // on LOGOUT API
-export function logoutUserAccount(userId) {
+export function logoutUserAccount() {
   return new Promise(async (resolve) => {
-    //TODO:will aware backend from here to Logout that user
+    //TODO:will aware backend from here to Logout that user or del user from session in bak
+    //TODO: delete token from cookie
 
     resolve({ status: "logout successs" });
   });

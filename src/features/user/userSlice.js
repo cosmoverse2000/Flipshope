@@ -8,8 +8,8 @@ const initialState = {
 
 export const fetchUserProfileAsync = createAsyncThunk(
   "user/fetchUserProfile",
-  async (userId) => {
-    const response = await fetchUserProfile(userId);
+  async () => {
+    const response = await fetchUserProfile();
     // The value we return becomes the `fulfilled` action payload
     // console.log(response, "userProfile");
     return response;

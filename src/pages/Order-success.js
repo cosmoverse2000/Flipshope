@@ -1,23 +1,21 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { resetCurrentOrder } from "../features/orders/orderSlice";
 import { resetCartItemsAsync } from "../features/cart/cartSlice";
-import { selectLoggedInUserToken } from "../features/auth/authSlice";
 import Footer from "../features/common/Footer";
 import Navbar from "../features/navbar/Navbar";
 
 const OrderSuccess = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUserToken);
 
   useEffect(() => {
     //to empty cart after order succes
-    dispatch(resetCartItemsAsync(user.id));
+    dispatch(resetCartItemsAsync());
     // to empty current order so that oders succes cannot be reached again
     dispatch(resetCurrentOrder());
-  }, [dispatch, user.id]);
+  }, [dispatch]);
 
   return (
     <>

@@ -157,14 +157,14 @@ const router = createBrowserRouter([
 
 export default function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUserToken);
+  const userToken = useSelector(selectLoggedInUserToken);
 
   useEffect(() => {
-    if (user) {
-      dispatch(fetchCartByUserIdAsync(user.id));
-      dispatch(fetchUserProfileAsync(user.id));
+    if (userToken) {
+      dispatch(fetchCartByUserIdAsync());
+      dispatch(fetchUserProfileAsync());
     }
-  }, [dispatch, user]);
+  }, [dispatch, userToken]);
 
   return (
     <Provider template={AlertTemplate} {...options}>

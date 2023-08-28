@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { selectLoggedInUserToken } from "../../auth/authSlice";
+import { selectUserProfile } from "../../user/userSlice";
 
 const AdminProtected = ({ children }) => {
-  const user = useSelector(selectLoggedInUserToken);
-  if (!user) {
+  const userProfile = useSelector(selectUserProfile);
+  if (!userProfile) {
     return <Navigate to="/login" replace={true}></Navigate>;
-  } else if (user && user.role !== "admin") {
+  } else if (userProfile && userProfile.role !== "admin") {
     return <Navigate to="/" replace={true}></Navigate>;
   } else {
     return children;

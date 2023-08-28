@@ -1,9 +1,9 @@
 // A mock function to mimic making an async request for data
 
 // get user data to display user profile
-export function fetchUserProfile(userId) {
+export function fetchUserProfile() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/user/" + userId);
+    const response = await fetch("http://localhost:8080/user/");
     const data = await response.json();
     // console.log(data, "user profile data");
     resolve(data);

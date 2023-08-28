@@ -8,7 +8,6 @@ import {
   selectProductListStatus,
 } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectLoggedInUserToken } from "../../auth/authSlice";
 import {
   addItemToCartAsync,
   selectCartItems,
@@ -48,7 +47,6 @@ function classNames(...classes) {
 export default function ProductDetail() {
   //redux
   const product = useSelector(selectProducById);
-  const user = useSelector(selectLoggedInUserToken);
   const cartItems = useSelector(selectCartItems);
   const prodDetailStatus = useSelector(selectProductListStatus);
   const cartUpdatingStatus = useSelector(selectCartStatus);
@@ -81,7 +79,6 @@ export default function ProductDetail() {
     const newItemToCart = {
       product: product.id,
       qty: 1,
-      user: user.id,
     };
     dispatch(addItemToCartAsync(newItemToCart));
     // TODO: we will on show alert , 'item-added' when backend give response -fixit

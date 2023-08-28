@@ -15,7 +15,7 @@ export default function Login() {
   //redux
   const dispatch = useDispatch();
   const loginErrors = useSelector(selectLoginErrors);
-  const user = useSelector(selectLoggedInUserToken);
+  const userToken = useSelector(selectLoggedInUserToken);
   //react-forms
   const {
     register,
@@ -27,7 +27,7 @@ export default function Login() {
   // console.log(errors);
   return (
     <>
-      {user && <Navigate to="/" replace={true}></Navigate>}
+      {userToken && <Navigate to="/" replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

@@ -18,9 +18,9 @@ export function addItemToCart(cartItem) {
 }
 
 //on start app load user's prev cart items
-export function fetchCartByUserId(userId) {
+export function fetchCartByUserId() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart?userId=" + userId);
+    const response = await fetch("http://localhost:8080/cart");
     const data = await response.json();
 
     resolve({ data });
@@ -65,9 +65,9 @@ export function deleteCartItem(cartItemId) {
   });
 }
 //to reset cart on order success
-export function resetCartItems(userId) {
+export function resetCartItems() {
   return new Promise(async (resolve) => {
-    const userData = await fetchCartByUserId(userId);
+    const userData = await fetchCartByUserId();
 
     for (const cartItem of userData.data) {
       await deleteCartItem(cartItem.id);

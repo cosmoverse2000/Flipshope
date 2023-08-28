@@ -7,8 +7,6 @@ import {
   fetchProductByIdAsync,
 } from "../../product/productSlice";
 import { useParams } from "react-router-dom";
-import { handler } from "@tailwindcss/aspect-ratio";
-import { selectLoggedInUserToken } from "../../auth/authSlice";
 import { addItemToCartAsync } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
 
@@ -41,7 +39,6 @@ function classNames(...classes) {
 
 export default function AdminProductDetail() {
   const product = useSelector(selectProducById);
-  const user = useSelector(selectLoggedInUserToken);
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -51,7 +48,7 @@ export default function AdminProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     //removing id , so that DB auto generate its onw id or identification of cart items
-    const newItemToCart = { ...product, qty: 1, user: user.id };
+    const newItemToCart = { ...product, qty: 1 };
     delete newItemToCart["id"];
     dispatch(addItemToCartAsync(newItemToCart));
   };
