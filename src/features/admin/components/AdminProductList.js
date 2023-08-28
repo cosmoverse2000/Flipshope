@@ -39,6 +39,18 @@ const sortOptions = [
     order: "desc",
     current: false,
   },
+  {
+    name: "Created Latest",
+    sortBy: "createdAt",
+    order: "desc",
+    current: false,
+  },
+  {
+    name: "Updated Latest",
+    sortBy: "updatedAt",
+    order: "desc",
+    current: false,
+  },
   { name: "Stocks-Left Low", sortBy: "stock", order: "asc", current: false },
   { name: "Stocks-Left High", sortBy: "stock", order: "desc", current: false },
   { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
