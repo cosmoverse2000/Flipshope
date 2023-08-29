@@ -60,7 +60,7 @@ export default function UserProfile() {
     setValue("city", address.city);
   };
   const handleNameEdit = (updatedName) => {
-    dispatch(updateUserProfileAsync({ id: userProfile.id, name: updatedName }));
+    dispatch(updateUserProfileAsync({ name: updatedName }));
     setShowNameEdit(false);
   };
 

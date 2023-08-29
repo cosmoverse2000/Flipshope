@@ -221,7 +221,10 @@ const AdminOrders = () => {
                   <tbody className="text-gray-600 text-sm font-light">
                     {allOrdersList.map((order) => {
                       return (
-                        <tr className="border-b border-gray-200 font-semibold hover:bg-gray-100">
+                        <tr
+                          key={order.id}
+                          className="border-b border-gray-200 font-semibold hover:bg-gray-100"
+                        >
                           <td className="py-3 px-2 text-left whitespace-nowrap">
                             {/* Delete order warning pop modal we can put anywhere but here in top of order */}
                             {showModal === order.id && (

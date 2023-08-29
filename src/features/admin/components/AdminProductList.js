@@ -201,6 +201,11 @@ export default function AdminProductList() {
   useEffect(() => {
     dispatch(fetchBrandsAsync());
     dispatch(fetchCategoriesAsync());
+    for (let key in sortOptions) {
+      // sorting reset on page reload
+      //removing other sortings checked if any
+      sortOptions[key].current = false;
+    }
   }, [dispatch]);
 
   return (

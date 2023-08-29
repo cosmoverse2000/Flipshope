@@ -3,6 +3,7 @@ import {
   signupUserAccount,
   loginUserAccount,
   logoutUserAccount,
+  checkUserTokenExists,
 } from "./authAPI";
 
 const initialState = {
@@ -37,6 +38,22 @@ export const loginUserAccountAsync = createAsyncThunk(
     }
   }
 );
+
+//check user token ACtion
+export const checkUserTokenExistsAsync = createAsyncThunk(
+  "auth/checkUserTokenExists",
+  async () => {
+    try {
+      const response = await checkUserTokenExists();
+      return response;
+    } catch (error) {
+      // return rejectWithValue(error);
+      console.log(error);
+      //todo: redirect to login
+    }
+  }
+);
+
 //logout ACtion
 export const logoutUserAccountAsync = createAsyncThunk(
   "auth/logoutUserAccount",
@@ -83,6 +100,18 @@ export const authSlice = createSlice({
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.loggedInUserToken = null;
+      })
+      .addCase(checkUserTokenExistsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(checkUserTokenExistsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.loggedInUserToken = action.payload;
+        //instead of login, 'checkUser' will set loogeinUsertoken if session exits in bak
+        // however we dont need token val any where in our site only in browser cookie
+        // that will automatically send token on every http req, to backend
+        //and backend will check,in backend session that user.token exits thn allow client
+        // also,we only need 'loggedInUserToken' as a boolean of if user exits in frontend
       });
   },
 });

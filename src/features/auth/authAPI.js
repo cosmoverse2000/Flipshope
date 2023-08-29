@@ -43,6 +43,27 @@ export function loginUserAccount(loginData) {
   });
 }
 
+//On Reload page cheking if session exists in backend reload w/ same user profie
+// 'jwt' tokn would be auto verified from stored cookie on each route to bak
+// so if token exists and session is not expired in backend user will be loaded using this
+export function checkUserTokenExists() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/check/");
+      if (response.ok) {
+        const token = await response.json();
+        resolve(token);
+      } else {
+        const error = await response.json();
+        reject(error);
+        //TODO: redirect to login
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 // on LOGOUT API
 export function logoutUserAccount() {
   return new Promise(async (resolve) => {

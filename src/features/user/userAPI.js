@@ -13,7 +13,7 @@ export function fetchUserProfile() {
 //On Update user API, like adding address, edit or remove user datas(addres, name ,email)
 export function updateUserProfile(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/user/" + userData.id, {
+    const response = await fetch("http://localhost:8080/user/", {
       method: "PATCH",
       body: JSON.stringify(userData),
       headers: {

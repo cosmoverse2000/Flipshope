@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
@@ -18,7 +13,10 @@ import ErrorPage from "./pages/404";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUserToken } from "./features/auth/authSlice";
+import {
+  checkUserTokenExistsAsync,
+  selectLoggedInUserToken,
+} from "./features/auth/authSlice";
 import OrderSuccess from "./pages/Order-success";
 import { fetchUserProfileAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
@@ -158,6 +156,12 @@ const router = createBrowserRouter([
 export default function App() {
   const dispatch = useDispatch();
   const userToken = useSelector(selectLoggedInUserToken);
+
+  //checkng if user exits in backend's session and is valid authorize client wo/ login|signp
+  // this will make app to not loose data on reload
+  useEffect(() => {
+    dispatch(checkUserTokenExistsAsync());
+  }, [dispatch]);
 
   useEffect(() => {
     if (userToken) {
