@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import { Grid } from "react-loader-spinner";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AlertTemplate from "react-alert-template-basic";
+import { positions, Provider } from "react-alert";
+import { useDispatch, useSelector } from "react-redux";
+//pages
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -10,24 +15,24 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ErrorPage from "./pages/404";
-import Protected from "./features/auth/components/Protected";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
-import {
-  checkUserTokenExistsAsync,
-  selectLoggedInUserToken,
-} from "./features/auth/authSlice";
-import OrderSuccess from "./pages/Order-success";
-import { fetchUserProfileAsync } from "./features/user/userSlice";
-import Logout from "./features/auth/components/Logout";
 import ForgotPage from "./pages/ForgotPage";
-import AdminProtected from "./features/admin/components/AdminProtected";
+import OrderSuccess from "./pages/Order-success";
 import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
 import AdminProductFormPage from "./pages/AdminProductFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
-import { positions, Provider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+//compo
+import Protected from "./features/auth/components/Protected";
+import AdminProtected from "./features/admin/components/AdminProtected";
+import Logout from "./features/auth/components/Logout";
+//redux slice
+import { fetchCartByUserIdAsync } from "./features/cart/cartSlice";
+import {
+  checkUserTokenExistsAsync,
+  selectLoggedInUserToken,
+  selectUserCheckLoadingStatus,
+} from "./features/auth/authSlice";
+import { fetchUserProfileAsync } from "./features/user/userSlice";
 
 const options = {
   timeout: 5000,
@@ -156,6 +161,7 @@ const router = createBrowserRouter([
 export default function App() {
   const dispatch = useDispatch();
   const userToken = useSelector(selectLoggedInUserToken);
+  const userCheckLoadingStatus = useSelector(selectUserCheckLoadingStatus);
 
   //checkng if user exits in backend's session and is valid authorize client wo/ login|signp
   // this will make app to not loose data on reload
@@ -171,8 +177,23 @@ export default function App() {
   }, [dispatch, userToken]);
 
   return (
-    <Provider template={AlertTemplate} {...options}>
-      <RouterProvider router={router} />
-    </Provider>
+    <>
+      {userCheckLoadingStatus ? (
+        <Grid
+          height="80"
+          width="80"
+          color="rgb(79, 70, 229)"
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass="my-24 justify-center"
+          visible={true}
+        />
+      ) : (
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </Provider>
+      )}
+    </>
   );
 }

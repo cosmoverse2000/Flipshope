@@ -87,7 +87,7 @@ const CheckoutPage = () => {
   return (
     <>
       {!cartItems.length ? (
-        <Navigate to="/" replace={true}></Navigate>
+        <Navigate to="/cart" replace={true}></Navigate>
       ) : (
         <>
           {placeOrderStatus === "loading" ? (

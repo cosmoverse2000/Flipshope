@@ -10,6 +10,7 @@ const initialState = {
   loggedInUserToken: null, //only jwt token is passed here for more sequrity
   status: "idle",
   loginErrors: null,
+  userCheckLoadingStatus: true, //intially load 'true' after fulfilled/rejected it will be 'false'
 };
 
 //signup ACtion
@@ -107,11 +108,17 @@ export const authSlice = createSlice({
       .addCase(checkUserTokenExistsAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.loggedInUserToken = action.payload;
+        state.userCheckLoadingStatus = false; // here user will be loaded
         //instead of login, 'checkUser' will set loogeinUsertoken if session exits in bak
         // however we dont need token val any where in our site only in browser cookie
         // that will automatically send token on every http req, to backend
         //and backend will check,in backend session that user.token exits thn allow client
         // also,we only need 'loggedInUserToken' as a boolean of if user exits in frontend
+      })
+      .addCase(checkUserTokenExistsAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.loggedInUserToken = action.payload;
+        state.userCheckLoadingStatus = false; //
       });
   },
 });
@@ -120,5 +127,7 @@ export const { increment } = authSlice.actions;
 
 export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectLoginErrors = (state) => state.auth.loginErrors;
+export const selectUserCheckLoadingStatus = (state) =>
+  state.auth.userCheckLoadingStatus;
 
 export default authSlice.reducer;
