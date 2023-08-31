@@ -21,7 +21,10 @@ const StripePaymentPage = () => {
     fetch("http://localhost:8080/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: currentOrder.orderedItems }),
+      body: JSON.stringify({ totalPrice: currentOrder.totalPrice }),
+      meta: {
+        order_id: currentOrder.id, //this info will go to stripe, then stripe to your bak for cnfirmation
+      },
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
