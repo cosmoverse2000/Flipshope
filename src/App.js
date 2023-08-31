@@ -33,6 +33,7 @@ import {
   selectUserCheckLoadingStatus,
 } from "./features/auth/authSlice";
 import { fetchUserProfileAsync } from "./features/user/userSlice";
+import StripePaymentPage from "./pages/StripePaymentPage";
 
 const options = {
   timeout: 5000,
@@ -105,6 +106,14 @@ const router = createBrowserRouter([
     element: (
       <Protected>
         <UserProfilePage />
+      </Protected>
+    ),
+  },
+  {
+    path: "/stripe-payment",
+    element: (
+      <Protected>
+        <StripePaymentPage />
       </Protected>
     ),
   },

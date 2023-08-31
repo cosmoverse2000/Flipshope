@@ -101,12 +101,15 @@ const CheckoutPage = () => {
               wrapperClass="my-24 justify-center"
               visible={true}
             />
+          ) : currentOrder && currentOrder.selectPayment === "cash" ? (
+            <Navigate
+              to={`/order-success/${currentOrder.id}`}
+              replace={true}
+            ></Navigate>
           ) : (
-            currentOrder && (
-              <Navigate
-                to={`/order-success/${currentOrder.id}`}
-                replace={true}
-              ></Navigate>
+            currentOrder &&
+            currentOrder.selectPayment === "card" && (
+              <Navigate to={`/stripe-payment`} replace={true}></Navigate>
             )
           )}
           <div className="mx-auto  max-w-7xl px-4 sm:px-6 lg:px-8">
