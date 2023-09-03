@@ -3,7 +3,7 @@
 //On create user
 export function signupUserAccount(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/auth/signup", {
+    const response = await fetch("/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -20,7 +20,7 @@ export function signupUserAccount(userData) {
 export function loginUserAccount(loginData) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/login/", {
+      const response = await fetch("/auth/login/", {
         method: "POST",
         body: JSON.stringify(loginData),
         headers: {
@@ -49,7 +49,7 @@ export function loginUserAccount(loginData) {
 export function checkUserTokenExists() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/check/");
+      const response = await fetch("/auth/check/");
       if (response.ok) {
         const token = await response.json();
         resolve(token);

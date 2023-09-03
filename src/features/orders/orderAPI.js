@@ -4,7 +4,7 @@ import { ORDERS_PER_PAGE } from "../../app/constants";
 export function addToOrders(order) {
   return new Promise(async (resolve) => {
     // console.log(order, "orderfa");
-    const response = await fetch("http://localhost:8080/order/", {
+    const response = await fetch("/order/", {
       method: "POST",
       body: JSON.stringify(order),
       headers: {
@@ -19,7 +19,7 @@ export function addToOrders(order) {
 //get all orders of a particular user
 export function fetchUserOrders() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/order/user");
+    const response = await fetch("/order/user");
     const data = await response.json();
     resolve(data);
   });
@@ -28,16 +28,13 @@ export function fetchUserOrders() {
 //to update orderStats from admin
 export function updateOrder(upadtedOrder) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8080/order/admin/" + upadtedOrder.id,
-      {
-        method: "PATCH",
-        body: JSON.stringify(upadtedOrder),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch("/order/admin/" + upadtedOrder.id, {
+      method: "PATCH",
+      body: JSON.stringify(upadtedOrder),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const data = await response.json();
     // console.log(data, "order update");
@@ -48,12 +45,9 @@ export function updateOrder(upadtedOrder) {
 //to remove Order By ADMIN
 export function deleteOrder(orderId) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8080/order/admin/" + orderId,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch("/order/admin/" + orderId, {
+      method: "DELETE",
+    });
 
     const data = await response.json(); //this data would empty in 'delete'case
     if (response.ok) {
@@ -81,9 +75,7 @@ export function fetchAllOrders({ sorting, page }) {
 
   //calling api
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8080/order/admin?" + queryString
-    );
+    const response = await fetch("/order/admin?" + queryString);
     const data = await response.json();
     const totalOrders = await response.headers.get("X-Total-Count");
     resolve({ data: { ordersList: data, totalOrders: totalOrders } });

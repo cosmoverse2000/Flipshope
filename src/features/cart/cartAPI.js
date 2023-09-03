@@ -1,7 +1,7 @@
 //On add item click API
 export function addItemToCart(cartItem) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart", {
+    const response = await fetch("/cart", {
       method: "POST",
       body: JSON.stringify(cartItem),
       headers: {
@@ -20,7 +20,7 @@ export function addItemToCart(cartItem) {
 //on start app load user's prev cart items
 export function fetchCartByUserId() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart");
+    const response = await fetch("/cart");
     const data = await response.json();
 
     resolve({ data });
@@ -29,16 +29,13 @@ export function fetchCartByUserId() {
 //to update cart update qty
 export function updateCartItem(updatedCartItem) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8080/cart/" + updatedCartItem.id,
-      {
-        method: "PATCH",
-        body: JSON.stringify(updatedCartItem),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch("/cart/" + updatedCartItem.id, {
+      method: "PATCH",
+      body: JSON.stringify(updatedCartItem),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     resolve(data);
   });
@@ -47,7 +44,7 @@ export function updateCartItem(updatedCartItem) {
 export function deleteCartItem(cartItemId) {
   return new Promise(async (resolve) => {
     // console.log(cartItemId, "cartItemId");
-    const response = await fetch("http://localhost:8080/cart/" + cartItemId, {
+    const response = await fetch("/cart/" + cartItemId, {
       method: "DELETE",
     });
 

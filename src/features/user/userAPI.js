@@ -3,7 +3,7 @@
 // get user data to display user profile
 export function fetchUserProfile() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/user/");
+    const response = await fetch("/user/");
     const data = await response.json();
     // console.log(data, "user profile data");
     resolve(data);
@@ -13,7 +13,7 @@ export function fetchUserProfile() {
 //On Update user API, like adding address, edit or remove user datas(addres, name ,email)
 export function updateUserProfile(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/user/", {
+    const response = await fetch("/user/", {
       method: "PATCH",
       body: JSON.stringify(userData),
       headers: {

@@ -18,13 +18,13 @@ const StripePaymentPage = () => {
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:8080/create-payment-intent", {
+    fetch("/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ totalPrice: currentOrder.totalPrice }),
-      meta: {
-        order_id: currentOrder.id, //this info will go to stripe, then stripe to your bak for cnfirmation
-      },
+      body: JSON.stringify({
+        totalPrice: currentOrder.totalPrice,
+        order_id: currentOrder.id,
+      }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));

@@ -79,7 +79,7 @@ const Navbar = (props) => {
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-4 -mb-2 flex items-center md:ml-6">
-                        <Link to="/cart">
+                        <Link to="/user-cart">
                           <button
                             type="button"
                             className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -94,7 +94,7 @@ const Navbar = (props) => {
                         </Link>
                         {cartItems.length > 0 ? (
                           <Link
-                            to="/cart"
+                            to="/user-cart"
                             className={`inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-7 -ml-3 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10 ${
                               animate && "animate-ping"
                             }`}
@@ -149,7 +149,7 @@ const Navbar = (props) => {
                       </div>
                     </div>
                     <div className="-mr-2 -mb-2 flex md:hidden">
-                      <Link to="/cart">
+                      <Link to="/user-cart">
                         <button
                           type="button"
                           className="relative ml-auto flex-shrink-0  rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -164,7 +164,7 @@ const Navbar = (props) => {
                       </Link>
                       {cartItems.length > 0 ? (
                         <Link
-                          to="/cart"
+                          to="/user-cart"
                           className={`inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-6 -ml-3 -mt-2 mr-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10 ${
                             animate && "animate-ping"
                           }`}
