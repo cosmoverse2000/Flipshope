@@ -7,6 +7,8 @@ const chooseColour = (status) => {
       return "bg-yellow-200 text-yellow-600";
     case "Delivered":
       return "bg-green-200 text-green-600";
+    case "Recieved":
+      return "bg-green-200 text-green-600";
     case "Cancelled":
       return "bg-red-200 text-red-600";
     default:

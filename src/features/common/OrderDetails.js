@@ -64,8 +64,11 @@ const OrderDetails = ({ order }) => {
               <p>{order.totalItems} Items</p>
             </div>
             <div className="flex justify-between my-2 text-base font-medium text-gray-900">
-              <p>Delivery Address :</p>
               <p>Dated : {dateFormatter(order.createdAt)}</p>
+              <p>Last Updated : {dateFormatter(order.updatedAt)}</p>
+            </div>
+            <div className="flex justify-between -mb-2 text-base font-medium text-gray-900">
+              <p>Delivery Address :</p>
             </div>
           </div>
           <div className="border-solid border-2  border-gray-200 p-3 ">

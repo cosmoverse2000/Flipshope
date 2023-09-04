@@ -63,7 +63,7 @@ const AdminOrders = () => {
     setOrderEditable(orderId);
   };
   //to update the edited order status....
-  const handleUpdate = (e, order) => {
+  const handleOrderStatusUpdate = (e, order) => {
     if (e.target.value) {
       const updatedOrder = { id: order.id, orderStatus: e.target.value };
       dispatch(updateOrderAsync(updatedOrder));
@@ -72,6 +72,19 @@ const AdminOrders = () => {
     // /todo: alert fro backend feedback only
     alert.info("Order-Status Updated Successfully");
   };
+
+  //to update the edited payment status....
+  const handlePaymentStatusUpdate = (e, order) => {
+    if (e.target.value) {
+      console.log(e.target.value);
+      const updatedOrder = { id: order.id, paymentStatus: e.target.value };
+      dispatch(updateOrderAsync(updatedOrder));
+    }
+    setOrderEditable(-1);
+    // /todo: alert fro backend feedback only
+    alert.info("Payment-Status Updated Successfully");
+  };
+
   // after Page change this fnc would be executed
   const handlePage = (e, page) => {
     if (page === -1) {
@@ -148,7 +161,7 @@ const AdminOrders = () => {
         <div className="mx-6">
           {/* ALL orders LISTS */}
           <div className=" flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
-            <div className="w-full lg:w-5.5/6">
+            <div className="w-full lg:w-6/6">
               <div className="overflow-x-auto  bg-white shadow-md rounded my-6">
                 <table className="min-w-max w-full table-auto">
                   <thead>
@@ -159,7 +172,7 @@ const AdminOrders = () => {
                             handleSort(e, sortingObj("createdAt"))
                           }
                         >
-                          Order Time
+                          <u>Order Time</u>
                           {sortingArrow("createdAt")}
                         </div>
                         <div onClick={(e) => handleSort(e, sortingObj("id"))}>
@@ -201,18 +214,25 @@ const AdminOrders = () => {
                       >
                         Total <br /> Amt.{sortingArrow("totalPrice")}
                       </th>
-                      <th className="py-3 px-2  text-center">
-                        Shipping Address
+                      <th className="py-3  text-center">Shipping Address</th>
+                      <th
+                        className="py-3 px-2 sticky right-24  bg-gray-200 cursor-pointer text-center"
+                        onClick={(e) =>
+                          handleSort(e, sortingObj("paymentStatus"))
+                        }
+                      >
+                        Payment <br />
+                        Status{sortingArrow("paymentStatus")}
                       </th>
-
                       <th
                         className="py-3 px-2 sticky right-24  bg-gray-200 cursor-pointer text-center"
                         onClick={(e) =>
                           handleSort(e, sortingObj("orderStatus"))
                         }
                       >
-                        Status{sortingArrow("orderStatus")}
+                        Order<br></br> Status{sortingArrow("orderStatus")}
                       </th>
+
                       <th className="py-3 px-2 sticky right-0 bg-gray-200 text-center">
                         Actions
                       </th>
@@ -281,7 +301,7 @@ const AdminOrders = () => {
                               ${order.totalPrice}
                             </div>
                           </td>
-                          <td className="py-3 px-2 max-w-fit text-center">
+                          <td className="py-3 max-w-fit text-center">
                             <div className=" items-center justify-center">
                               <i>{order.address.name}</i> ,<br></br>
                               {order.address.street.substring(0, 20)}
@@ -295,9 +315,43 @@ const AdminOrders = () => {
                             {orderEditable === order.id ? (
                               <select
                                 className="py-1 px-6 rounded-full text-xs"
-                                onChange={(e) => handleUpdate(e, order)}
+                                onChange={(e) =>
+                                  handlePaymentStatusUpdate(e, order)
+                                }
+                                onBlur={(e) => setOrderEditable(-1)}
+                                value={order.paymentStatus}
                               >
-                                <option value="">--Select--</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Recieved">Recieved</option>
+                                <option value="Cancelled">Cancelled</option>
+                              </select>
+                            ) : (
+                              <>
+                                <span
+                                  className={`${chooseColour(
+                                    order.paymentStatus
+                                  )}  py-1 px-3 rounded-full text-xs cursor-pointer`}
+                                  onClick={(e) => handleEdit(e, order.id)}
+                                >
+                                  {order.paymentStatus}
+                                </span>
+                                <div className="uppercase pt-1 text-blue-500">
+                                  ({order.selectPayment})
+                                </div>
+                              </>
+                            )}
+                          </td>
+                          <td className="py-3 px-2 sticky right-24 bg-white   hover:bg-gray-100 text-center">
+                            {orderEditable === order.id ? (
+                              <select
+                                className="py-1 px-6 rounded-full text-xs"
+                                onChange={(e) =>
+                                  handleOrderStatusUpdate(e, order)
+                                }
+                                onBlur={(e) => setOrderEditable(-1)}
+                                value={order.orderStatus}
+                              >
+                                {/* <option value="">--Select--</option> */}
                                 <option value="Pending">Pending</option>
                                 <option value="Dispatched">Dispatched</option>
                                 <option value="Delivered">Delivered</option>
@@ -307,13 +361,14 @@ const AdminOrders = () => {
                               <span
                                 className={`${chooseColour(
                                   order.orderStatus
-                                )} py-1 px-3 rounded-full text-xs`}
-                                onClick={() => handleShow(order)}
+                                )} py-1 px-3 rounded-full text-xs  cursor-pointer`}
+                                onClick={(e) => handleEdit(e, order.id)}
                               >
                                 {order.orderStatus}
                               </span>
                             )}
                           </td>
+
                           <td className="py-3 px-2 sticky right-0 bg-white hover:bg-gray-100 text-center">
                             <div className="flex item-center justify-center">
                               <button
