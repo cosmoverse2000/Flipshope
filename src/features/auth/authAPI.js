@@ -49,7 +49,7 @@ export function loginUserAccount(loginData) {
 export function checkUserTokenExists() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("/auth/check/");
+      const response = await fetch("/auth/check");
       if (response.ok) {
         const token = await response.json();
         resolve(token);
@@ -71,5 +71,54 @@ export function logoutUserAccount() {
     //TODO: delete token from cookie
 
     resolve({ status: "logout successs" });
+  });
+}
+
+//On Request Forgot PASSword REquest
+export function resetPasswordRequest(email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/reset-password-request", {
+        method: "POST",
+        body: JSON.stringify({ email: email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data, "daa");
+        resolve(data);
+      } else {
+        const error = await response.json();
+        reject(error);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+//On  Reset PASSword
+export function resetPassword(userData) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data, "daa");
+        resolve(data);
+      } else {
+        const error = await response.json();
+        reject(error);
+      }
+    } catch (error) {
+      reject(error);
+    }
   });
 }

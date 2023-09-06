@@ -2,7 +2,7 @@ import React from "react";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectLoginErrors,
+  selectAuthErrors,
   selectLoggedInUserToken,
   loginUserAccountAsync,
 } from "../authSlice";
@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 export default function Login() {
   //redux
   const dispatch = useDispatch();
-  const loginErrors = useSelector(selectLoginErrors);
+  const authErrors = useSelector(selectAuthErrors);
   const userToken = useSelector(selectLoggedInUserToken);
   //react-forms
   const {
@@ -117,9 +117,9 @@ export default function Login() {
                     {errors.password.message}
                   </p>
                 )}
-                {loginErrors && (
+                {authErrors && (
                   <p className="text-red-500 whitespace-pre-line">
-                    {loginErrors.message}
+                    {authErrors.message}
                   </p>
                 )}
               </div>

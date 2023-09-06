@@ -1,19 +1,29 @@
 import React from "react";
-//redux
-
 //router
 import { Link } from "react-router-dom";
 //form
 import { useForm } from "react-hook-form";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  authLoadingStatus,
+  resetPasswordRequestAsync,
+  selectAuthErrors,
+  selectResetPassMailSent,
+} from "../authSlice";
 
 export default function Forgot() {
   //react-forms
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
+  //redux
+  const dispatch = useDispatch();
+  const resetMailStatus = useSelector(selectResetPassMailSent);
+  const authErrors = useSelector(selectAuthErrors);
+  const linkSendingLoadingSatus = useSelector(authLoadingStatus);
 
   // console.log(errors);
   return (
@@ -33,8 +43,7 @@ export default function Forgot() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             onSubmit={handleSubmit((data) => {
-              console.log(data);
-              //   TODO : will implement backend to reset link to email to reset password
+              dispatch(resetPasswordRequestAsync(data.email));
             })}
             className="space-y-6"
             action="#"
@@ -63,7 +72,15 @@ export default function Forgot() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
+                  <p className="text-red-500 px-3">{errors.email.message}</p>
+                )}
+                {authErrors && (
+                  <p className="text-red-500 px-3"> {authErrors.message}</p>
+                )}
+                {resetMailStatus && (
+                  <p className="text-green-500 px-3">
+                    Reset link Mailed Successfully !
+                  </p>
                 )}
               </div>
             </div>
@@ -73,13 +90,15 @@ export default function Forgot() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Send Reset Link
+                {linkSendingLoadingSatus === "loading"
+                  ? "Sending..."
+                  : "Send Reset Link"}
               </button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Send back to ?{" "}
+            Go Back to ?{" "}
             <Link
               to="/login"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"

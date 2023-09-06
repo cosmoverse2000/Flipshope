@@ -21,6 +21,7 @@ import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
 import AdminProductFormPage from "./pages/AdminProductFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 //compo
 import Protected from "./features/auth/components/Protected";
 import AdminProtected from "./features/admin/components/AdminProtected";
@@ -164,6 +165,10 @@ const router = createBrowserRouter([
   {
     path: "/forgot",
     element: <ForgotPage />,
+  },
+  {
+    path: "/resetPassword",
+    element: <ResetPasswordPage />,
   },
 ]);
 
