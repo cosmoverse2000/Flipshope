@@ -6,7 +6,6 @@ import { Navigate } from "react-router-dom";
 const Logout = () => {
   const dispatch = useDispatch();
   const userToken = useSelector(selectLoggedInUserToken);
-
   useEffect(() => {
     if (userToken) {
       dispatch(logoutUserAccountAsync());

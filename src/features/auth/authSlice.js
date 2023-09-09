@@ -7,6 +7,8 @@ import {
   resetPasswordRequest,
   resetPassword,
 } from "./authAPI";
+import { reset } from "../product/productSlice";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   loggedInUserToken: null, //only jwt token is passed here for more sequrity
@@ -62,10 +64,13 @@ export const checkUserTokenExistsAsync = createAsyncThunk(
 //logout ACtion
 export const logoutUserAccountAsync = createAsyncThunk(
   "auth/logoutUserAccount",
-  async () => {
-    const response = await logoutUserAccount();
-    // The value we return becomes the `fulfilled` action payload
-    return response;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await logoutUserAccount();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );
 
@@ -99,8 +104,8 @@ export const authSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    reset: (state) => {
+      return initialState;
     },
   },
   extraReducers: (builder) => {
@@ -130,6 +135,11 @@ export const authSlice = createSlice({
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.loggedInUserToken = null;
+      })
+      .addCase(logoutUserAccountAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.loggedInUserToken = null;
+        state.authErrors = action.payload;
       })
       .addCase(resetPasswordRequestAsync.pending, (state) => {
         state.status = "loading";
@@ -180,7 +190,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { increment } = authSlice.actions;
+// export const { reset } = authSlice.actions;
 
 export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectAuthErrors = (state) => state.auth.authErrors;

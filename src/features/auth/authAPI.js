@@ -66,11 +66,19 @@ export function checkUserTokenExists() {
 
 // on LOGOUT API
 export function logoutUserAccount() {
-  return new Promise(async (resolve) => {
-    //TODO:will aware backend from here to Logout that user or del user from session in bak
-    //TODO: delete token from cookie
-
-    resolve({ status: "logout successs" });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/logout");
+      if (response.ok) {
+        const data = await response.json();
+        resolve(data);
+      } else {
+        const error = await response.json();
+        reject(error);
+      }
+    } catch (error) {
+      reject(error);
+    }
   });
 }
 

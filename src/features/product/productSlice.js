@@ -83,8 +83,8 @@ export const productSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    reset: (state) => {
+      return initialState;
     },
   },
   extraReducers: (builder) => {
@@ -139,7 +139,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { increment } = productSlice.actions;
+export const { reset } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
 export const selectTotaItemsCount = (state) => state.product.totalItems;
