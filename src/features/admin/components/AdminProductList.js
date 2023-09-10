@@ -187,9 +187,7 @@ export default function AdminProductList() {
     //after any setfilter and setSorting this beolw will be dispatched
     //using action 'fetchAllProductsQueryAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(
-      fetchAllProductsQueryAsync({ filter, sorting, page, role: "admin" })
-    );
+    dispatch(fetchAllProductsQueryAsync({ filter, sorting, page }));
   }, [dispatch, filter, sorting, page]);
 
   //to reset pagination while filter and sorting
@@ -411,7 +409,7 @@ export const ProductListDesktopFilters = ({ filtersList, handleFilters }) => {
                   </span>
                 </Disclosure.Button>
               </h3>
-              <Disclosure.Panel className="pt-6">
+              <Disclosure.Panel unmount={false} className="pt-6">
                 <div className="space-y-4">
                   {section.options.map((option, optionIdx) => (
                     <div key={option.value} className="flex items-center">
@@ -426,11 +424,11 @@ export const ProductListDesktopFilters = ({ filtersList, handleFilters }) => {
                         // here option .value give the value of filter like 'smarphone'
                         // we can use 'e also to get crrent val but here we will use option for that
                         onChange={(e) => handleFilters(e, section, option)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
                       />
                       <label
                         htmlFor={`filter-${section.id}-${optionIdx}`}
-                        className="ml-3 text-sm text-gray-600"
+                        className="ml-3 text-sm text-gray-600 cursor-pointer"
                       >
                         {option.label}
                       </label>
@@ -457,6 +455,7 @@ export const ProductListMobileFilters = ({
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
       <Dialog
         as="div"
+        unmount={false}
         className="relative z-40 lg:hidden"
         onClose={setMobileFiltersOpen}
       >
@@ -527,7 +526,7 @@ export const ProductListMobileFilters = ({
                             </span>
                           </Disclosure.Button>
                         </h3>
-                        <Disclosure.Panel className="pt-6">
+                        <Disclosure.Panel unmount={false} className="pt-6">
                           <div className="space-y-6">
                             {section.options.map((option, optionIdx) => (
                               <div
@@ -573,7 +572,7 @@ export const ProductListMenuBar = ({ handleSort, setMobileFiltersOpen }) => {
   return (
     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12">
       <h1 className=" text-3xl font-bold tracking-tight text-gray-900">
-        All Products
+        All Products : ADMIN
       </h1>
 
       <div className="flex items-center">

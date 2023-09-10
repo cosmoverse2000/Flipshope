@@ -11,45 +11,25 @@ export function fetchProductById(id) {
 
 //USING THIS API TO FETCH PRODUCT LIST, Along w/ filter sort and pagination
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
-export function fetchAllProductsQuery(filter, sorting, page, role) {
-  //TODO:on server we will support multiple filters ,now not possible in json-server
-  //TODO:server will filter deleted product to admin not to a user
-  //example of structure that these above arguments will posses
+export function fetchAllProductsQuery(filter, sorting, page) {
   //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','adad']}
   //'Sort' obj format ={_sort:"ratings",_order="asc"}
   //'pagination' obj format ={"page":2}
   let queryString = "";
 
-  // converting all key:value pair of 'filter' obj into query string by concating each key:val pair
-  //addind filter queries
+  // converting all key:value pair of 'filter' obj into query string by
+  // concating each key:val pair
+  //addind FILTER queries
   for (const key in filter) {
-    queryString += `${key}=${filter[key][filter[key].length - 1]}&`;
+    queryString += `${key}=${filter[key]}&`;
   }
-  // WHEN HANDLING MULTIPLE CATEGORIES
-
-  // for (const key in filter) {
-  //   queryString += `${key}=`;
-
-  //   for (let i = 0; i < filter[key].length; i++) {
-  //     const element = filter[key][i];
-  //     queryString += `${element},`;
-  //   }
-  //   queryString = queryString.replace(/.$/, "&");
-  // }
-  // console.log(queryString);
-
-  //adding sorting queries
+  //adding SORTING queries
   for (const key in sorting) {
     queryString += `${key}=${sorting[key]}&`;
   }
-  //addding pagination queries
+  //addding PAGINATION queries
   queryString += `_page=${page}&_limit=${ITEMS_PER_PAGE}`;
 
-  queryString += `&role=${role}`;
-
-  // console.log(queryString);
-
-  //calling api
   return new Promise(async (resolve) => {
     const response = await fetch("/products?" + queryString);
     const data = await response.json();

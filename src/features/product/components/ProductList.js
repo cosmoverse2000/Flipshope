@@ -322,7 +322,7 @@ export const ProductListDesktopFilters = ({ filtersList, handleFilters }) => {
                   </span>
                 </Disclosure.Button>
               </h3>
-              <Disclosure.Panel className="pt-6">
+              <Disclosure.Panel unmount={false} className="pt-6">
                 <div className="space-y-4">
                   {section.options.map((option, optionIdx) => (
                     <div key={option.value} className="flex items-center">
@@ -337,11 +337,11 @@ export const ProductListDesktopFilters = ({ filtersList, handleFilters }) => {
                         // here option .value give the value of filter like 'smarphone'
                         // we can use 'e also to get crrent val but here we will use option for that
                         onChange={(e) => handleFilters(e, section, option)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
                       />
                       <label
                         htmlFor={`filter-${section.id}-${optionIdx}`}
-                        className="ml-3 text-sm text-gray-600"
+                        className="ml-3 text-sm text-gray-600 cursor-pointer"
                       >
                         {option.label}
                       </label>
@@ -368,6 +368,7 @@ export const ProductListMobileFilters = ({
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
       <Dialog
         as="div"
+        unmount={false}
         className="relative z-40 lg:hidden"
         onClose={setMobileFiltersOpen}
       >
@@ -398,11 +399,14 @@ export const ProductListMobileFilters = ({
                 <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                 <button
                   type="button"
-                  className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                  className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 cursor-pointer"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
-                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  <XMarkIcon
+                    className="h-6 w-6 cursor-pointer"
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
 
@@ -438,7 +442,7 @@ export const ProductListMobileFilters = ({
                             </span>
                           </Disclosure.Button>
                         </h3>
-                        <Disclosure.Panel className="pt-6">
+                        <Disclosure.Panel unmount={false} className="pt-6">
                           <div className="space-y-6">
                             {section.options.map((option, optionIdx) => (
                               <div
@@ -454,11 +458,11 @@ export const ProductListMobileFilters = ({
                                   onChange={(e) =>
                                     handleFilters(e, section, option)
                                   }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
                                 />
                                 <label
                                   htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                  className="ml-3 min-w-0 flex-1 text-gray-500"
+                                  className="ml-3 min-w-0 flex-1 text-gray-500 cursor-pointer"
                                 >
                                   {option.label}
                                 </label>
