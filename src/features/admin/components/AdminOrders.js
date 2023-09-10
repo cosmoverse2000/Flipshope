@@ -8,11 +8,7 @@ import {
   selectTotalOrdersCount,
   updateOrderAsync,
 } from "../../orders/orderSlice";
-import {
-  ORDERS_PER_PAGE,
-  dateFormatter,
-  discountedPrice,
-} from "../../../app/constants";
+import { ORDERS_PER_PAGE, discountedPrice } from "../../../app/constants";
 import Pagination from "../../common/Pagination";
 import OrderDetails from "../../common/OrderDetails";
 import chooseColour from "../../common/ColorStatus";
@@ -32,7 +28,7 @@ const AdminOrders = () => {
 
   //react-hooks
   const [sorting, setSorting] = useState({
-    _sort: "createdAt",
+    _sort: "updatedAt",
     _order: "desc",
   }); // to use prev sort state create it as usestate
   const [page, setPage] = useState(1); // to use prev page state, we create it as usestate
@@ -113,9 +109,9 @@ const AdminOrders = () => {
     return (
       sorting["_sort"] === sortBy &&
       (sorting["_order"] === "asc" ? (
-        <ArrowUpIcon className="h-4 mb-1 text-red-500 color inline" />
+        <ArrowUpIcon className="h-4 mb-1 text-red-500 color inline underline" />
       ) : (
-        <ArrowDownIcon className="h-4 mb-1 text-red-500 inline" />
+        <ArrowDownIcon className="h-4 mb-1 text-red-500 inline underline" />
       ))
     );
   };
@@ -169,10 +165,19 @@ const AdminOrders = () => {
                       <th className="py-3 px-4 cursor-pointer text-left">
                         <div
                           onClick={(e) =>
+                            handleSort(e, sortingObj("updatedAt"))
+                          }
+                        >
+                          <u>Last Updated</u>
+
+                          {sortingArrow("updatedAt")}
+                        </div>
+                        <div
+                          onClick={(e) =>
                             handleSort(e, sortingObj("createdAt"))
                           }
                         >
-                          <u>Order Time</u>
+                          Order Time
                           {sortingArrow("createdAt")}
                         </div>
                         <div onClick={(e) => handleSort(e, sortingObj("id"))}>
@@ -265,7 +270,17 @@ const AdminOrders = () => {
                             )}
                             <div className="items-center">
                               <div className=" text-left px-2 font-normal">
-                                <b> {dateFormatter(order.createdAt)}</b>
+                                <b>
+                                  {order.updatedAt
+                                    ? new Date(order.updatedAt).toLocaleString()
+                                    : null}
+                                </b>
+                                <br />
+                                <b>
+                                  {order.createdAt
+                                    ? new Date(order.createdAt).toLocaleString()
+                                    : null}
+                                </b>
                                 <br />
                                 {order.id}
                               </div>

@@ -606,9 +606,9 @@ export const ProductListMenuBar = ({ handleSort, setMobileFiltersOpen }) => {
                         className={classNames(
                           option.current
                             ? "font-medium text-gray-900"
-                            : "text-gray-500",
+                            : "text-gray-500 cursor-pointer",
                           active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm"
+                          "block px-4 py-2 text-sm cursor-pointer"
                         )}
                         // option is sorting type onject we already definde
                         onClick={(e) => {
