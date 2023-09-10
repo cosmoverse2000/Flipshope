@@ -29,7 +29,7 @@ export default function Cart() {
     dispatch(updateCartItemAsync({ id: cartItem.id, qty: +e.target.value }));
   };
   const handleRemove = (cartItemId) => {
-    dispatch(deleteCartItemAsync({ cartItemId, alert }));
+    dispatch(deleteCartItemAsync({ prodId: cartItemId, alert }));
   };
 
   //NO ITEMS IN CART FEEDBACK
