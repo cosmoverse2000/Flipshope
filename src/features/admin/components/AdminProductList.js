@@ -13,7 +13,7 @@ import {
   updateSelectedProductAsync,
   selectProductListStatus,
 } from "../../product/productSlice";
-import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
+import { ITEMS_PER_PAGE } from "../../../app/constants";
 //roiuter imps
 import { Link } from "react-router-dom";
 //tailwind imps
@@ -54,10 +54,15 @@ const sortOptions = [
   { name: "Stocks-Left Low", sortBy: "stock", order: "asc", current: false },
   { name: "Stocks-Left High", sortBy: "stock", order: "desc", current: false },
   { name: "Best Rating", sortBy: "rating", order: "desc", current: false },
-  { name: "Price: Low to High", sortBy: "price", order: "asc", current: false },
+  {
+    name: "Price: Low to High",
+    sortBy: "discountedPrice",
+    order: "asc",
+    current: false,
+  },
   {
     name: "Price: High to Low",
-    sortBy: "price",
+    sortBy: "discountedPrice",
     order: "desc",
     current: false,
   },
@@ -335,7 +340,7 @@ export const ProductListGrid = ({ products, handleDelete, status }) => {
                         </div>
                         <div>
                           <p className="text-sm  block font-medium  text-gray-900">
-                            ${discountedPrice(product)}
+                            ${product.discountedPrice}
                           </p>
                           <p className="text-sm mt-2 line-through block font-medium  text-gray-500">
                             ${product.price}

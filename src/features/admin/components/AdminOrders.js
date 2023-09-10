@@ -8,7 +8,7 @@ import {
   selectTotalOrdersCount,
   updateOrderAsync,
 } from "../../orders/orderSlice";
-import { ORDERS_PER_PAGE, discountedPrice } from "../../../app/constants";
+import { ORDERS_PER_PAGE } from "../../../app/constants";
 import Pagination from "../../common/Pagination";
 import OrderDetails from "../../common/OrderDetails";
 import chooseColour from "../../common/ColorStatus";
@@ -306,7 +306,7 @@ const AdminOrders = () => {
                                   {item.qty}
                                 </span>
                                 <span className="text-base basis-2/12 font-semibold">
-                                  ${discountedPrice(item.product)}
+                                  ${item.product.discountedPrice}
                                 </span>
                               </div>
                             ))}

@@ -1,6 +1,6 @@
 import React from "react";
 import chooseColour from "./ColorStatus";
-import { dateFormatter, discountedPrice } from "../../app/constants";
+import { dateFormatter } from "../../app/constants";
 
 const OrderDetails = ({ order }) => {
   return (
@@ -38,7 +38,7 @@ const OrderDetails = ({ order }) => {
                           </a>
                         </h3>
                         <p className="ml-4">
-                          ${discountedPrice(cartItem.product)}
+                          ${cartItem.product.discountedPrice}
                         </p>
                       </div>
                       <div className="flex justify-between text-base font-medium text-gray-900">

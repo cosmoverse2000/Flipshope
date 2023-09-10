@@ -13,7 +13,6 @@ import {
   selectCartItems,
   selectCartStatus,
 } from "../../cart/cartSlice";
-import { discountedPrice } from "../../../app/constants";
 import { useAlert } from "react-alert";
 import { Grid } from "react-loader-spinner";
 
@@ -176,7 +175,7 @@ export default function ProductDetail() {
                 <div className="mt-4 lg:row-span-3 lg:mt-0">
                   <h2 className="sr-only">Product information</h2>
                   <p className="text-3xl tracking-tight text-gray-900">
-                    ${discountedPrice(product)}
+                    ${product.discountedPrice}
                   </p>
                   <p className="text-3xl line-through tracking-tight text-gray-500">
                     ${product.price}

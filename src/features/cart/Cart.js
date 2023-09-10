@@ -7,7 +7,7 @@ import {
 } from "./cartSlice";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { discountedPrice } from "../../app/constants";
+
 import Modals from "../common/Modals";
 import { useAlert } from "react-alert";
 
@@ -21,7 +21,7 @@ export default function Cart() {
   const cartItems = useSelector(selectCartItems);
 
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.qty * discountedPrice(item.product) + amount,
+    (amount, item) => item.qty * item.product.discountedPrice + amount,
     0
   );
   const totalItems = cartItems.reduce((amount, item) => item.qty + amount, 0);
@@ -99,7 +99,7 @@ export default function Cart() {
                               </a>
                             </h3>
                             <p className="ml-4">
-                              ${discountedPrice(cartItem.product)}
+                              ${cartItem.product.discountedPrice}
                             </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
