@@ -41,10 +41,15 @@ export const fetchUserOrdersAsync = createAsyncThunk(
 // by admin only
 export const updateOrderAsync = createAsyncThunk(
   "orders/updateOrder",
-  async (updatedOrder) => {
+  async ({ updatedOrder, alert, updateType }) => {
     const response = await updateOrder(updatedOrder);
     // The value we return becomes the `fulfilled` action payload
-    // console.log(response);
+    if (updateType === "orderStatus") {
+      alert.success("Order-Status Updated Successfully !");
+    }
+    if (updateType === "paymentStatus") {
+      alert.info("Payment-Status Updated Successfully !");
+    }
     return response;
   }
 );
@@ -65,9 +70,10 @@ export const fetchAllOrdersAsync = createAsyncThunk(
 // by admin only
 export const deleteOrderAsync = createAsyncThunk(
   "orders/deleteOrder",
-  async (deleteOrderId) => {
-    const response = await deleteOrder(deleteOrderId);
+  async ({ orderId, alert }) => {
+    const response = await deleteOrder(orderId);
     // The value we return becomes the `fulfilled` action payload
+    alert.info("Order Deleted Success");
     return response.data;
   }
 );

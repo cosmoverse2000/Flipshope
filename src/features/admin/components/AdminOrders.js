@@ -62,23 +62,23 @@ const AdminOrders = () => {
   const handleOrderStatusUpdate = (e, order) => {
     if (e.target.value) {
       const updatedOrder = { id: order.id, orderStatus: e.target.value };
-      dispatch(updateOrderAsync(updatedOrder));
+      dispatch(
+        updateOrderAsync({ updatedOrder, alert, updateType: "orderStatus" })
+      );
     }
     setOrderEditable(-1);
-    // /todo: alert fro backend feedback only
-    alert.info("Order-Status Updated Successfully");
   };
 
   //to update the edited payment status....
   const handlePaymentStatusUpdate = (e, order) => {
     if (e.target.value) {
-      console.log(e.target.value);
+      // console.log(e.target.value);
       const updatedOrder = { id: order.id, paymentStatus: e.target.value };
-      dispatch(updateOrderAsync(updatedOrder));
+      dispatch(
+        updateOrderAsync({ updatedOrder, alert, updateType: "paymentStatus" })
+      );
     }
     setOrderEditable(-1);
-    // /todo: alert fro backend feedback only
-    alert.info("Payment-Status Updated Successfully");
   };
 
   // after Page change this fnc would be executed
@@ -100,9 +100,7 @@ const AdminOrders = () => {
   };
   //to handle delete Product by admin
   const handleDelete = (orderId) => {
-    dispatch(deleteOrderAsync(orderId));
-    //todo: alert fro backend feedback only
-    alert.info("Order Deleted Success");
+    dispatch(deleteOrderAsync({ orderId, alert }));
   };
   //SORTING ARROWS CSS
   const sortingArrow = (sortBy) => {

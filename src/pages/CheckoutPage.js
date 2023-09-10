@@ -53,9 +53,7 @@ const CheckoutPage = () => {
     dispatch(updateCartItemAsync({ ...cartItem, qty: +e.target.value }));
   };
   const handleRemove = (prodId) => {
-    dispatch(deleteCartItemAsync(prodId));
-    //TODO: get response from back that deleted then show alert
-    alert.error("Product removed from Cart !");
+    dispatch(deleteCartItemAsync({ prodId, alert }));
   };
   const handleAddress = (e) => {
     setSelectAddress(e.target.value);

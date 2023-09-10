@@ -125,20 +125,20 @@ const AdminProductForm = () => {
           ),
           sizes: data.sizes.map((size) => sizes.find((sz) => sz.id === size)),
         };
-        console.log(product, "form");
+        // console.log(product, "form");
         if (params.prodId) {
           product.id = params.prodId;
           product.rating = selectedProduct.rating || 1;
           ///this product is Updated Product !
-          dispatch(updateSelectedProductAsync(product));
-          // console.log(data, "Product Edit success!");
-          //TODO: alert this after backedn approves it
-          alert.success("Product Edited Successfully !");
+          dispatch(
+            updateSelectedProductAsync({
+              product,
+              alert,
+              updateType: "Updated",
+            })
+          );
         } else {
-          dispatch(createProductAsync(product));
-          // console.log(data, "Product add success!");
-          //TODO: alert this after backedn approves it
-          alert.success("Product Added Successfully !");
+          dispatch(createProductAsync({ product, alert }));
         }
         reset();
       })}

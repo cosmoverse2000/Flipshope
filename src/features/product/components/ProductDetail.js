@@ -63,9 +63,7 @@ export default function ProductDetail() {
       newItemToCart.size = selectedSize;
     }
 
-    dispatch(addItemToCartAsync(newItemToCart));
-    // TODO: we will on show alert , 'item-added' when backend give response -fixit
-    alert.success("Added to cart !");
+    dispatch(addItemToCartAsync({ newItemToCart, alert }));
   };
 
   useEffect(() => {
@@ -373,11 +371,16 @@ export default function ProductDetail() {
                           role="list"
                           className="list-disc space-y-2 pl-4 text-sm"
                         >
-                          {product.highlights.map((highlight) => (
-                            <li key={highlight} className="text-gray-400">
-                              <span className="text-gray-600">{highlight}</span>
-                            </li>
-                          ))}
+                          {product.highlights.map(
+                            (highlight) =>
+                              highlight.length > 0 && (
+                                <li key={highlight} className="text-gray-400">
+                                  <span className="text-gray-600">
+                                    {highlight}
+                                  </span>
+                                </li>
+                              )
+                          )}
                         </ul>
                       </div>
                     </div>

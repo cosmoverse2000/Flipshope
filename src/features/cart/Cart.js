@@ -29,9 +29,7 @@ export default function Cart() {
     dispatch(updateCartItemAsync({ id: cartItem.id, qty: +e.target.value }));
   };
   const handleRemove = (cartItemId) => {
-    dispatch(deleteCartItemAsync(cartItemId));
-    //TODO: get response from back that deleted then show alert
-    alert.error("Product removed from Cart !");
+    dispatch(deleteCartItemAsync({ cartItemId, alert }));
   };
 
   //NO ITEMS IN CART FEEDBACK
@@ -99,7 +97,7 @@ export default function Cart() {
                               </a>
                             </h3>
                             <p className="ml-4">
-                              ${cartItem.product.discountedPrice}
+                              ${+cartItem.product.discountedPrice}
                             </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">

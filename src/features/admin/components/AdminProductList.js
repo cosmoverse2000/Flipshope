@@ -182,10 +182,13 @@ export default function AdminProductList() {
     const index = products.findIndex((product) => product.id === productId);
     const productToDel = { ...products[index] };
     productToDel.isDeleted = true;
-    console.log(productToDel, "Del Succ");
-    dispatch(updateSelectedProductAsync(productToDel));
-    //TODO:show this alerr after backend approves
-    alert.info("Product Deleted Successfully !");
+    dispatch(
+      updateSelectedProductAsync({
+        product: productToDel,
+        alert,
+        updateType: "Deleted",
+      })
+    );
   };
 
   useEffect(() => {

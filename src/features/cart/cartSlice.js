@@ -14,10 +14,10 @@ const initialState = {
 
 export const addItemToCartAsync = createAsyncThunk(
   "cart/addItemToCart",
-  async (cartItem) => {
-    const response = await addItemToCart(cartItem);
+  async ({ newItemToCart, alert }) => {
+    const response = await addItemToCart(newItemToCart);
     // The value we return becomes the `fulfilled` action payload
-    // console.log(response);
+    alert.success("Added to cart !");
     return response;
   }
 );
@@ -41,9 +41,10 @@ export const updateCartItemAsync = createAsyncThunk(
 );
 export const deleteCartItemAsync = createAsyncThunk(
   "cart/deleteCartItem",
-  async (deleteCartItemId) => {
-    const response = await deleteCartItem(deleteCartItemId);
+  async ({ prodId, alert }) => {
+    const response = await deleteCartItem(prodId);
     // The value we return becomes the `fulfilled` action payload
+    alert.error("Product removed from Cart !");
     return response.data;
   }
 );
