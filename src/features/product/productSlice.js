@@ -75,7 +75,7 @@ export const updateSelectedProductAsync = createAsyncThunk(
       alert.info("Product Deleted Successfully !");
     }
     if (updateType === "Updated") {
-      alert.success("Order Updated Successfully !");
+      alert.success("Product Updated Successfully !");
     }
     return response;
   }

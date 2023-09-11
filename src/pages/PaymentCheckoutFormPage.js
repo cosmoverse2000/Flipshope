@@ -63,7 +63,7 @@ export default function PaymentCheckoutFormPage() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${process.env.BASE_URL}/order-success/${currentOrder.id}`,
+        return_url: `${process.env.REACT_APP_BASE_URL}/order-success/${currentOrder.id}`,
       },
     });
 
