@@ -30,11 +30,19 @@ export default function Login() {
       {userToken && <Navigate to="/" replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src={process.env.PUBLIC_URL + "/flipshope_logo.png"}
-            alt="Flipshope Logo"
-          />
+          <a
+            href={process.env.REACT_APP_BASE_URL}
+            className=" underline text-sm font-medium shadow-2xl text-center text-indigo-600"
+          >
+            <img
+              className="mx-auto h-16 shadow-2xl w-auto cursor-pointer"
+              src={process.env.PUBLIC_URL + "/flipshope_logo.png"}
+              alt="Flipshope Logo"
+            />
+            <p>
+              <b> www.flipshope.com</b>
+            </p>
+          </a>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Log in to your account
           </h2>

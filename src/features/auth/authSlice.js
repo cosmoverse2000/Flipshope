@@ -7,8 +7,6 @@ import {
   resetPasswordRequest,
   resetPassword,
 } from "./authAPI";
-import { reset } from "../product/productSlice";
-import { useDispatch } from "react-redux";
 
 const initialState = {
   loggedInUserToken: null, //only jwt token is passed here for more sequrity
@@ -49,13 +47,13 @@ export const loginUserAccountAsync = createAsyncThunk(
 //check user token ACtion
 export const checkUserTokenExistsAsync = createAsyncThunk(
   "auth/checkUserTokenExists",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await checkUserTokenExists();
       return response;
     } catch (error) {
-      // return rejectWithValue(error);
       console.log(error);
+      // return rejectWithValue(error);
       //todo: redirect to login
     }
   }
@@ -130,6 +128,7 @@ export const authSlice = createSlice({
         // console.log(action, "login user reject error thunk");
       })
       .addCase(logoutUserAccountAsync.pending, (state) => {
+        state.loggedInUserToken = null;
         state.status = "loading";
       })
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
@@ -184,7 +183,8 @@ export const authSlice = createSlice({
       })
       .addCase(checkUserTokenExistsAsync.rejected, (state, action) => {
         state.status = "idle";
-        state.loggedInUserToken = action.payload;
+        // state.loggedInUserToken = action.payload;
+        // state.authErrors = action.payload;
         state.userCheckLoadingStatus = false; //
       });
   },

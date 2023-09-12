@@ -15,6 +15,7 @@ import {
 } from "../../cart/cartSlice";
 import { useAlert } from "react-alert";
 import { Grid } from "react-loader-spinner";
+import { selectLoggedInUserToken } from "../../auth/authSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,9 +24,10 @@ function classNames(...classes) {
 export default function ProductDetail() {
   //redux
   const product = useSelector(selectProducById);
-  const cartItems = useSelector(selectCartItems);
   const prodDetailStatus = useSelector(selectProductListStatus);
+  const cartItems = useSelector(selectCartItems);
   const cartUpdatingStatus = useSelector(selectCartStatus);
+  const userToken = useSelector(selectLoggedInUserToken);
   const dispatch = useDispatch();
   //router
   const navigate = useNavigate();
@@ -40,30 +42,37 @@ export default function ProductDetail() {
     e.preventDefault();
     //checking if item already present in cart
     if (product.stock <= 0) {
-      //todo: all dipatch alerts should be poped after backend res confirmation
       alert.error("PRODUCT OUT OF STOCK!");
       return;
     }
 
-    const index = cartItems.findIndex((item) => item.product.id === product.id);
-    if (index >= 0 && cartItems.length > 0) {
-      alert.error("Already added to cart !");
-      // console.log("Already Added to Cart");
+    //add item to cart only after user login
+    if (userToken) {
+      const index = cartItems.findIndex(
+        (item) => item.product.id === product.id
+      );
+      if (index >= 0 && cartItems.length > 0) {
+        alert.error("Already added to cart !");
+        // console.log("Already Added to Cart");
+        return;
+      }
+      const newItemToCart = {
+        product: product.id,
+        qty: 1,
+      };
+      //if customer Choose color and size- adding it to cart & order details
+      if (selectedColor) {
+        newItemToCart.color = selectedColor;
+      }
+      if (selectedSize) {
+        newItemToCart.size = selectedSize;
+      }
+
+      dispatch(addItemToCartAsync({ newItemToCart, alert }));
+    } else {
+      alert.error("PLEASE, LOGIN TO CONTINUE !");
       return;
     }
-    const newItemToCart = {
-      product: product.id,
-      qty: 1,
-    };
-    //if customer Choose color and size- adding it to cart & order details
-    if (selectedColor) {
-      newItemToCart.color = selectedColor;
-    }
-    if (selectedSize) {
-      newItemToCart.size = selectedSize;
-    }
-
-    dispatch(addItemToCartAsync({ newItemToCart, alert }));
   };
 
   useEffect(() => {
@@ -373,7 +382,7 @@ export default function ProductDetail() {
                         >
                           {product.highlights.map(
                             (highlight) =>
-                              highlight.length > 0 && (
+                              (highlight && highlight.length) > 0 && (
                                 <li key={highlight} className="text-gray-400">
                                   <span className="text-gray-600">
                                     {highlight}

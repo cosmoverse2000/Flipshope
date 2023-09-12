@@ -399,7 +399,7 @@ export default function UserProfile() {
                             <p className="text-sm font-semibold leading-6 text-gray-900">
                               {address.name}
                             </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            <p className="mt-1 max-w-xs md:max-w-lg overflow-hidden whitespace-nowrap truncate text-xs leading-5 text-gray-500">
                               {address.street}
                             </p>
                             <p className="text-sm leading-6 text-gray-500">

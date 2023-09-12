@@ -44,11 +44,7 @@ const options = {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Protected>
-        <Home />
-      </Protected>
-    ),
+    element: <Home />,
   },
   {
     path: "/login",
@@ -76,11 +72,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/product-detail/:id",
-    element: (
-      <Protected>
-        <ProductDetailPage />
-      </Protected>
-    ),
+    element: <ProductDetailPage />,
   },
   {
     path: "*",

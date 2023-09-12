@@ -337,7 +337,7 @@ const CheckoutPage = () => {
                                 key={index}
                                 className="border-solid border-2  border-gray-200 p-5 "
                               >
-                                <div className="flex   gap-x-4">
+                                <div className="flex gap-x-4">
                                   <input
                                     id={address.email}
                                     name="address"
@@ -348,20 +348,20 @@ const CheckoutPage = () => {
                                   />
                                   <label
                                     htmlFor={address.email}
-                                    className="flex justify-between cursor-pointer w-full "
+                                    className="max-sm:flex-col flex justify-between cursor-pointer w-full "
                                   >
                                     <div className="">
                                       <p className="text-sm font-semibold leading-6 text-gray-900">
                                         {address.name}
                                       </p>
-                                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                                      <p className="mt-1 max-w-[15rem] md:max-w-lg overflow-hidden whitespace-nowrap truncate text-xs leading-5 text-gray-500">
                                         {address.street}
                                       </p>
                                       <p className="text-sm leading-6 text-gray-500">
                                         {address.pincode}
                                       </p>
                                     </div>
-                                    <div className="hidden  sm:flex sm:flex-col sm:items-end">
+                                    <div className="  sm:flex sm:flex-col sm:items-end">
                                       <p className="text-sm font-semibold leading-6 text-gray-900">
                                         Phone: {address.phone}
                                       </p>
@@ -425,7 +425,7 @@ const CheckoutPage = () => {
                 </form>
               </div>
               <div className="lg:col-span-2 ">
-                <div className=" bg-white mt-12 mx-auto max-w-7xl px-5">
+                <div className=" bg-white my-12 mx-auto max-w-7xl px-5">
                   <div className="flow-root">
                     <h1 className="text-4xl my-10 font-bold tracking-tight text-gray-900">
                       Your Cart

@@ -32,11 +32,11 @@ const OrderSuccess = () => {
               </h1>
               <Link
                 to="/user-orders"
-                className="text-3xl underline cursor-pointer"
+                className="md:text-3xl text-2xl underline cursor-pointer "
               >
                 ORDER ID: #{params?.orderId}
               </Link>
-              <p className="mt-6 text-base leading-7 text-gray-600">
+              <p className="mt-6 text-base leading-7 text-gray-600 overflow-hidden">
                 ThankYou ! For being our valuable customer.
                 <br />
                 To check your orders Status go to Account{"->"}My Orders

@@ -4,15 +4,21 @@ import { fetchUserProfile, updateUserProfile } from "./userAPI";
 const initialState = {
   status: "idle",
   userProfile: null,
+  userProfileLoadingStatus: true,
 };
 
 export const fetchUserProfileAsync = createAsyncThunk(
   "user/fetchUserProfile",
-  async () => {
-    const response = await fetchUserProfile();
-    // The value we return becomes the `fulfilled` action payload
-    // console.log(response, "userProfile");
-    return response;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchUserProfile();
+      // The value we return becomes the `fulfilled` action payload
+      // console.log(response, "userProfile");
+      return response;
+    } catch (error) {
+      console.log(error, "USER PROFILE ERR");
+      return rejectWithValue(error);
+    }
   }
 );
 
@@ -43,6 +49,13 @@ export const userSlice = createSlice({
       .addCase(fetchUserProfileAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.userProfile = action.payload;
+        state.userProfileLoadingStatus = false;
+      })
+      .addCase(fetchUserProfileAsync.rejected, (state, action) => {
+        state.status = "idle";
+        // state.userProfile = action.payload;
+        state.userProfileLoadingStatus = false;
+        console.log(action.payload, "USER PROFILE ERROR");
       })
       .addCase(updateUserProfileAsync.pending, (state) => {
         state.status = "loading";
@@ -58,5 +71,7 @@ export const { reset } = userSlice.actions;
 
 export const selectUserProfile = (state) => state.user.userProfile;
 export const selectUserLoadStatus = (state) => state.user.status;
+export const selectUserProfileLoadingStatus = (state) =>
+  state.user.userProfileLoadingStatus;
 
 export default userSlice.reducer;

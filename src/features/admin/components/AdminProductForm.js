@@ -263,17 +263,16 @@ const AdminProductForm = () => {
               <div className="mt-2">
                 {colors.map((color) => {
                   return (
-                    <>
+                    <div key={color.id} className=" float-left">
                       <input
                         type="checkbox"
                         {...register("colors", {})}
                         id={color.id}
-                        key={color.id}
                         value={color.id}
                         className="rounded-md border-0 ml-3 mr-1 shadow-sm ring-2  ring-inset ring-gray-300 w-6 h-4"
                       />
                       {color.name}
-                    </>
+                    </div>
                   );
                 })}
 
@@ -293,17 +292,16 @@ const AdminProductForm = () => {
               <div className="mt-2">
                 {sizes.map((size, index) => {
                   return (
-                    <>
+                    <div key={size.id} className=" float-left">
                       <input
                         type="checkbox"
                         {...register("sizes", {})}
                         id={size.id}
-                        key={size.id}
                         value={size.id}
                         className="rounded-md border-0 ml-3 mr-1 shadow-sm ring-2  ring-inset ring-gray-300 w-6 h-4"
                       />
                       {size.name}
-                    </>
+                    </div>
                   );
                 })}
 
