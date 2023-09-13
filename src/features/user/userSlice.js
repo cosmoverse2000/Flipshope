@@ -59,9 +59,11 @@ export const userSlice = createSlice({
       })
       .addCase(updateUserProfileAsync.pending, (state) => {
         state.status = "loading";
+        state.userProfileLoadingStatus = true;
       })
       .addCase(updateUserProfileAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        state.userProfileLoadingStatus = false;
         state.userProfile = action.payload;
       });
   },

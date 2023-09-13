@@ -128,7 +128,6 @@ export const authSlice = createSlice({
         // console.log(action, "login user reject error thunk");
       })
       .addCase(logoutUserAccountAsync.pending, (state) => {
-        state.loggedInUserToken = null;
         state.status = "loading";
       })
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {

@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectUserLoadStatus,
   selectUserProfile,
+  selectUserProfileLoadingStatus,
   updateUserProfileAsync,
 } from "../userSlice";
 import { useForm } from "react-hook-form";
 import { Grid } from "react-loader-spinner";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import Modals from "../../common/Modals";
 
 export default function UserProfile() {
   //TODO: ALso add payments section in userprofile, user can add card details
+  //set modal id for which item you want to show modal
+  const [showModal, setShowModal] = useState(0);
   //redux
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
-  const status = useSelector(selectUserLoadStatus);
+  // const status = useSelector(selectUserLoadStatus);
+  const status = useSelector(selectUserProfileLoadingStatus);
   // console.log(userProfile, "userProfile");
   //react
   const [showNameEdit, setShowNameEdit] = useState(false);
+  const [showImgEdit, setShowImgEdit] = useState(false);
   const [showEditForm, setShowEditForm] = useState(-1);
   const [showAddNewAddressForm, setShowAddNewAddressForm] = useState(0);
 
@@ -34,11 +39,12 @@ export default function UserProfile() {
   const handleEdit = (address, index) => {
     const newUser = { ...userProfile, addresses: [...userProfile.addresses] };
     //to shalow copy and getting correct index
-    newUser.addresses.splice(index, 1, address); //removing item from index and replacing w/ addrs
+    newUser.addresses.splice(index, 1, address);
+    //removing item from index and replacing w/ addrs
     dispatch(updateUserProfileAsync(newUser));
   };
 
-  const handleRemove = (e, index) => {
+  const handleRemove = (index) => {
     const newUser = { ...userProfile, addresses: [...userProfile.addresses] };
     //to shalow copy and getting correct index
     newUser.addresses.splice(index, 1);
@@ -59,9 +65,10 @@ export default function UserProfile() {
     setValue("region", address.region);
     setValue("city", address.city);
   };
-  const handleNameEdit = (updatedName) => {
-    dispatch(updateUserProfileAsync({ name: updatedName }));
+  const handleUserEdit = (updatedUser) => {
+    dispatch(updateUserProfileAsync(updatedUser));
     setShowNameEdit(false);
+    setShowImgEdit(false);
   };
 
   const handleAddNewAddress = (address) => {
@@ -78,7 +85,7 @@ export default function UserProfile() {
       <h1 className="mx-auto px-4 sm:px-6 lg:px-8 font-bold text-2xl max-w-4xl ">
         My Profile
       </h1>
-      {status === "loading" ? (
+      {status ? (
         <Grid
           height="80"
           width="80"
@@ -90,71 +97,132 @@ export default function UserProfile() {
           visible={true}
         />
       ) : (
-        <div className="mx-auto mt-4 py-6 bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto mt-4 py-1 bg-white max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="flow-root">
-            {/* //USER NAME WITH EDIT FUNCTIONALITY w/ VALIDATION */}
-            <div className="flex items-end text-base font-medium text-gray-900">
-              {showNameEdit ? (
-                <form
-                  className=" flex items-end bg-white "
-                  onSubmit={handleSubmit((data) => {
-                    handleNameEdit(data.userName);
-                    // console.log(data, "deit name");
-                  })}
-                >
-                  <div className="mt-2 mr-4">
-                    <input
-                      type="text"
-                      id="userName"
-                      {...register("userName", {
-                        required: "• User Name is Required !",
-                        maxLength: {
-                          value: 40,
-                          message: "• Max Name Length Exceded !",
-                        },
-                        pattern: {
-                          value: /^[A-Za-z\s]+$/i,
-                          message: "• Only Alphabets Accepted !", // JS only: <p>error message</p> TS only support string
-                        },
+            {/* //USER NAME & IMG WITH EDIT FUNCTIONALITY w/ VALIDATION */}
+            <div className="md:flex justify-between  text-base font-medium text-gray-900">
+              {/* USERNAME AND EDIT */}
+              <div className="my-4 text-xl font-medium text-green-600">
+                <div className="flex items-end text-base font-medium text-gray-900">
+                  {showNameEdit ? (
+                    <form
+                      className=" flex items-end bg-white "
+                      onSubmit={handleSubmit((data) => {
+                        handleUserEdit({ name: data.userName });
+                        // console.log(data, "deit name");
                       })}
-                      className="text-4xl  font-bold tracking-tight text-indigo-600 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    >
+                      <div className="mt-2 mr-4">
+                        <input
+                          type="text"
+                          id="userName"
+                          {...register("userName", {
+                            required: "• User Name is Required !",
+                            maxLength: {
+                              value: 40,
+                              message: "• Max Name Length Exceded !",
+                            },
+                            pattern: {
+                              value: /^[A-Za-z\s]+$/i,
+                              message: "• Only Alphabets Accepted !", // JS only: <p>error message</p> TS only support string
+                            },
+                          })}
+                          className="text-4xl  font-bold tracking-tight text-indigo-600 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                        {errors.userName && (
+                          <p className="text-red-500">
+                            {errors.userName.message}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Save
+                        {/* on save 'handleSubmit' from react-form will run */}
+                      </button>
+                    </form>
+                  ) : (
+                    <>
+                      <p className="text-4xl mr-4 font-bold tracking-tight text-indigo-600">
+                        {userProfile.name ? userProfile.name : "Guest User"}
+                      </p>
+                      <button
+                        type="button"
+                        className="font-medium mx-2 -mb-1  text-gray-900 hover:text-indigo-500"
+                        onClick={() => {
+                          setValue(
+                            "userName",
+                            userProfile.name ? userProfile.name : "Guest User"
+                          );
+                          setShowNameEdit(true);
+                        }}
+                      >
+                        <PencilSquareIcon
+                          className="mb-2  h-5 w-5 inline"
+                          aria-hidden="true"
+                        />{" "}
+                        Edit Name
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+              {/* USERIMG AND EDIT */}
+              <div className="flex items-end  text-base font-medium text-gray-900">
+                {showImgEdit ? (
+                  <form
+                    className=" flex items-end bg-white "
+                    onSubmit={handleSubmit((data) => {
+                      handleUserEdit({ imageUrl: data.userImg });
+                      // console.log(data, "deit name");
+                    })}
+                  >
+                    <div className="mt-2 mr-4">
+                      <input
+                        type="text"
+                        id="userImg"
+                        {...register("userImg", {
+                          required: "• User Img is Required !",
+                        })}
+                        className="text-4xl  font-bold tracking-tight text-indigo-600 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                      {errors.userImg && (
+                        <p className="text-red-500">{errors.userImg.message}</p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Save
+                      {/* on save 'handleSubmit' from react-form will run */}
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="font-medium mx-4 my-auto  text-gray-900 hover:text-indigo-500"
+                      onClick={() => {
+                        setValue("userImg", userProfile.imageUrl);
+                        setShowImgEdit(true);
+                      }}
+                    >
+                      <PencilSquareIcon
+                        className=" h-5 w-5 inline"
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <img
+                      className=" h-16 w-16  rounded-full border border-gray-500"
+                      src={userProfile.imageUrl}
+                      alt="userImg"
                     />
-                    {errors.userName && (
-                      <p className="text-red-500">{errors.userName.message}</p>
-                    )}
-                  </div>
-                  <button
-                    type="submit"
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Save
-                    {/* on save 'handleSubmit' from react-form will run */}
-                  </button>
-                </form>
-              ) : (
-                <>
-                  <p className="text-4xl mr-4 font-bold tracking-tight text-indigo-600">
-                    {userProfile.name ? userProfile.name : "Guest User"}
-                  </p>
-                  <button
-                    type="button"
-                    className="font-medium mx-2 -mb-1  text-gray-900 hover:text-indigo-500"
-                    onClick={() => {
-                      setValue(
-                        "userName",
-                        userProfile.name ? userProfile.name : "Guest User"
-                      );
-                      setShowNameEdit(true);
-                    }}
-                  >
-                    <PencilSquareIcon
-                      className="mb-2  h-5 w-5 inline"
-                      aria-hidden="true"
-                    />{" "}
-                    Edit Name
-                  </button>
-                </>
-              )}
+                  </>
+                )}
+              </div>
             </div>
             {/* //DISPLAY EMAIL AND ROLE if admin */}
             <div className="flex justify-between text-base font-medium text-gray-900">
@@ -175,10 +243,26 @@ export default function UserProfile() {
                 Your Addresses :
               </legend>
 
-              <ul role="list">
+              <ul>
                 {userProfile.addresses &&
                   userProfile.addresses.map((address, index) => (
                     <div key={index}>
+                      {showModal === address.name && (
+                        <Modals
+                          modalTitle={`Delete ${address.name}'s, Address !`}
+                          modalWarning={
+                            "Are you sure want to delete this address from user-profile ?"
+                          }
+                          modalActionBtnName={"Remove"}
+                          modalCancelBtnName={"Cancel"}
+                          onClickModalActionBtn={() => {
+                            handleRemove(index);
+                          }}
+                          onClickModalCancelBtn={() => {}}
+                          setShowModal={setShowModal}
+                          showModal={showModal}
+                        />
+                      )}
                       {showEditForm === index ? (
                         <form
                           className="px-5 bg-white py-6 "
@@ -427,8 +511,8 @@ export default function UserProfile() {
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={(e) => {
-                                handleRemove(e, index);
+                              onClick={() => {
+                                setShowModal(address.name);
                               }}
                             >
                               Remove
@@ -440,8 +524,8 @@ export default function UserProfile() {
                   ))}
               </ul>
             </fieldset>
-            {/* //FORM TO ADD NEW ADDRESSS TO USER ADDRESSES */}
 
+            {/* //FORM TO ADD NEW ADDRESSS TO USER ADDRESSES */}
             <div>
               {showAddNewAddressForm ? (
                 <form

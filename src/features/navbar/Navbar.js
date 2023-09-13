@@ -53,6 +53,7 @@ const Navbar = (props) => {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <div className="flex h-20 items-center justify-between">
                     {/* {NABAR START} */}
+                    {/* LOADER ANIMATION BEFORE PROFILE LOAD */}
                     {userToken && userProfileLoadingStatus ? (
                       <Bars
                         height="30"
@@ -107,7 +108,7 @@ const Navbar = (props) => {
                     {userToken && userProfileLoadingStatus ? null : (
                       <div className="hidden md:block">
                         <div className="ml-4 -mb-2 flex items-center md:ml-6">
-                          {/* CART ICON desktop */}
+                          {/* CART ICON desktop START */}
                           <Link to="/user-cart">
                             <button
                               type="button"
@@ -134,19 +135,20 @@ const Navbar = (props) => {
                           ) : (
                             ""
                           )}
+                          {/* CART ICON desktop END*/}
                           {/* PROFILE DROPDOWN DESKTOP */}
                           {userProfile ? (
                             <Menu as="div" className="relative ml-3 mb-3">
                               <div>
-                                <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <Menu.Button className="relative flex max-w-xs items-center rounded-full  border-3 border-gray-500 bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                   <span className="absolute -inset-1.5" />
                                   <span className="sr-only">
                                     Open user menu
                                   </span>
                                   <img
-                                    className="h-8 w-8 rounded-full"
+                                    className="h-12 w-12  rounded-full border-4 border-gray-500"
                                     src={userProfile.imageUrl}
-                                    alt=""
+                                    alt="userImg"
                                   />
                                 </Menu.Button>
                               </div>
@@ -198,74 +200,96 @@ const Navbar = (props) => {
 
                     {/* NAVBAR  MOBILE  START*/}
                     {/* NAVBAR ICONS MOBILE  START*/}
-                    <div className="mx-2 -mb-2 flex md:hidden">
-                      {/* CART ICON MOBILE*/}
-                      <Link to="/user-cart">
-                        <button
-                          type="button"
-                          className="relative ml-auto flex-shrink-0  rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="absolute -inset-1.5" />
-
-                          <ShoppingCartIcon
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </Link>
-                      {cartItems.length > 0 ? (
-                        <Link
-                          to="/user-cart"
-                          className={`inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-6 -ml-3 -mt-2 mr-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10 ${
-                            animate && "animate-ping"
-                          }`}
-                        >
-                          {cartItems.length}
-                        </Link>
-                      ) : (
-                        ""
-                      )}
-                      {/* MOBILE DISCLOSURE PANEL BUTTON */}
-                      {userProfile ? (
-                        <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800  text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-1  focus:ring-offset-gray-800">
-                          <span className="absolute -inset-0.5" />
-                          <span className="sr-only">Open main menu</span>
-                          {open ? (
-                            <XMarkIcon
-                              className="block h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <Bars3Icon
-                              className="block h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          )}
-                        </Disclosure.Button>
-                      ) : (
-                        <div>
-                          <Link
-                            to={`/login`}
-                            className={classNames(
-                              " hover:bg-indigo-900 hover:text-white",
-                              "rounded-md px-3 py-2 mx-1 text-sm font-medium border-2 border-gray-300 bg-indigo-700 text-gray-100"
-                            )}
+                    {userToken && userProfileLoadingStatus ? null : (
+                      <div className="mx-2 -mb-2 flex md:hidden">
+                        {/* CART ICON MOBILE*/}
+                        <Link to="/user-cart">
+                          <button
+                            type="button"
+                            className="relative ml-auto flex-shrink-0  rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
-                            Login
+                            <span className="absolute -inset-1.5" />
+
+                            <ShoppingCartIcon
+                              className="h-6 w-6"
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </Link>
+                        {cartItems.length > 0 ? (
+                          <Link
+                            to="/user-cart"
+                            className={`inline-flex items-center rounded-md bg-red-50 z-10 px-2 py-1 mb-6 -ml-3 -mt-2 mr-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10 ${
+                              animate && "animate-ping"
+                            }`}
+                          >
+                            {cartItems.length}
                           </Link>
-                        </div>
-                      )}
-                    </div>
+                        ) : (
+                          ""
+                        )}
+                        {/* CART ICON MOBILE END*/}
+                        {/* MOBILE DISCLOSURE PANEL BUTTON */}
+                        {userProfile ? (
+                          <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800  text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-1  focus:ring-offset-gray-800">
+                            <span className="absolute -inset-0.5" />
+                            <span className="sr-only">Open main menu</span>
+                            {open ? (
+                              <XMarkIcon
+                                className="block h-6 w-6"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <Bars3Icon
+                                className="block h-6 w-6"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </Disclosure.Button>
+                        ) : (
+                          <div>
+                            <Link
+                              to={`/login`}
+                              className={classNames(
+                                " hover:bg-indigo-900 hover:text-white",
+                                "rounded-md px-3 py-2 mx-1 text-sm font-medium border-2 border-gray-300 bg-indigo-700 text-gray-100"
+                              )}
+                            >
+                              Login
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     {/* NAVBAR ICONS MOBILE  END*/}
-                    {/* NAVBAR  MOBILE  START*/}
+                    {/* NAVBAR  MOBILE  END*/}
                   </div>
                 </div>
 
-                {/*  PROFILE DROPDOWN MOBILE SATRT*/}
+                {/*  PROFILE DROPDOWN MOBILE SATRT -alag se hai ye only loke popup*/}
                 {/* MOBILE USER PROFILE MENU/LIST only popup when clicked abv disclosue-btn*/}
                 <Disclosure.Panel className="md:hidden">
                   <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                    {navigation.map((item) => (
+                    {navigation.map(
+                      (item) =>
+                        item.role ===
+                          (userProfile ? userProfile.role : "user") && (
+                          <Link key={item.name} to={item.link}>
+                            <Disclosure.Button
+                              as="div"
+                              className={classNames(
+                                userProfile && userProfile.role === "admin"
+                                  ? "text-white bg-green-600 hover:bg-green-500"
+                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                "rounded-md px-3 py-1 my-1 text-base font-medium border-2 border-gray-500"
+                              )}
+                            >
+                              {item.name}
+                            </Disclosure.Button>
+                          </Link>
+                        )
+                    )}
+                    {/* {navigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
                         as="a"
@@ -280,16 +304,16 @@ const Navbar = (props) => {
                       >
                         {item.name}
                       </Disclosure.Button>
-                    ))}
+                    ))} */}
                   </div>
                   {userProfile && (
                     <div className="border-t border-gray-700 pb-3 pt-4">
                       <div className="flex items-center px-5">
                         <div className="flex-shrink-0">
                           <img
-                            className="h-10 w-10 rounded-full"
+                            className="h-12 w-12  rounded-full border-4 border-gray-500"
                             src={userProfile.imageUrl}
-                            alt=""
+                            alt="userImg"
                           />
                         </div>
                         <div className="ml-3 mr-auto">
@@ -305,11 +329,10 @@ const Navbar = (props) => {
                         {userNavigation.map((item) => (
                           <Disclosure.Button
                             key={item.name}
-                            as="a"
-                            href={item.href}
+                            as="div"
                             className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                           >
-                            {item.name}
+                            <Link to={item.link}>{item.name}</Link>
                           </Disclosure.Button>
                         ))}
                       </div>

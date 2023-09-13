@@ -38,6 +38,22 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
+  // MOBILE VIEW IMAGE SLIDE BTN FUNC -start
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1020);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % product.images.length);
+  };
+  const prevSlide = () => {
+    setCurrentSlide((prevSlide) =>
+      prevSlide === 0 ? product.images.length - 1 : prevSlide - 1
+    );
+  };
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+  // MOBILE VIEW IMAGE SLIDE BTN FUNC -End
+
   const handleCart = (e) => {
     e.preventDefault();
     //checking if item already present in cart
@@ -79,6 +95,24 @@ export default function ProductDetail() {
     dispatch(fetchProductByIdAsync(params.id));
   }, [dispatch, params.id]);
 
+  // useeffect for mobile imgs crousel creator
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1020);
+    };
+    window.addEventListener("resize", handleResize);
+    if (prodDetailStatus !== "loading") {
+      const interval = setInterval(nextSlide, 3000); // Auto-slide every 3 seconds
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [prodDetailStatus]);
+
   return (
     <>
       {prodDetailStatus === "loading" ? (
@@ -99,7 +133,7 @@ export default function ProductDetail() {
               <nav aria-label="Breadcrumb">
                 <div
                   role="list"
-                  className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
+                  className="mx-auto my-2 flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
                 >
                   {product.breadcrumbs &&
                     product.breadcrumbs.map((breadcrumb) => (
@@ -136,39 +170,92 @@ export default function ProductDetail() {
                 </div>
               </nav>
 
-              {/* Image gallery */}
-              <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                  <img
-                    src={product.images[0]}
-                    alt={product.title}
-                    className="h-full w-full object-cover object-center"
-                  />
+              {/* Image gallery  START*/}
+              {isMobile ? (
+                <div className="relative">
+                  {/* MOBILE - IMAGES CAROUSEL/SLIDER start */}
+                  <div className="flex overflow-hidden">
+                    {product.images.map((image, index) => (
+                      <div
+                        key={index}
+                        className={`${
+                          index === currentSlide ? "block" : "hidden"
+                        } w-full h-full transition-opacity duration-500 ease-in-out`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Slide ${index}`}
+                          className="w-[100vh] h-[50vh]"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-between">
+                    <button
+                      onClick={prevSlide}
+                      className="absolute top-0 bottom-0 hover:bg-opacity-30 pl-6 hover:bg-white text-gray-400 text-9xl focus:outline-none"
+                    >
+                      &#8249;
+                    </button>
+                    <button
+                      onClick={nextSlide}
+                      className="absolute right-0 top-0 bottom-0 hover:bg-opacity-30 pr-6 hover:bg-white text-gray-400 text-9xl focus:outline-none"
+                    >
+                      &#8250;
+                    </button>
+                  </div>
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                    <div className="flex space-x-2">
+                      {product.images.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => goToSlide(index)}
+                          className={`w-4 h-4 rounded-full ${
+                            index === currentSlide
+                              ? "bg-blue-500"
+                              : "bg-gray-300 hover:bg-gray-400"
+                          }`}
+                        ></button>
+                      ))}
+                    </div>
+                  </div>
+                  {/* MOBILE - IMAGES CAROUSEL/SLIDER end */}
                 </div>
-                <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                  <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+              ) : (
+                <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+                  <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                     <img
-                      src={product.images[1]}
+                      src={product.images[0]}
                       alt={product.title}
                       className="h-full w-full object-cover object-center"
                     />
                   </div>
-                  <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                  <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                      <img
+                        src={product.images[1]}
+                        alt={product.title}
+                        className="h-full w-full object-cover object-center"
+                      />
+                    </div>
+                    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                      <img
+                        src={product.images[2]}
+                        alt={product.title}
+                        className="h-full w-full object-cover object-center"
+                      />
+                    </div>
+                  </div>
+                  <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                     <img
-                      src={product.images[2]}
+                      src={product.images[3]}
                       alt={product.title}
                       className="h-full w-full object-cover object-center"
                     />
                   </div>
                 </div>
-                <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                  <img
-                    src={product.images[3]}
-                    alt={product.title}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-              </div>
+              )}
+              {/* Image gallery  END*/}
 
               {/* Product info */}
               <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
@@ -267,7 +354,7 @@ export default function ProductDetail() {
                             Size
                           </h3>
                           <a
-                            href="#"
+                            href="/"
                             className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                           >
                             Size guide
@@ -376,10 +463,7 @@ export default function ProductDetail() {
                       </h3>
 
                       <div className="mt-4">
-                        <ul
-                          role="list"
-                          className="list-disc space-y-2 pl-4 text-sm"
-                        >
+                        <ul className="list-disc space-y-2 pl-4 text-sm">
                           {product.highlights.map(
                             (highlight) =>
                               (highlight && highlight.length) > 0 && (
