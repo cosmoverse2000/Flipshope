@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //router
 import { Link } from "react-router-dom";
 //form
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   authLoadingStatus,
+  resetAuthErrors,
   resetPasswordRequestAsync,
   selectAuthErrors,
   selectResetPassMailSent,
@@ -22,8 +23,14 @@ export default function Forgot() {
   //redux
   const dispatch = useDispatch();
   const resetMailStatus = useSelector(selectResetPassMailSent);
-  const authErrors = useSelector(selectAuthErrors);
+  let authErrors = useSelector(selectAuthErrors);
   const linkSendingLoadingSatus = useSelector(authLoadingStatus);
+
+  useEffect(() => {
+    if (authErrors) {
+      dispatch(resetAuthErrors());
+    }
+  }, [dispatch]);
 
   // console.log(errors);
   return (

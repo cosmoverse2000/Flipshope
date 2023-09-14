@@ -1,15 +1,24 @@
 import React from "react";
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { signupUserAccountAsync, selectLoggedInUserToken } from "../authSlice";
+import {
+  signupUserAccountAsync,
+  selectLoggedInUserToken,
+  selectAuthErrors,
+  authLoadingStatus,
+  resetAuthErrors,
+} from "../authSlice";
 //router
 import { Link, Navigate } from "react-router-dom";
 //form
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export default function Signup() {
   //redux
   const dispatch = useDispatch();
+  const authErrors = useSelector(selectAuthErrors);
+  const authLoadStatus = useSelector(authLoadingStatus);
   const userToken = useSelector(selectLoggedInUserToken);
   //react-forms
   const {
@@ -17,6 +26,12 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (authErrors) {
+      dispatch(resetAuthErrors());
+    }
+  }, [dispatch]);
 
   return (
     <>
@@ -80,6 +95,11 @@ export default function Signup() {
                   />
                   {errors.email && (
                     <p className="text-red-500">{errors.email.message}</p>
+                  )}
+                  {authErrors && (
+                    <p className="text-red-500 whitespace-pre-line">
+                      {authErrors.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -154,7 +174,7 @@ export default function Signup() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Sign Up
+                  {authLoadStatus === "loading" ? "Signing Up..." : "Sign Up"}
                 </button>
               </div>
             </form>

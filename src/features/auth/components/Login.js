@@ -5,15 +5,19 @@ import {
   selectAuthErrors,
   selectLoggedInUserToken,
   loginUserAccountAsync,
+  authLoadingStatus,
+  resetAuthErrors,
 } from "../authSlice";
 //router
 import { Link, Navigate } from "react-router-dom";
 //form
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export default function Login() {
   //redux
   const dispatch = useDispatch();
+  const authLoadStatus = useSelector(authLoadingStatus);
   const authErrors = useSelector(selectAuthErrors);
   const userToken = useSelector(selectLoggedInUserToken);
   //react-forms
@@ -24,6 +28,11 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    if (authErrors) {
+      dispatch(resetAuthErrors());
+    }
+  }, [dispatch]);
   // console.log(errors);
   return (
     <>
@@ -138,7 +147,7 @@ export default function Login() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Log in
+                {authLoadStatus === "loading" ? "Loging In..." : "Log In"}
               </button>
             </div>
           </form>

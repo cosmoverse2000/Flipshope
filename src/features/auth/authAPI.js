@@ -2,17 +2,28 @@
 
 //On create user
 export function signupUserAccount(userData) {
-  return new Promise(async (resolve) => {
-    const response = await fetch("/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(userData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    //TODO:don't send back password data and also it should be encrypted
-    const data = await response.json();
-    resolve(data);
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data, "daa");
+        resolve(data);
+      } else {
+        const error = await response.json();
+        // console.log(error, "error");
+        reject(error);
+      }
+    } catch (error) {
+      // console.log(error, "loginUserAccount");
+      reject(error);
+    }
   });
 }
 

@@ -20,10 +20,16 @@ const initialState = {
 //signup ACtion
 export const signupUserAccountAsync = createAsyncThunk(
   "auth/signupUserAccount",
-  async (userData) => {
-    const response = await signupUserAccount(userData);
-    // The value we return becomes the `fulfilled` action payload
-    return response;
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await signupUserAccount(userData);
+      // The value we return becomes the `fulfilled` action payload
+      return response;
+    } catch (error) {
+      // to handle reject from api
+      // console.log(error,"login errors if any");
+      return rejectWithValue(error);
+    }
   }
 );
 
@@ -105,6 +111,9 @@ export const authSlice = createSlice({
     reset: (state) => {
       return initialState;
     },
+    resetAuthErrors: (state) => {
+      state.authErrors = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -114,6 +123,10 @@ export const authSlice = createSlice({
       .addCase(signupUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.loggedInUserToken = action.payload;
+      })
+      .addCase(signupUserAccountAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.authErrors = action.payload;
       })
       .addCase(loginUserAccountAsync.pending, (state) => {
         state.status = "loading";
@@ -132,12 +145,14 @@ export const authSlice = createSlice({
       })
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUserToken = null;
+        // state.loggedInUserToken = null;
+        window.location.reload();
       })
       .addCase(logoutUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
-        state.loggedInUserToken = null;
+        // state.loggedInUserToken = null;
         state.authErrors = action.payload;
+        window.location.reload();
       })
       .addCase(resetPasswordRequestAsync.pending, (state) => {
         state.status = "loading";
@@ -189,7 +204,7 @@ export const authSlice = createSlice({
   },
 });
 
-// export const { reset } = authSlice.actions;
+export const { resetAuthErrors } = authSlice.actions;
 
 export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectAuthErrors = (state) => state.auth.authErrors;
