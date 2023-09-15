@@ -11,7 +11,7 @@ export function fetchProductById(id) {
 
 //USING THIS API TO FETCH PRODUCT LIST, Along w/ filter sort and pagination
 // using this promise function to get productlist using query and filter ,added sorting in same api treating _sort,_order as key and giving vlues to it in handle sort
-export function fetchAllProductsQuery(filter, sorting, page) {
+export function fetchAllProductsQuery(filter, sorting, page, admin) {
   //'filter' obj format ={"category":["smartphone","laptops"],"brand":['samsung','adad']}
   //'Sort' obj format ={_sort:"ratings",_order="asc"}
   //'pagination' obj format ={"page":2}
@@ -29,6 +29,9 @@ export function fetchAllProductsQuery(filter, sorting, page) {
   }
   //addding PAGINATION queries
   queryString += `_page=${page}&_limit=${ITEMS_PER_PAGE}`;
+  if (admin) {
+    queryString += `&admin=true`;
+  }
 
   return new Promise(async (resolve) => {
     const response = await fetch("/products?" + queryString);

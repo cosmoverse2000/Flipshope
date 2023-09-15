@@ -195,7 +195,9 @@ export default function AdminProductList() {
     //after any setfilter and setSorting this beolw will be dispatched
     //using action 'fetchAllProductsQueryAsync' from Product Slice to call api function
     // then updating 'products' in store
-    dispatch(fetchAllProductsQueryAsync({ filter, sorting, page }));
+    dispatch(
+      fetchAllProductsQueryAsync({ filter, sorting, page, admin: true })
+    );
   }, [dispatch, filter, sorting, page]);
 
   //to reset pagination while filter and sorting
