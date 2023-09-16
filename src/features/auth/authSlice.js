@@ -146,13 +146,17 @@ export const authSlice = createSlice({
       .addCase(logoutUserAccountAsync.fulfilled, (state, action) => {
         state.status = "idle";
         // state.loggedInUserToken = null;
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .addCase(logoutUserAccountAsync.rejected, (state, action) => {
         state.status = "idle";
         // state.loggedInUserToken = null;
         state.authErrors = action.payload;
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .addCase(resetPasswordRequestAsync.pending, (state) => {
         state.status = "loading";
