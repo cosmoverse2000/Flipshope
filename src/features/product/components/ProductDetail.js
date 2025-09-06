@@ -13,7 +13,7 @@ import {
   selectCartItems,
   selectCartStatus,
 } from "../../cart/cartSlice";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import { Grid } from "react-loader-spinner";
 import { selectLoggedInUserToken } from "../../auth/authSlice";
 
@@ -32,8 +32,7 @@ export default function ProductDetail() {
   //router
   const navigate = useNavigate();
   const params = useParams();
-  //alert
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -58,17 +57,17 @@ export default function ProductDetail() {
     e.preventDefault();
     //checking if item already present in cart
     if (product.stock <= 0) {
-      alert.error("PRODUCT OUT OF STOCK!");
+      toast.error("PRODUCT OUT OF STOCK!");
       return;
     }
 
     //add item to cart only after user login
-    if (userToken) {
+    if (userToken && product) {
       const index = cartItems.findIndex(
         (item) => item.product.id === product.id
       );
       if (index >= 0 && cartItems.length > 0) {
-        alert.error("Already added to cart !");
+        toast.error("Already added to cart !");
         // console.log("Already Added to Cart");
         return;
       }
@@ -84,9 +83,9 @@ export default function ProductDetail() {
         newItemToCart.size = selectedSize;
       }
 
-      dispatch(addItemToCartAsync({ newItemToCart, alert }));
+      dispatch(addItemToCartAsync({ newItemToCart, toast }));
     } else {
-      alert.error("PLEASE, LOGIN TO CONTINUE !");
+      toast.error("PLEASE, LOGIN TO CONTINUE !");
       return;
     }
   };
@@ -112,6 +111,8 @@ export default function ProductDetail() {
       window.removeEventListener("resize", handleResize);
     };
   }, [prodDetailStatus]);
+
+  const productImageCount = product?.images?.length || 0;
 
   return (
     <>
@@ -233,14 +234,14 @@ export default function ProductDetail() {
                   <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                     <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                       <img
-                        src={product.images[1]}
+                        src={product.images[productImageCount < 2 ? 0 : 1]}
                         alt={product.title}
                         className="h-full w-full object-cover object-center"
                       />
                     </div>
                     <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                       <img
-                        src={product.images[2]}
+                        src={product.images[productImageCount < 3 ? 0 : 2]}
                         alt={product.title}
                         className="h-full w-full object-cover object-center"
                       />
@@ -248,7 +249,7 @@ export default function ProductDetail() {
                   </div>
                   <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                     <img
-                      src={product.images[3]}
+                      src={product.images[productImageCount < 4 ? 0 : 3]}
                       alt={product.title}
                       className="h-full w-full object-cover object-center"
                     />

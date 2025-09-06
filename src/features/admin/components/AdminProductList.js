@@ -30,7 +30,7 @@ import {
 import Pagination from "../../common/Pagination";
 import { Grid } from "react-loader-spinner";
 import Modals from "../../common/Modals";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 const sortOptions = [
   {
@@ -82,8 +82,7 @@ export default function AdminProductList() {
   const brands = useSelector(selectBrands);
   const status = useSelector(selectProductListStatus);
   const dispatch = useDispatch();
-  //react-aler
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
 
   //local use states
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -185,7 +184,7 @@ export default function AdminProductList() {
     dispatch(
       updateSelectedProductAsync({
         product: productToDel,
-        alert,
+        toast,
         updateType: "Deleted",
       })
     );

@@ -9,13 +9,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import Modals from "../common/Modals";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 export default function Cart() {
   //set modal id for which item you want to show modal
   const [showModal, setShowModal] = useState(0);
-  //react-alert
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
 
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
@@ -29,7 +28,7 @@ export default function Cart() {
     dispatch(updateCartItemAsync({ id: cartItem.id, qty: +e.target.value }));
   };
   const handleRemove = (cartItemId) => {
-    dispatch(deleteCartItemAsync({ prodId: cartItemId, alert }));
+    dispatch(deleteCartItemAsync({ prodId: cartItemId, toast }));
   };
 
   //NO ITEMS IN CART FEEDBACK

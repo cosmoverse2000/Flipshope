@@ -79,7 +79,12 @@ export function checkUserTokenExists() {
 export function logoutUserAccount() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("/auth/logout");
+      const response = await fetch("/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         resolve(data);

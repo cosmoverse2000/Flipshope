@@ -19,7 +19,7 @@ import {
 } from "../features/user/userSlice";
 import { Grid } from "react-loader-spinner";
 import Modals from "../features/common/Modals";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 const CheckoutPage = () => {
   //set modal id for which item you want to show modal
@@ -32,8 +32,7 @@ const CheckoutPage = () => {
   const userProfile = useSelector(selectUserProfile);
   const currentOrder = useSelector(selectCurrentOrder);
   const placeOrderStatus = useSelector(selectOrderLoadingStatus);
-  //react alert
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
 
   //react-forms
   const {
@@ -53,7 +52,7 @@ const CheckoutPage = () => {
     dispatch(updateCartItemAsync({ ...cartItem, qty: +e.target.value }));
   };
   const handleRemove = (prodId) => {
-    dispatch(deleteCartItemAsync({ prodId, alert }));
+    dispatch(deleteCartItemAsync({ prodId, toast }));
   };
   const handleAddress = (e) => {
     setSelectAddress(e.target.value);
@@ -63,7 +62,7 @@ const CheckoutPage = () => {
   };
   const handleOrders = () => {
     if (selectAddress === null || selectPayment === null) {
-      window.alert("Please, Select address & payment Method !");
+      toast.error("Please, Select address & payment Method !");
       return;
     }
     const order = {

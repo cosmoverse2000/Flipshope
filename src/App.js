@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { Grid } from "react-loader-spinner";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AlertTemplate from "react-alert-template-basic";
-import { positions, Provider } from "react-alert";
+import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 //pages
 import Home from "./pages/Home";
@@ -36,11 +35,13 @@ import {
 import { fetchUserProfileAsync } from "./features/user/userSlice";
 import StripePaymentPage from "./pages/StripePaymentPage";
 
-const options = {
-  timeout: 5000,
-  position: positions.BOTTOM_LEFT,
+const toastOptions = {
+  duration: 5000,
+  style: {
+    background: "#363636",
+    color: "#fff",
+  },
 };
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -196,9 +197,10 @@ export default function App() {
           visible={true}
         />
       ) : (
-        <Provider template={AlertTemplate} {...options}>
+        <>
           <RouterProvider router={router} />
-        </Provider>
+          <Toaster position="bottom-left" toastOptions={toastOptions} />
+        </>
       )}
     </>
   );

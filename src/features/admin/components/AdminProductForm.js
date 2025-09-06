@@ -10,7 +10,7 @@ import {
   updateSelectedProductAsync,
 } from "../../product/productSlice";
 import { useParams } from "react-router-dom";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 const AdminProductForm = () => {
   //Constant DATA for Product Form
@@ -49,8 +49,7 @@ const AdminProductForm = () => {
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch();
-  //react-alert
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
   //react-forms
   const {
     register,
@@ -133,12 +132,12 @@ const AdminProductForm = () => {
           dispatch(
             updateSelectedProductAsync({
               product,
-              alert,
+              toast,
               updateType: "Updated",
             })
           );
         } else {
-          dispatch(createProductAsync({ product, alert }));
+          dispatch(createProductAsync({ product, toast }));
         }
         reset();
       })}

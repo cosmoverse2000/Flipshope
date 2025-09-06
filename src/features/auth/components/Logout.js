@@ -12,7 +12,7 @@ const Logout = () => {
     }
   }, [dispatch, userToken]);
 
-  return <>{!userToken && <Navigate to="/login" replace={true}></Navigate>}</>;
+  return <Navigate to="/login" replace={true} />;
 };
 
 export default Logout;

@@ -15,7 +15,7 @@ import chooseColour from "../../common/ColorStatus";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
 import { Grid } from "react-loader-spinner";
 import Modals from "../../common/Modals";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 const AdminOrders = () => {
   //redux
@@ -23,8 +23,7 @@ const AdminOrders = () => {
   const allOrdersList = useSelector(selectAllOrders);
   const ordersListCount = useSelector(selectTotalOrdersCount);
   const selectOrderStatus = useSelector(selectOrderLoadingStatus);
-  //react-alert
-  const alert = useAlert();
+  //react-hot-toast - no hook needed
 
   //react-hooks
   const [sorting, setSorting] = useState({
@@ -63,7 +62,7 @@ const AdminOrders = () => {
     if (e.target.value) {
       const updatedOrder = { id: order.id, orderStatus: e.target.value };
       dispatch(
-        updateOrderAsync({ updatedOrder, alert, updateType: "orderStatus" })
+        updateOrderAsync({ updatedOrder, toast, updateType: "orderStatus" })
       );
     }
     setOrderEditable(-1);
@@ -75,7 +74,7 @@ const AdminOrders = () => {
       // console.log(e.target.value);
       const updatedOrder = { id: order.id, paymentStatus: e.target.value };
       dispatch(
-        updateOrderAsync({ updatedOrder, alert, updateType: "paymentStatus" })
+        updateOrderAsync({ updatedOrder, toast, updateType: "paymentStatus" })
       );
     }
     setOrderEditable(-1);
@@ -100,7 +99,7 @@ const AdminOrders = () => {
   };
   //to handle delete Product by admin
   const handleDelete = (orderId) => {
-    dispatch(deleteOrderAsync({ orderId, alert }));
+    dispatch(deleteOrderAsync({ orderId, toast }));
   };
   //SORTING ARROWS CSS
   const sortingArrow = (sortBy) => {

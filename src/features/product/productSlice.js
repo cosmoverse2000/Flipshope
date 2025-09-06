@@ -59,23 +59,23 @@ export const fetchAllProductsQueryAsync = createAsyncThunk(
 //adding new product
 export const createProductAsync = createAsyncThunk(
   "product/createProduct",
-  async ({ product, alert }) => {
+  async ({ product, toast }) => {
     const response = await createProduct(product);
     // The value we return becomes the `fulfilled` action payload
-    alert.success("Product Created Successfully !");
+    toast.success("Product Created Successfully !");
     return response;
   }
 );
 export const updateSelectedProductAsync = createAsyncThunk(
   "product/updateSelectedProduct",
-  async ({ product, alert, updateType }) => {
+  async ({ product, toast, updateType }) => {
     const response = await updateSelectedProduct(product);
     // The value we return becomes the `fulfilled` action payload
     if (updateType === "Deleted") {
-      alert.info("Product Deleted Successfully !");
+      toast.success("Product Deleted Successfully !");
     }
     if (updateType === "Updated") {
-      alert.success("Product Updated Successfully !");
+      toast.success("Product Updated Successfully !");
     }
     return response;
   }
